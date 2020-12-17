@@ -7,6 +7,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../DialogBox/errorDialog.dart';
+import '../DialogBox/loadingDialog.dart';
 import '../Store/storehome.dart';
 import 'package:e_shop/Config/config.dart';
 
@@ -40,7 +42,9 @@ class _RegisterState extends State<Register>
           children: [
             SizedBox(height: 10),
             InkWell(
-              onTap: ()=> print("Selected"),
+              onTap: () {
+               _selectAndPickImage();
+              },
               child: CircleAvatar(
                 radius: _screenWidth *0.15,
                 backgroundColor: Colors.white,
@@ -82,7 +86,9 @@ class _RegisterState extends State<Register>
               ),
             ),
             RaisedButton(
-              onPressed: ()=>("Clicked"),
+              onPressed: (){
+                uploadAndSaveImage();
+              },
               color: Colors.white,
               child: Text("Sign up",style: TextStyle(color: Colors.black),),
             ),
@@ -95,6 +101,66 @@ class _RegisterState extends State<Register>
         ),
       ),
     );
+  }
+  Future<void> _selectAndPickImage() async
+  {
+    _imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
+  }
+  Future<void> uploadAndSaveImage() async
+  {
+    if(_imageFile==null)
+    {
+      showDialog(
+        context: context,
+        builder: (c)
+          {
+            return ErrorAlertDialog(message: "PLease select an image file ",);
+          }
+      );
+    }
+    else
+      {
+        _passwordTextEditingController.text == _cpasswordTextEditingController.text ?
+                _emailTextEditingController.text.isNotEmpty &&
+                _passwordTextEditingController.text.isNotEmpty &&
+                _cpasswordTextEditingController.text.isNotEmpty &&
+                    _nameTextEditingController.text.isNotEmpty ?
+                    uploadToStorage() :
+                displayDialog("Please fill up registration complete form.."):
+                displayDialog("Password do not match.");
+      }
+  }
+  displayDialog(String msg)
+  {
+    showDialog(
+        context: context,
+        builder: (c)
+    {
+      return ErrorAlertDialog(message: msg,);
+    }
+    );
+  }
+  uploadToStorage() async
+  {
+    showDialog(
+        context: context,
+        builder: (c)
+    {
+      return LoadingAlertDialog(message: "Authentication, Please wait.....");
+    });
+    String imageFileName =DateTime.now().microsecondsSinceEpoch.toString();
+    StorageReference storageReference =FirebaseStorage.instance.ref().child(imageFileName);
+    StorageUploadTask storageUploadTask =storageReference.putFile(_imageFile);
+    StorageTaskSnapshot storageTaskSnapshot =await storageUploadTask.onComplete;
+    await storageTaskSnapshot.ref.getDownloadURL().then((urlImage)
+    {
+      userImageUrl=urlImage;
+      _registerUser();
+    });
+  }
+  _registerUser()
+  {
+
   }
 }
 
