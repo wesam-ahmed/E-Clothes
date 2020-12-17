@@ -79,7 +79,7 @@ class _SplashScreenState extends State<SplashScreen>
             children: [
               Image.asset("images/welcome.png"),
               SizedBox(height: 20.0,),
-              Text("welcome to lbsny",style: TextStyle(color: Colors.black54),)
+              Text("welcome to e-Shop",style: TextStyle(color: Colors.black54),)
             ],
           ),
         ),
