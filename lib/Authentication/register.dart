@@ -8,18 +8,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../Config/config.dart';
-import '../Config/config.dart';
-import '../Config/config.dart';
-import '../Config/config.dart';
-import '../Config/config.dart';
-import '../DialogBox/errorDialog.dart';
 import '../DialogBox/errorDialog.dart';
 import '../DialogBox/loadingDialog.dart';
 import '../Store/storehome.dart';
 import 'package:e_shop/Config/config.dart';
 
 import '../Widgets/customTextField.dart';
+
+
 
 class Register extends StatefulWidget {
   @override
@@ -76,13 +72,13 @@ class _RegisterState extends State<Register>
                     isObsecure: false,
                   ),
                   CustomTextField(
-                    controller: _emailTextEditingController,
+                    controller: _passwordTextEditingController,
                     data: Icons.email,
                     hintText: "Password",
                     isObsecure: true,
                   ),
                   CustomTextField(
-                    controller: _emailTextEditingController,
+                    controller: _cpasswordTextEditingController,
                     data: Icons.person,
                     hintText: "Confirm Password",
                     isObsecure: true,
@@ -160,7 +156,6 @@ class _RegisterState extends State<Register>
     await storageTaskSnapshot.ref.getDownloadURL().then((urlImage)
     {
       userImageUrl=urlImage;
-
       _registerUser();
     });
   }
@@ -179,20 +174,20 @@ class _RegisterState extends State<Register>
       Navigator.pop(context);
       showDialog(
           context: context,
-        builder: (C)
+          builder: (C)
           {
             return ErrorAlertDialog(message: error.message.toString(),);
           }
       );
     });
     if(firebaseUser != null)
-      {
-        SaveUserInfoToFirestore(firebaseUser).then((value){
-          Navigator.pop(context);
-          Route route = MaterialPageRoute(builder: (C) => StoreHome());
-          Navigator.pushReplacement(context, route);
-        });
-      }
+    {
+      SaveUserInfoToFirestore(firebaseUser).then((value){
+        Navigator.pop(context);
+        Route route = MaterialPageRoute(builder: (C) => StoreHome());
+        Navigator.pushReplacement(context, route);
+      });
+    }
   }
 
   Future SaveUserInfoToFirestore(FirebaseUser fUser) async
