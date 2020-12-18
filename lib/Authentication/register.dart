@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:e_shop/DialogBox/loadingDialog.dart';
@@ -7,14 +8,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../Config/config.dart';
+import '../Config/config.dart';
+import '../Config/config.dart';
+import '../Config/config.dart';
+import '../Config/config.dart';
+import '../DialogBox/errorDialog.dart';
 import '../DialogBox/errorDialog.dart';
 import '../DialogBox/loadingDialog.dart';
 import '../Store/storehome.dart';
 import 'package:e_shop/Config/config.dart';
 
 import '../Widgets/customTextField.dart';
-
-
 
 class Register extends StatefulWidget {
   @override
@@ -155,12 +160,54 @@ class _RegisterState extends State<Register>
     await storageTaskSnapshot.ref.getDownloadURL().then((urlImage)
     {
       userImageUrl=urlImage;
+
       _registerUser();
     });
   }
-  _registerUser()
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  void _registerUser() async
   {
+    FirebaseUser firebaseUser;
 
+    await _auth.createUserWithEmailAndPassword
+      (
+      email: _emailTextEditingController.text.trim(),
+      password: _passwordTextEditingController.text.trim(),
+    ).then((auth){
+      firebaseUser = auth.user;
+    }).catchError((error){
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+        builder: (C)
+          {
+            return ErrorAlertDialog(message: error.message.toString(),);
+          }
+      );
+    });
+    if(firebaseUser != null)
+      {
+        SaveUserInfoToFirestore(firebaseUser).then((value){
+          Navigator.pop(context);
+          Route route = MaterialPageRoute(builder: (C) => StoreHome());
+          Navigator.pushReplacement(context, route);
+        });
+      }
+  }
+
+  Future SaveUserInfoToFirestore(FirebaseUser fUser) async
+  {
+    Firestore.instance.collection("users").document(fUser.uid).setData({
+      "uid": fUser.uid,
+      "email": fUser.email,
+      "name": _nameTextEditingController.text.trim(),
+      "url": userImageUrl,
+    });
+    await EcommerceApp.sharedPreferences.setString("uid", fUser.uid);
+    await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, fUser.email);
+    await EcommerceApp.sharedPreferences.setString(EcommerceApp.userName, _nameTextEditingController.text);
+    await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl,userImageUrl);
+    await EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,["garbageValue"]);
   }
 }
 
