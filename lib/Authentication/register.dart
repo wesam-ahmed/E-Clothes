@@ -97,7 +97,8 @@ class _RegisterState extends State<Register>
             Container(height: 4,
             width: _screenWidth*0.8,
             color: Colors.white,),
-            SizedBox(height: 15,),
+            SizedBox(height: 15,
+            ),
           ],
         ),
       ),
@@ -147,7 +148,7 @@ class _RegisterState extends State<Register>
         context: context,
         builder: (c)
     {
-      return LoadingAlertDialog(message: "Authentication, Please wait.....");
+      return LoadingAlertDialog(message: "Registering, Please wait.....");
     });
     String imageFileName =DateTime.now().microsecondsSinceEpoch.toString();
     StorageReference storageReference =FirebaseStorage.instance.ref().child(imageFileName);
@@ -197,6 +198,7 @@ class _RegisterState extends State<Register>
       "email": fUser.email,
       "name": _nameTextEditingController.text.trim(),
       "url": userImageUrl,
+      EcommerceApp.userCartList: ["garbageValue"],
     });
     await EcommerceApp.sharedPreferences.setString("uid", fUser.uid);
     await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, fUser.email);
