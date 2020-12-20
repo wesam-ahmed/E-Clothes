@@ -96,7 +96,7 @@ class _RegisterState extends State<Register>
             SizedBox(height: 30),
             Container(height: 4,
             width: _screenWidth*0.8,
-            color: Colors.white,),
+            color: Colors.black,),
             SizedBox(height: 15,
             ),
           ],
