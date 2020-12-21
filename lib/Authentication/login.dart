@@ -16,10 +16,6 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-
-
-
-
 class _LoginState extends State<Login>
 {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -47,7 +43,7 @@ class _LoginState extends State<Login>
             padding: EdgeInsets.all(8),
               child: Text(
                 "Login to your account",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.black),
               ),
             ),
             Form(
@@ -62,7 +58,7 @@ class _LoginState extends State<Login>
                   ),
                   CustomTextField(
                     controller: _passwordTextEditingController,
-                    data: Icons.email,
+                    data: Icons.lock,
                     hintText: "Password",
                     isObsecure: true,
                   ),
@@ -83,16 +79,16 @@ class _LoginState extends State<Login>
                 );
               },
               color: Colors.white,
-              child: Text("Login",style: TextStyle(color: Colors.black),),
+              child: Text("Login",style:TextStyle(color: Colors.black,fontFamily: "Signatra" ,fontSize: 30),),
             ),
             SizedBox(height: 50),
             Container(height: 4,
               width: _screenWidth*0.8,
-              color: Colors.white,),
+              color: Colors.black,),
             SizedBox(height: 10,),
             FlatButton.icon(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> AdminSignInPage())),
-              icon: (Icon(Icons.nature_people, color: Colors.white,)),
-              label: Text("i'm Admin", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+              icon: (Icon(Icons.nature_people, color: Colors.black,)),
+              label: Text("i'm Admin", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
             ),
           ],
         ),
