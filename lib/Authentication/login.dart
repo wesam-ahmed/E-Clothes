@@ -58,7 +58,7 @@ class _LoginState extends State<Login>
                   ),
                   CustomTextField(
                     controller: _passwordTextEditingController,
-                    data: Icons.email,
+                    data: Icons.lock,
                     hintText: "Password",
                     isObsecure: true,
                   ),
