@@ -73,13 +73,13 @@ class _RegisterState extends State<Register>
                   ),
                   CustomTextField(
                     controller: _passwordTextEditingController,
-                    data: Icons.email,
+                    data: Icons.vpn_key_outlined,
                     hintText: "Password",
                     isObsecure: true,
                   ),
                   CustomTextField(
                     controller: _cpasswordTextEditingController,
-                    data: Icons.person,
+                    data: Icons.vpn_key_rounded,
                     hintText: "Confirm Password",
                     isObsecure: true,
                   ),
