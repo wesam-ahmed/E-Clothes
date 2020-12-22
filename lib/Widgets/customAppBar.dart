@@ -19,7 +19,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget
      flexibleSpace: Container(
        decoration: new BoxDecoration(
            gradient: new LinearGradient(
-             colors: [Colors.pink,Colors.lightGreenAccent],
+             colors: [Colors.white,Colors.grey],
              begin:const FractionalOffset(0.0, 0.0),
              end: const FractionalOffset(1.0, 0.0),
              stops: [0.0,1.0],

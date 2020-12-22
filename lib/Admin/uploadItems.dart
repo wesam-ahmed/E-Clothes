@@ -24,18 +24,17 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
   bool get wantKeepAlive => true;
   File file;
-  TextEditingController _desctiptiontextEditingController=TextEditingController();
-  TextEditingController _pricetextEditingController=TextEditingController();
-  TextEditingController _titletextEditingController=TextEditingController();
-  TextEditingController _shortInfotextEditingController=TextEditingController();
+  TextEditingController _desctiptionTextEditingController=TextEditingController();
+  TextEditingController _priceTextEditingController=TextEditingController();
+  TextEditingController _titleTextEditingController=TextEditingController();
+  TextEditingController _shortInfoTextEditingController=TextEditingController();
   String productId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading =false;
   @override
   Widget build(BuildContext context) {
     return file==null ? displayAdminHomeScreen():displayAdminUploadHomeScreen();
   }
-  displayAdminHomeScreen()
-  {
+  displayAdminHomeScreen() {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -100,6 +99,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       ),
     );
   }
+  //Dialog of upload pic
   takeImage(mContext){
     return showDialog(context: mContext,
       builder: (con){
@@ -107,15 +107,15 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
          title: Text("Item image",style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
          children: [
            SimpleDialogOption(
-             child: Text("Capturre with Camera",style: TextStyle(color: Colors.black),),
+             child: Text("Capture with Camera",style: TextStyle(color: Colors.black),),
              onPressed: capturePhotoWithCamera,
            ),
            SimpleDialogOption(
-             child: Text("Selact from Gallery",style: TextStyle(color: Colors.black),),
+             child: Text("Select from Gallery",style: TextStyle(color: Colors.black),),
              onPressed: pickPhotoFromGallery,
            ),
            SimpleDialogOption(
-             child: Text("cancel",style: TextStyle(color: Colors.black),),
+             child: Text("Cancel",style: TextStyle(color: Colors.black),),
              onPressed: (){
                Navigator.pop(context);
              },
@@ -157,12 +157,15 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
         leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.black,),onPressed: clearFromInfo ),
         title: Text("New product",style: TextStyle(color: Colors.black,fontSize: 24.0,fontWeight: FontWeight.bold),),
         actions: [
-          FlatButton(onPressed:uploading? null: ()=> uploadImageandSaveIteminfo(), child: Text("Add",style: TextStyle(color: Colors.black,fontSize: 16.0,fontWeight: FontWeight.bold),))
+          FlatButton(
+              onPressed:uploading? null: ()=> uploadImageandSaveIteminfo(),
+              child: Text("Add",style: TextStyle(color: Colors.black,fontSize: 16.0,fontWeight: FontWeight.bold),)
+          )
         ],
       ),
       body: ListView(
         children: [
-          uploading?circularProgress():Text(""),
+          uploading ? circularProgress() : Text(""),
           Container(
             height:230.0 ,
             width: MediaQuery.of(context).size.width*0.8,
@@ -177,12 +180,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
           ),
           Padding(padding: EdgeInsets.only(top: 12.0)),
           ListTile(
-            leading:Icon(Icons.perm_device_info,color: Colors.black87,),
+            leading:Icon(Icons.perm_device_info,color: Colors.grey,),
             title: Container(
               width: 250.0,
               child: TextField(
                 style: TextStyle(color: Colors.black),
-                controller: _shortInfotextEditingController,
+                controller: _shortInfoTextEditingController,
                 decoration:  InputDecoration(
                   hintText: "shot info",
                   hintStyle: TextStyle(color: Colors.blueGrey),
@@ -195,12 +198,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
           Divider(color: Colors.grey,),
 
           ListTile(
-            leading:Icon(Icons.title,color: Colors.black87,),
+            leading:Icon(Icons.title,color: Colors.grey,),
             title: Container(
               width: 250.0,
               child: TextField(
                 style: TextStyle(color: Colors.black),
-                controller: _titletextEditingController,
+                controller: _titleTextEditingController,
                 decoration:  InputDecoration(
                   hintText: "Title",
                   hintStyle: TextStyle(color: Colors.blueGrey),
@@ -213,12 +216,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
           Divider(color: Colors.grey,),
 
           ListTile(
-            leading:Icon(Icons.info,color: Colors.black87,),
+            leading:Icon(Icons.info,color: Colors.grey,),
             title: Container(
               width: 250.0,
               child: TextField(
                 style: TextStyle(color: Colors.black),
-                controller: _desctiptiontextEditingController,
+                controller: _desctiptionTextEditingController,
                 decoration:  InputDecoration(
                   hintText: "Desctiption",
                   hintStyle: TextStyle(color: Colors.blueGrey),
@@ -230,13 +233,13 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
           ),
           Divider(color: Colors.grey,),
           ListTile(
-            leading:Icon(Icons.monetization_on,color: Colors.black87,),
+            leading:Icon(Icons.monetization_on,color: Colors.grey,),
             title: Container(
               width: 250.0,
               child: TextField(
                 keyboardType: TextInputType.number,
                 style: TextStyle(color: Colors.black),
-                controller: _pricetextEditingController,
+                controller: _priceTextEditingController,
                 decoration:  InputDecoration(
                   hintText: "Price",
                   hintStyle: TextStyle(color: Colors.blueGrey),
@@ -259,13 +262,13 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   clearFromInfo() {
     setState(() {
       file = null;
-      _desctiptiontextEditingController.clear();
-      _titletextEditingController.clear();
-      _shortInfotextEditingController.clear();
-      _titletextEditingController.clear();
+      _desctiptionTextEditingController.clear();
+      _priceTextEditingController.clear();
+      _shortInfoTextEditingController.clear();
+      _titleTextEditingController.clear();
     });
    }
-    uploadImageandSaveIteminfo()async{
+   uploadImageandSaveIteminfo()async{
       setState(() {
         uploading=true;
       });
@@ -276,27 +279,28 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       final StorageReference storageReference=FirebaseStorage.instance.ref().child("Items");
       StorageUploadTask uploadTask=storageReference.child("product_$productId.jpg").putFile(mFileImage);
       StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
-      String downloadurl =await taskSnapshot.ref.getDownloadURL();
-      return downloadurl;
+      String downloadUrl =await taskSnapshot.ref.getDownloadURL();
+      return downloadUrl;
     }
   saveIteminfo(String downloadUrl){
     final itemsRef=Firestore.instance.collection("items");
     itemsRef.document(productId).setData({
-      "shortInfo":_shortInfotextEditingController.text.trim(),
-      "longDescription":_desctiptiontextEditingController.text.trim(),
-      "price":int.parse(_pricetextEditingController.text),
+      "shortInfo":_shortInfoTextEditingController.text.trim(),
+      "longDescription":_desctiptionTextEditingController.text.trim(),
+      "price":int.parse(_priceTextEditingController.text),
       "publishedDate": DateTime.now(),
-      "status":downloadUrl,
-      "title":_titletextEditingController.text.trim(),
+      "thumbnailUrl":downloadUrl,
+      "status":"available",
+      "title":_titleTextEditingController.text.trim(),
     });
     setState(() {
        file=null;
        uploading=false;
        productId=DateTime.now().millisecondsSinceEpoch.toString();
-       _desctiptiontextEditingController.clear();
-       _titletextEditingController.clear();
-       _shortInfotextEditingController.clear();
-       _pricetextEditingController.clear();
+       _desctiptionTextEditingController.clear();
+       _titleTextEditingController.clear();
+       _shortInfoTextEditingController.clear();
+       _priceTextEditingController.clear();
     });
   }
   }
