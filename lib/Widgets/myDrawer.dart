@@ -72,7 +72,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 Divider(height: 10,color: Colors.black,thickness: 6,),
                 ListTile(
-                  leading: Icon(Icons.shopping_bag,color: Colors.black,),
+                  leading: Icon(Icons.reorder,color: Colors.black,),
                   title: Text("My Orders",style: TextStyle(color: Colors.black),),
                   onTap: (){
                     Route route = MaterialPageRoute(builder: (C) => MyOrders());
@@ -99,7 +99,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 Divider(height: 10,color: Colors.black,thickness: 6,),
                 ListTile(
-                  leading: Icon(Icons.add_location_alt,color: Colors.black,),
+                  leading: Icon(Icons.add_location,color: Colors.black,),
                   title: Text("Add New Address",style: TextStyle(color: Colors.black),),
                   onTap: (){
                     Route route = MaterialPageRoute(builder: (C) => AddAddress());
@@ -108,7 +108,7 @@ class MyDrawer extends StatelessWidget {
                 ),
                 Divider(height: 10,color: Colors.black,thickness: 6,),
                 ListTile(
-                  leading: Icon(Icons.logout,color: Colors.black,),
+                  leading: Icon(Icons.exit_to_app,color: Colors.black,),
                   title: Text("Logout",style: TextStyle(color: Colors.black),),
                   onTap: () {
                     EcommerceApp.auth.signOut().then((c) {
