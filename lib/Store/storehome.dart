@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Store/product_page.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -70,7 +71,7 @@ class _StoreHomeState extends State<StoreHome> {
                               builder: (context,counter,_)
                               {
                                 return Text(
-                                  counter.count.toString(),
+                                  (EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).length-1).toString(),
                                   style: TextStyle(color: Colors.black,fontSize: 12,fontWeight: FontWeight.w500) ,
                                 );
                               },
@@ -93,18 +94,15 @@ class _StoreHomeState extends State<StoreHome> {
                 return !dataSnapshot.hasData
                     ?SliverToBoxAdapter(child: Center(child: circularProgress(),),)
                     :SliverStaggeredGrid.countBuilder(
-
                   crossAxisCount: 1,
                     staggeredTileBuilder: (c)=> StaggeredTile.fit(1),
-                  itemBuilder: (context,index){
+                  itemBuilder: (context,index)
+                  {
                     ItemModel model =ItemModel.fromJson(dataSnapshot.data.documents[index].data);
                     return sourceInfo(model, context);
-
                   },
                   itemCount: dataSnapshot.data.documents.length,
-
                 );
-
               },
             ),
           ],
@@ -117,13 +115,14 @@ class _StoreHomeState extends State<StoreHome> {
 
 
 Widget sourceInfo(ItemModel model, BuildContext context,
-    {Color background, removeCartFunction}) {
+    {Color background, removeCartFunction})
+{
   return InkWell(
     onTap: (){
       Route route =MaterialPageRoute(builder: (c)=>ProductPage(itemModel:model));
       Navigator.pushReplacement(context, route);
     },
-    splashColor:Colors.pink,
+    splashColor:Colors.grey ,
     child: Padding
       (padding: EdgeInsets.all(6.0),
       child: Container(
@@ -144,14 +143,10 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       children: [
                         Expanded(
                           child: Text(model.title,style: TextStyle(color: Colors.black,fontSize: 14.0),),
-
                         ),
-
                       ],
-
                     ),
                   ),
-
                    SizedBox(height:5.0,),
                   Container(
                     child: Row(
@@ -159,11 +154,8 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       children: [
                         Expanded(
                           child: Text(model.shortInfo,style: TextStyle(color: Colors.black54,fontSize: 12.0),),
-
                         ),
-
                       ],
-
                     ),
                   ),
                   SizedBox(height: 20.0,),
@@ -183,13 +175,9 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                             children: [
                               Text(
                                 "50%",style: TextStyle(fontSize:15.0,color: Colors.white,fontWeight: FontWeight.normal),
-
-
                               ),
                               Text(
                                 "OFF",style: TextStyle(fontSize:12.0,color: Colors.white,fontWeight: FontWeight.normal),
-
-
                               ),
                             ],
                           ),
@@ -204,12 +192,11 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                             child: Row(
                               children: [
                                 Text(
-                                  "origional Price: EGP ",
+                                  "original Price: EGP ",
                                   style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.grey,
                                     decoration: TextDecoration.lineThrough,
-
                                   ),
 
                                 ),
@@ -235,22 +222,18 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                                   style: TextStyle(
                                     fontSize: 14.0,
                                     color: Colors.grey,
-
                                   ),
-
                                 ),
                                 Text(
                                   " EGP ",
-                                  style: TextStyle(color: Colors.red,fontSize: 16.0),
+                                  style: TextStyle(color: Colors.blueGrey,fontSize: 16.0),
                                 ),
                                 Text(
                                   (model.price ).toString(),
                                   style: TextStyle(
                                     fontSize: 15.0,
                                     color: Colors.grey,
-
                                   ),
-
                                 ),
                               ],
                             ),
@@ -266,19 +249,23 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                     alignment: Alignment.centerRight,
                     child:removeCartFunction == null
                       ?IconButton(
-                      icon: Icon(Icons.add_shopping_cart,color: Colors.pinkAccent,),
+                      icon: Icon(Icons.add_shopping_cart,color: Colors.black,),
                       onPressed: (){
                         checkItemInCart(model.shortInfo, context);
                       },
                     )
                         :IconButton(
-                      icon: Icon(Icons.delete ,color: Colors.pinkAccent,),
-
+                      icon: Icon(Icons.delete ,color: Colors.black,),
+                      onPressed: (){
+                        removeCartFunction();
+                        Route route = MaterialPageRoute(builder: (C) => StoreHome());
+                        Navigator.pushReplacement(context, route);
+                      },
                     ),
                   ),
                   Divider(
                     height: 5.0,
-                    color: Colors.pink,
+                    color: Colors.black,
                   ),
                 ],
               ),
@@ -290,15 +277,30 @@ Widget sourceInfo(ItemModel model, BuildContext context,
   ),
   );
 }
-
-
-
-Widget card({Color primaryColor = Colors.redAccent, String imgPath}) {
-  return Container();
+Widget card({Color primaryColor = Colors.redAccent, String imgPath})
+{
+  return Container(
+    height: 150,
+    width: width * .34,
+    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+    decoration: BoxDecoration(
+      color: primaryColor,
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+      boxShadow: <BoxShadow>[
+        BoxShadow(offset: Offset(0,5),blurRadius: 10,color: Colors.grey[200]),
+      ]
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+      child: Image.network(
+        imgPath,
+        height: 150,
+        width: width * .34,
+        fit: BoxFit.fill,
+      ) ,
+    ),
+  );
 }
-
-
-
 void checkItemInCart(String shortInfoAsID, BuildContext context)
 {
   EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).contains(shortInfoAsID)
