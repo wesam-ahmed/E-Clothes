@@ -1,6 +1,4 @@
 
-import 'dart:js';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Config/config.dart';
@@ -15,19 +13,90 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
+
 String getOrderId="";
 class OrderDetails extends StatelessWidget {
-final String orderId;
-OrderDetails({Key key,this.orderId}):super(key: key);
+final String orderID;
+OrderDetails({Key key,this.orderID}):super(key: key);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(),
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: FutureBuilder<DocumentSnapshot>(
+              future:EcommerceApp.firestore
+                  .collection(EcommerceApp.collectionUser)
+                  .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+                  .collection(EcommerceApp.collectionOrders)
+                  .document(orderID).get(),
+            builder: (c,snapshot){
+                Map dataMap;
+                if(snapshot.hasData)
+                {
+                  dataMap =snapshot.data.data;
+                }
+                return snapshot.hasData
+                    ?Container(
+                      child: Column(
+                        children: [
+                          StatusBanner(status: dataMap[EcommerceApp.isSuccess],),
+                          SizedBox(height: 10,),
+                          Padding(padding: EdgeInsets.all(4),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "EG"+dataMap[EcommerceApp.totalAmount].toString(),
+                              style:  TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          ),
+                          Padding(padding: EdgeInsets.all(4)
+                          ,child: Text(
+                              "OrderId: "+getOrderId
+                            ),
+                          ),
+                          Padding(padding: EdgeInsets.all(4)
+                            ,child: Text(
+                                "Order at: "+ DateFormat("dd MMMM,yyyy - hh:mm aa").format(DateTime.fromMillisecondsSinceEpoch(int.parse(dataMap["orderTime"]))),
+                              style: TextStyle(color: Colors.grey,fontSize: 16),
+                            ),
+                          ),
+                          Divider(height: 2,),
+                          FutureBuilder<QuerySnapshot>(
+                            future: EcommerceApp.firestore.collection("items").where("shortInfo",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
+                            builder: (c,dataSnapshot){
+                              return dataSnapshot.hasData ?
+                                  OrderCard(
+                                    itemCount: dataSnapshot.data.documents.length,
+                                    data: dataSnapshot.data.documents,
+                                  )
+                                  :Center(child: circularProgress(),);
+                            },
+                          ),
+                          Divider(height: 2,),
+                          FutureBuilder<DocumentSnapshot>(
+                           future:EcommerceApp.firestore
+                           .collection(EcommerceApp.collectionUser)
+                           .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+                           .collection(EcommerceApp.subCollectionAddress)
+                           .document(dataMap[EcommerceApp.addressID]).get(),
+                            builder: (c,snap) {
+                           return snap.hasData
+                             ?ShippingDetails(model: AddressModel.fromJson(snap.data.data),)
+                               :Center(child: circularProgress(),);
+                            },
+                             )
+                              ],
+                             ),
+                             )
+                    :Center(child: circularProgress(),);
+            },
+          ),
+        ),
+      ),
     );
   }
 }
-
-
 
 class StatusBanner extends StatelessWidget {
   final bool status;
@@ -89,9 +158,6 @@ class StatusBanner extends StatelessWidget {
   }
 }
 
-
-
-
 class PaymentDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -101,13 +167,9 @@ class PaymentDetailsCard extends StatelessWidget {
   }
 }
 
-
-
 class ShippingDetails extends StatelessWidget {
-
   final AddressModel model;
   ShippingDetails({Key key,this.model}):super(key: key);
-
 
   @override
   Widget build(BuildContext context)
@@ -121,7 +183,7 @@ class ShippingDetails extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0,),
           child: Text(
-            "Shimpment Details:",
+            "Shipment Details:",
             style: TextStyle(color: Colors.black,fontWeight:FontWeight.bold),
           ),
         ),
@@ -174,9 +236,10 @@ class ShippingDetails extends StatelessWidget {
   padding: EdgeInsets.all(10.0),
   child: Center(
   child: InkWell(
-    onTap: (
-    confirmeduserOrderReceived(context,getOrderId)
-    ),
+    onTap: (){
+      confirmeduserOrderReceived(context,getOrderId);
+    }
+    ,
     child: Container(
       decoration: new BoxDecoration(
           gradient: new LinearGradient(
@@ -191,7 +254,7 @@ class ShippingDetails extends StatelessWidget {
       height: 50.0,
       child: Center(
         child: Text(
-          " Confirmed||Item waslt ya ro7 omkk",
+          " Confirmed || Items Received ",
           style: TextStyle(color: Colors.white,fontSize: 15.0,),
 
         ),
@@ -209,20 +272,23 @@ class ShippingDetails extends StatelessWidget {
 ],
     );
   }
-  confirmeduserOrderReceived(BuildContext Context ,String mOrderId)
-  {
+  confirmeduserOrderReceived(BuildContext Context ,String mOrderId) {
     EcommerceApp.firestore
         .collection(EcommerceApp.collectionUser)
-        .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)).
-    collection(EcommerceApp.collectionOrders).document(mOrderId).delete();
+        .document(EcommerceApp.sharedPreferences
+        .getString(EcommerceApp.userUID))
+        .collection(EcommerceApp.collectionOrders)
+        .document(mOrderId)
+        .delete();
 
     getOrderId ="";
-   Route route = MaterialPageRoute(builder: (c)=> SplashScreen());
-   Navigator.pushReplacement(context, route);
-   Fluttertoast.showToast(msg: "Order has been Received");
+    Route route = MaterialPageRoute(builder: (c)=> SplashScreen());
+    Navigator.pushReplacement(Context, route);
+    Fluttertoast.showToast(msg: "Order has been Received");
 
 
   }
+
 }
 
 
