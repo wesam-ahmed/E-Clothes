@@ -59,7 +59,7 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
     );
   }
- addOrderDetails(){
+  addOrderDetails(){
     writeOrderDetalisForUser({
       EcommerceApp.addressID:widget.addressId,
       EcommerceApp.totalAmount:widget.totalAmount,
@@ -100,7 +100,6 @@ class _PaymentPageState extends State<PaymentPage> {
     });
 
   }
-
   Future writeOrderDetalisForUser(Map<String,dynamic>data)async{
     await EcommerceApp.firestore.collection(EcommerceApp.collectionUser).
     document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)).

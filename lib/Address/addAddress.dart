@@ -33,6 +33,7 @@ class AddAddress extends StatelessWidget {
                         flatNumber: cFlatHomeNumber.text.trim(),
                         phoneNumber: cPhoneNumber.text.trim(),
                       ).toJson();
+
                       EcommerceApp.firestore.collection(EcommerceApp.collectionUser)
                       .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
                       .collection(EcommerceApp.subCollectionAddress)
@@ -103,7 +104,6 @@ class AddAddress extends StatelessWidget {
     );
   }
 }
-
 class MyTextField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;

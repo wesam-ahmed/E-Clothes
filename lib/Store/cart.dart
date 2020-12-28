@@ -20,7 +20,10 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage>
+
 {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
   double totalAmount;
 
   @override
@@ -50,7 +53,27 @@ class _CartPageState extends State<CartPage>
         backgroundColor: Colors.black,
         icon: Icon(Icons.navigate_next),
       ),
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        leading: new IconButton(
+          //Customs menu icon color (osama)
+          icon: new Icon(Icons.menu,color: Colors.black,),
+          onPressed: () => _scaffoldKey.currentState.openDrawer(),
+        ),
+        flexibleSpace: Container(
+          decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                colors: [Colors.white,Colors.grey],
+                begin:const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0,1.0],
+                tileMode: TileMode.clamp,
+              )
+          ),
+        ),
+        title: Text("e-Shop",style: TextStyle(fontSize: 55.0,color: Colors.black,fontFamily: "Signatra"),),
+        centerTitle: true,
+
+      ),
       drawer: MyDrawer(),
       body: CustomScrollView(
         slivers: [

@@ -10,8 +10,6 @@ class MyOrders extends StatefulWidget {
   _MyOrdersState createState() => _MyOrdersState();
 }
 
-
-
 class _MyOrdersState extends State<MyOrders> {
   @override
   Widget build(BuildContext context) {
@@ -42,9 +40,11 @@ class _MyOrdersState extends State<MyOrders> {
         ],
       ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: EcommerceApp.firestore.collection(EcommerceApp.collectionUser)
+          stream: EcommerceApp.firestore
+              .collection(EcommerceApp.collectionUser)
               .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
               .collection(EcommerceApp.collectionOrders).snapshots(),
+
           builder: (c,snapshot){
             return snapshot.hasData
                 ?ListView.builder(
@@ -52,7 +52,7 @@ class _MyOrdersState extends State<MyOrders> {
               itemBuilder: (c,index){
                 return FutureBuilder<QuerySnapshot>(
                   future:Firestore.instance
-                      .collection("item")
+                      .collection("items")
                       .where("shortInfo",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
 
 
@@ -63,8 +63,6 @@ class _MyOrdersState extends State<MyOrders> {
                       orderId: snapshot.data.documents[index].documentID,
                     )
                         :Center(child: circularProgress(),);
-
-
                   },
                 );
               },
