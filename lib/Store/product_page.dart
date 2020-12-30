@@ -98,7 +98,7 @@ class _ProductPageState extends State<ProductPage> {
                                 tileMode: TileMode.clamp,
                               )
                           ),
-                          width: MediaQuery.of(context).size.width-40.0,
+                          width: screenSize.width-40.0,
                           height: 50.0,
                           child: Center(
                             child: Text("Add to Cart",style: TextStyle(color: Colors.white),),

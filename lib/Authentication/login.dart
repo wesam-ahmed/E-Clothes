@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminLogin.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
@@ -24,7 +22,7 @@ class _LoginState extends State<Login>
   @override
   Widget build(BuildContext context)
   {
-    double _screenWidth = MediaQuery.of(context).size.width,_screenHeight = MediaQuery.of(context).size.height;
+    double _screenWidth = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
       child: Container(

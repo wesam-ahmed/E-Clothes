@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Address/address.dart';
-import 'package:e_shop/Widgets/customAppBar.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:provider/provider.dart';
-import '../main.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -20,9 +18,11 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage>
-
 {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Future<bool> _backStore()async{
+     return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+  }
 
   double totalAmount;
 
@@ -35,7 +35,10 @@ class _CartPageState extends State<CartPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: _backStore,
+        child: Scaffold(
+          key: _scaffoldKey,
       floatingActionButton: FloatingActionButton.extended(
           onPressed: ()
               {
@@ -54,10 +57,11 @@ class _CartPageState extends State<CartPage>
         icon: Icon(Icons.navigate_next),
       ),
       appBar: AppBar(
-        leading: new IconButton(
-          //Customs menu icon color (osama)
-          icon: new Icon(Icons.menu,color: Colors.black,),
-          onPressed: () => _scaffoldKey.currentState.openDrawer(),
+        leading: IconButton(
+          icon: Icon(Icons.menu,color: Colors.black,),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          }
         ),
         flexibleSpace: Container(
           decoration: new BoxDecoration(
@@ -131,7 +135,7 @@ class _CartPageState extends State<CartPage>
           ),
         ],
       ),
-    );
+    ));
   }
   beginBuildingCart()
   {

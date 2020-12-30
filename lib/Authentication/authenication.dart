@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'register.dart';
-import 'package:e_shop/Config/config.dart';
-
-import 'register.dart';
 
 
 class AuthenticScreen extends StatefulWidget {

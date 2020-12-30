@@ -4,6 +4,7 @@ import 'package:e_shop/Store/product_page.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -22,11 +23,32 @@ class StoreHome extends StatefulWidget {
 
 class _StoreHomeState extends State<StoreHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Future<bool> _onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => new AlertDialog(
+        title: new Text('Are you sure?'),
+        content: new Text('Do you want to exit an App'),
+        actions: <Widget>[
+          new FlatButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: new Text('No'),
+          ),
+          new FlatButton(
+            onPressed: () => SystemNavigator.pop(),
+            child: new Text('Yes'),
+          ),
+        ],
+      ),
+    )) ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child:SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -108,6 +130,7 @@ class _StoreHomeState extends State<StoreHome> {
           ],
         ),
       ),
+    )
     );
   }
 }
@@ -252,6 +275,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       icon: Icon(Icons.add_shopping_cart,color: Colors.black,),
                       onPressed: (){
                         checkItemInCart(model.shortInfo, context);
+
                       },
                     )
                         :IconButton(

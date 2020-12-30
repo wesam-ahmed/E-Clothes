@@ -2,7 +2,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Config/config.dart';
-import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
 import 'package:e_shop/Models/address.dart';
@@ -272,7 +271,7 @@ class ShippingDetails extends StatelessWidget {
 ],
     );
   }
-  confirmeduserOrderReceived(BuildContext Context ,String mOrderId) {
+  confirmeduserOrderReceived(BuildContext context ,String mOrderId) {
     EcommerceApp.firestore
         .collection(EcommerceApp.collectionUser)
         .document(EcommerceApp.sharedPreferences
@@ -283,7 +282,7 @@ class ShippingDetails extends StatelessWidget {
 
     getOrderId ="";
     Route route = MaterialPageRoute(builder: (c)=> SplashScreen());
-    Navigator.pushReplacement(Context, route);
+    Navigator.pushReplacement(context, route);
     Fluttertoast.showToast(msg: "Order has been Received");
 
 

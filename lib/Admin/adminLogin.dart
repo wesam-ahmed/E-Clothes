@@ -43,7 +43,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen>
   final TextEditingController _passwordTextEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width,_screenHeight = MediaQuery.of(context).size.height;
+    double _screenWidth = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
       child: Container(

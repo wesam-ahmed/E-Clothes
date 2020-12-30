@@ -54,6 +54,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
 {
   @override
+  // ignore: must_call_super
   void initState() {
     // TODO: implement initState
     displaySplash();
