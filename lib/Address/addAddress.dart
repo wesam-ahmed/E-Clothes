@@ -1,4 +1,3 @@
-import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
@@ -16,7 +15,12 @@ class AddAddress extends StatelessWidget {
   final cPinCode = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    Future<bool> _backStore() async{
+      return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+    }
+    return WillPopScope(
+      onWillPop: _backStore,
+        child:SafeArea(
       child: Scaffold(
         key: scaffoldKey,
         appBar: MyAppBar(),
@@ -101,13 +105,14 @@ class AddAddress extends StatelessWidget {
         ),
       ),
       ),
-    );
+    ));
   }
 }
 class MyTextField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   MyTextField({Key key, this.hint, this.controller,}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(

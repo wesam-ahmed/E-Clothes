@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Store/storehome.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:flutter/services.dart';
@@ -11,9 +12,14 @@ class MyOrders extends StatefulWidget {
 }
 
 class _MyOrdersState extends State<MyOrders> {
+  Future<bool> _backStore()async{
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+  }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: _backStore,
+      child: SafeArea(
       child: Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -71,6 +77,6 @@ class _MyOrdersState extends State<MyOrders> {
           },
         ),
       ),
-    );
+    ));
   }
 }

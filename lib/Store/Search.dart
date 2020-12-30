@@ -17,13 +17,16 @@ class SearchProduct extends StatefulWidget {
   _SearchProductState createState() => new _SearchProductState();
 }
 
-
-
 class _SearchProductState extends State<SearchProduct>{
+  Future<bool> _backStore() async{
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+  }
   Future<QuerySnapshot> docList;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: _backStore,
+      child: SafeArea(
       child: Scaffold(
         appBar: MyAppBar(
           bottom: PreferredSize(child: searchWidget(),preferredSize: Size(56,56)),),
@@ -44,7 +47,7 @@ class _SearchProductState extends State<SearchProduct>{
           },
         ),
       ),
-    );
+    ));
   }
   Widget searchWidget() {
     return Container(

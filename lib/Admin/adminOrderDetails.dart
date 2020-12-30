@@ -264,7 +264,7 @@ class AdminShippingDetails extends StatelessWidget {
       ],
     );
   }
-  confirmParcelShifted(BuildContext Context ,String mOrderId)
+  confirmParcelShifted(BuildContext context ,String mOrderId)
   {
     EcommerceApp.firestore
         .collection(EcommerceApp.collectionOrders)
@@ -273,7 +273,7 @@ class AdminShippingDetails extends StatelessWidget {
 
     getOrderId ="";
     Route route = MaterialPageRoute(builder: (c)=> UploadPage());
-    Navigator.pushReplacement(Context, route);
+    Navigator.pushReplacement(context, route);
     Fluttertoast.showToast(msg: "Parcel has been Shifted.");
 
 
