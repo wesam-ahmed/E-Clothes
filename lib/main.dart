@@ -9,8 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Authentication/authenication.dart';
 import 'package:e_shop/Config/config.dart';
 import 'Config/config.dart';
-import 'Config/config.dart';
-import 'Config/config.dart';
 import 'Counters/cartitemcounter.dart';
 import 'Counters/changeAddresss.dart';
 import 'Counters/totalMoney.dart';
@@ -36,12 +34,11 @@ class MyApp extends StatelessWidget {
        ChangeNotifierProvider(create: (c)=> TotalAmount()),
      ],
      child: MaterialApp(
-   title: 'e-Shop',
-   debugShowCheckedModeBanner: false,
-   theme: ThemeData(
-   primaryColor: Colors.green,
-   ),
-    home: SplashScreen()
+      title: 'e-Shop',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.green,),
+      home: SplashScreen()
     ),
    );
   }
@@ -57,6 +54,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
 {
   @override
+  // ignore: must_call_super
   void initState() {
     // TODO: implement initState
     displaySplash();

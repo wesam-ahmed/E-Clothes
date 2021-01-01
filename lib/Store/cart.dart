@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Address/address.dart';
-import 'package:e_shop/Widgets/customAppBar.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
@@ -12,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:provider/provider.dart';
-import '../main.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -21,6 +19,11 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage>
 {
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  Future<bool> _backStore()async{
+     return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+  }
+
   double totalAmount;
 
   @override
@@ -32,7 +35,10 @@ class _CartPageState extends State<CartPage>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return WillPopScope(
+        onWillPop: _backStore,
+        child: Scaffold(
+          key: _scaffoldKey,
       floatingActionButton: FloatingActionButton.extended(
           onPressed: ()
               {
@@ -50,7 +56,28 @@ class _CartPageState extends State<CartPage>
         backgroundColor: Colors.black,
         icon: Icon(Icons.navigate_next),
       ),
-      appBar: MyAppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.menu,color: Colors.black,),
+          onPressed: () {
+            _scaffoldKey.currentState.openDrawer();
+          }
+        ),
+        flexibleSpace: Container(
+          decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                colors: [Colors.white,Colors.grey],
+                begin:const FractionalOffset(0.0, 0.0),
+                end: const FractionalOffset(1.0, 0.0),
+                stops: [0.0,1.0],
+                tileMode: TileMode.clamp,
+              )
+          ),
+        ),
+        title: Text("e-Shop",style: TextStyle(fontSize: 55.0,color: Colors.black,fontFamily: "Signatra"),),
+        centerTitle: true,
+
+      ),
       drawer: MyDrawer(),
       body: CustomScrollView(
         slivers: [
@@ -108,7 +135,7 @@ class _CartPageState extends State<CartPage>
           ),
         ],
       ),
-    );
+    ));
   }
   beginBuildingCart()
   {

@@ -35,7 +35,7 @@ class _RegisterState extends State<Register>
   File _imageFile;
   @override
   Widget build(BuildContext context) {
-    double _screenWidth = MediaQuery.of(context).size.width,_screenHeight = MediaQuery.of(context).size.height;
+    double _screenWidth = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: Container(
         child: Column(
@@ -106,6 +106,7 @@ class _RegisterState extends State<Register>
   }
   Future<void> _selectAndPickImage() async
   {
+    // ignore: deprecated_member_use
     _imageFile = await ImagePicker.pickImage(source: ImageSource.gallery);
   }
   Future<void> uploadAndSaveImage() async
@@ -183,7 +184,7 @@ class _RegisterState extends State<Register>
     });
     if(firebaseUser != null)
     {
-      SaveUserInfoToFirestore(firebaseUser).then((value){
+      saveUserInfoToFirestore(firebaseUser).then((value){
         Navigator.pop(context);
         Route route = MaterialPageRoute(builder: (C) => StoreHome());
         Navigator.pushReplacement(context, route);
@@ -191,7 +192,7 @@ class _RegisterState extends State<Register>
     }
   }
 
-  Future SaveUserInfoToFirestore(FirebaseUser fUser) async
+  Future saveUserInfoToFirestore(FirebaseUser fUser) async
   {
     Firestore.instance.collection("users").document(fUser.uid).setData({
       "uid": fUser.uid,

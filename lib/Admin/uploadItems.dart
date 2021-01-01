@@ -8,8 +8,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:image/image.dart' as ImD;
 
 
 
@@ -31,6 +29,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   String productId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading =false;
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     return file==null ? displayAdminHomeScreen():displayAdminUploadHomeScreen();
   }
@@ -128,6 +127,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   }
   capturePhotoWithCamera()async{
     Navigator.pop(context);
+  // ignore: deprecated_member_use
   File imageFile=  await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 680.0,maxWidth: 970.0);
   setState(() {
     file=imageFile;
@@ -135,6 +135,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   }
   pickPhotoFromGallery()async{
     Navigator.pop(context);
+    // ignore: deprecated_member_use
     File imageFile=  await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       file=imageFile;
