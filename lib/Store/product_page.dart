@@ -15,13 +15,18 @@ class ProductPage extends StatefulWidget {
 
 
 class _ProductPageState extends State<ProductPage> {
+  Future<bool> _backStore()async{
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+  }
   int quantityOfItems=1;
   @override
   Widget build(BuildContext context)
   {
     Size screenSize =MediaQuery.of(context).size;
 
-    return SafeArea(
+    return WillPopScope(
+        onWillPop: _backStore,
+        child:SafeArea(
       child: Scaffold(
         appBar: MyAppBar(),
         drawer: MyDrawer(),
@@ -70,7 +75,7 @@ class _ProductPageState extends State<ProductPage> {
                           ),
 
                           Text(
-                           "EGP"+ widget.itemModel.price.toString(),
+                            "EGP"+ widget.itemModel.price.toString(),
                             style: boldTextStyle,
                           ),
                           SizedBox(
@@ -113,7 +118,9 @@ class _ProductPageState extends State<ProductPage> {
           ],
         ),
       ),
+    )
     );
+
   }
 
 }

@@ -178,7 +178,7 @@ class _AddressCardState extends State<AddressCard> {
                             ),
                             TableRow(
                                 children: [
-                                  KeyText(msg: "Pin Code",),
+                                  KeyText(msg: "Postal Code",),
                                   Text(widget.model.pincode),
                                 ]
                             ),

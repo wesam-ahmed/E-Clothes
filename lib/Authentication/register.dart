@@ -44,7 +44,7 @@ class _RegisterState extends State<Register>
             SizedBox(height: 10),
             InkWell(
               onTap: () {
-               _selectAndPickImage();
+                _selectAndPickImage();
               },
               child: CircleAvatar(
                 radius: _screenWidth *0.15,
@@ -111,7 +111,7 @@ class _RegisterState extends State<Register>
   }
   Future<void> uploadAndSaveImage() async
   {
-    if(_imageFile==null)
+   /* if(_imageFile==null)
     {
       showDialog(
         context: context,
@@ -121,8 +121,8 @@ class _RegisterState extends State<Register>
           }
       );
     }
-    else
-      {
+    else*/
+
         _passwordTextEditingController.text == _cpasswordTextEditingController.text ?
                 _emailTextEditingController.text.isNotEmpty &&
                 _passwordTextEditingController.text.isNotEmpty &&
@@ -131,7 +131,7 @@ class _RegisterState extends State<Register>
                     uploadToStorage() :
                 displayDialog("Please fill up registration complete form.."):
                 displayDialog("Password do not match.");
-      }
+
   }
   displayDialog(String msg)
   {
@@ -145,67 +145,86 @@ class _RegisterState extends State<Register>
   }
   uploadToStorage() async
   {
+    if (_imageFile == null) {
+
+      showDialog(
+          context: context,
+          builder: (c) {
+            return LoadingAlertDialog(message: "Registering, Please wait.....");
+          });
+      _registerUser();
+
+    }
+    else {
     showDialog(
         context: context,
-        builder: (c)
-    {
-      return LoadingAlertDialog(message: "Registering, Please wait.....");
-    });
-    String imageFileName =DateTime.now().microsecondsSinceEpoch.toString();
-    StorageReference storageReference =FirebaseStorage.instance.ref().child(imageFileName);
-    StorageUploadTask storageUploadTask =storageReference.putFile(_imageFile);
-    StorageTaskSnapshot storageTaskSnapshot =await storageUploadTask.onComplete;
-    await storageTaskSnapshot.ref.getDownloadURL().then((urlImage)
-    {
-      userImageUrl=urlImage;
+        builder: (c) {
+          return LoadingAlertDialog(message: "Registering, Please wait.....");
+        });
+    String imageFileName = DateTime
+        .now()
+        .microsecondsSinceEpoch
+        .toString();
+    StorageReference storageReference = FirebaseStorage.instance.ref().child(
+        imageFileName);
+    StorageUploadTask storageUploadTask = storageReference.putFile(
+        _imageFile);
+    StorageTaskSnapshot storageTaskSnapshot = await storageUploadTask
+        .onComplete;
+    await storageTaskSnapshot.ref.getDownloadURL().then((urlImage) {
+      userImageUrl = urlImage;
       _registerUser();
     });
   }
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  void _registerUser() async
-  {
-    FirebaseUser firebaseUser;
-
-    await _auth.createUserWithEmailAndPassword
-      (
-      email: _emailTextEditingController.text.trim(),
-      password: _passwordTextEditingController.text.trim(),
-    ).then((auth){
-      firebaseUser = auth.user;
-    }).catchError((error){
-      Navigator.pop(context);
-      showDialog(
-          context: context,
-          builder: (C)
-          {
-            return ErrorAlertDialog(message: error.message.toString(),);
-          }
-      );
-    });
-    if(firebaseUser != null)
-    {
-      saveUserInfoToFirestore(firebaseUser).then((value){
-        Navigator.pop(context);
-        Route route = MaterialPageRoute(builder: (C) => StoreHome());
-        Navigator.pushReplacement(context, route);
-      });
     }
-  }
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    void _registerUser() async
+    {
+      FirebaseUser firebaseUser;
 
-  Future saveUserInfoToFirestore(FirebaseUser fUser) async
-  {
-    Firestore.instance.collection("users").document(fUser.uid).setData({
-      "uid": fUser.uid,
-      "email": fUser.email,
-      "name": _nameTextEditingController.text.trim(),
-      "url": userImageUrl,
-      EcommerceApp.userCartList: ["garbageValue"],
-    });
-    await EcommerceApp.sharedPreferences.setString("uid", fUser.uid);
-    await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, fUser.email);
-    await EcommerceApp.sharedPreferences.setString(EcommerceApp.userName, _nameTextEditingController.text);
-    await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl,userImageUrl);
-    await EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,["garbageValue"]);
-  }
+      await _auth.createUserWithEmailAndPassword
+        (
+        email: _emailTextEditingController.text.trim(),
+        password: _passwordTextEditingController.text.trim(),
+      ).then((auth) {
+        firebaseUser = auth.user;
+      }).catchError((error) {
+        Navigator.pop(context);
+        showDialog(
+            context: context,
+            builder: (C) {
+              return ErrorAlertDialog(message: error.message.toString(),);
+            }
+        );
+      });
+      if (firebaseUser != null) {
+        saveUserInfoToFirestore(firebaseUser).then((value) {
+          Navigator.pop(context);
+          Route route = MaterialPageRoute(builder: (C) => StoreHome());
+          Navigator.pushReplacement(context, route);
+        });
+      }
+    }
+
+    Future saveUserInfoToFirestore(FirebaseUser fUser) async
+    {
+      Firestore.instance.collection("users").document(fUser.uid).setData({
+        "uid": fUser.uid,
+        "email": fUser.email,
+        "name": _nameTextEditingController.text.trim(),
+        "url": userImageUrl,
+        EcommerceApp.userCartList: ["garbageValue"],
+      });
+      await EcommerceApp.sharedPreferences.setString("uid", fUser.uid);
+      await EcommerceApp.sharedPreferences.setString(
+          EcommerceApp.userEmail, fUser.email);
+      await EcommerceApp.sharedPreferences.setString(
+          EcommerceApp.userName, _nameTextEditingController.text);
+      await EcommerceApp.sharedPreferences.setString(
+          EcommerceApp.userAvatarUrl, userImageUrl);
+      await EcommerceApp.sharedPreferences.setStringList(
+          EcommerceApp.userCartList, ["garbageValue"]);
+    }
+
 }
 
