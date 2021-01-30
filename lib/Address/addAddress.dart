@@ -94,8 +94,10 @@ class AddAddress extends StatelessWidget {
                     hint: "State / Country",
                     controller: cState,
                   ),
-                  MyTextField(
-                    hint: "Pin Code",
+                  TextField(
+                    decoration:InputDecoration(
+                      hintText:"Postal Code"
+                    ),
                     controller: cPinCode,
                   ),
                 ],
@@ -120,7 +122,9 @@ class MyTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration.collapsed(hintText: hint),
+
         validator: (val)=> val.isEmpty ?"field can not be empty." : null,
+
       ),
     );
   }
