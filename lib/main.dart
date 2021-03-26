@@ -12,6 +12,7 @@ import 'Config/config.dart';
 import 'Counters/cartitemcounter.dart';
 import 'Counters/changeAddresss.dart';
 import 'Counters/totalMoney.dart';
+import 'Store/Section.dart';
 import 'Store/storehome.dart';
 
 Future<void> main() async
@@ -62,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
   displaySplash(){
     Timer(Duration(seconds: 2), ()async{
       if(await EcommerceApp.auth.currentUser() !=null){
-        Route route=MaterialPageRoute(builder: (_) => StoreHome());
+        Route route=MaterialPageRoute(builder: (_) => Section());
         Navigator.pushReplacement(context, route);
       }else{
         Route route=MaterialPageRoute(builder: (_) => AuthenticScreen());

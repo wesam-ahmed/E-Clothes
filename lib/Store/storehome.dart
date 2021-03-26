@@ -30,11 +30,11 @@ class _StoreHomeState extends State<StoreHome> {
         title: new Text('Are you sure?'),
         content: new Text('Do you want to exit an App'),
         actions: <Widget>[
-          new FlatButton(
+          new TextButton(
             onPressed: () => Navigator.of(context).pop(false),
             child: new Text('No'),
           ),
-          new FlatButton(
+          new TextButton(
             onPressed: () => SystemNavigator.pop(),
             child: new Text('Yes'),
           ),
@@ -111,7 +111,7 @@ class _StoreHomeState extends State<StoreHome> {
           slivers: [
             SliverPersistentHeader(pinned:true,delegate: SearchBoxDelegate()),
             StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance.collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),
+              stream: Firestore.instance.collection(SectionKey.section).document("Pants").collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),
               builder: (context, dataSnapshot){
                 return !dataSnapshot.hasData
                     ?SliverToBoxAdapter(child: Center(child: circularProgress(),),)

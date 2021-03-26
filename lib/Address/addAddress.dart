@@ -45,6 +45,7 @@ class AddAddress extends StatelessWidget {
                       .setData(model)
                       .then((value){
                         final snack = SnackBar(content: Text("New Address added susccessfully."));
+                        // ignore: deprecated_member_use
                         scaffoldKey.currentState.showSnackBar(snack);
                         FocusScope.of(context).requestFocus(FocusNode());
                         formKey.currentState.reset();

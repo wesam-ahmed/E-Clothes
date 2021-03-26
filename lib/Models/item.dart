@@ -57,4 +57,8 @@ class PublishedDate {
     data['$date'] = this.date;
     return data;
   }
+
+}
+class SectionKey{
+  static String section;
 }

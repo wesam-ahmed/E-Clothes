@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminOrderCard.dart';
+import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../Widgets/loadingWidget.dart';
 
 class AdminShiftOrders extends StatefulWidget {
@@ -12,9 +12,14 @@ class AdminShiftOrders extends StatefulWidget {
 
 
 class _MyOrdersState extends State<AdminShiftOrders> {
+  Future<bool> _backAdmin()async{
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => UploadPage()));
+  }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: _backAdmin,
+      child: SafeArea(
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
@@ -35,7 +40,7 @@ class _MyOrdersState extends State<AdminShiftOrders> {
             IconButton(
               icon: Icon(Icons.arrow_drop_down_circle,color: Colors.white,),
               onPressed: (){
-                SystemNavigator.pop();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => UploadPage()));
               },
             ),
           ],
@@ -75,6 +80,6 @@ class _MyOrdersState extends State<AdminShiftOrders> {
           },
         ),
       ),
-    );
+    ),);
   }
 }

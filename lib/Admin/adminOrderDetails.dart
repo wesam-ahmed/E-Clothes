@@ -43,7 +43,7 @@ class AdminOrderDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                         dataMap[EcommerceApp.totalAmount].toString()+ "+EG",
+                         dataMap[EcommerceApp.totalAmount].toString()+ " EG",
                           style:  TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -176,7 +176,7 @@ class AdminShippingDetails extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0,),
           child: Text(
-            "Shimpment Details:",
+            "Shipment Details:",
             style: TextStyle(color: Colors.black,fontWeight:FontWeight.bold),
           ),
         ),
@@ -217,7 +217,7 @@ class AdminShippingDetails extends StatelessWidget {
               ),
               TableRow(
                   children: [
-                    KeyText(msg: "Pin Code",),
+                    KeyText(msg: "Postal Code",),
                     Text(model.pincode),
                   ]
               ),
@@ -274,7 +274,7 @@ class AdminShippingDetails extends StatelessWidget {
     getOrderId ="";
     Route route = MaterialPageRoute(builder: (c)=> UploadPage());
     Navigator.pushReplacement(context, route);
-    Fluttertoast.showToast(msg: "Parcel has been Shifted.");
+    Fluttertoast.showToast(msg: "Product has been Shifted.");
 
 
   }

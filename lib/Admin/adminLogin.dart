@@ -5,6 +5,7 @@ import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:flutter/material.dart';
 
+
 class AdminSignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -117,7 +118,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen>
               color: Colors.black,
             ),
             SizedBox(height: 20,),
-            FlatButton.icon(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> AuthenticScreen())),
+            TextButton.icon(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> AuthenticScreen())),
               icon: (Icon(Icons.nature_people, color: Colors.black,)),
               label: Text("i'm not Admin", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
             ),
@@ -132,15 +133,15 @@ class _AdminSignInScreenState extends State<AdminSignInScreen>
       snapshot.documents.forEach((result) {
         if(result.data["id"] != _adminIDTextEditingController.text.trim())
         {
-          Scaffold.of(context).showSnackBar(SnackBar(content:Text("your ID is not correct. "),));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("your ID is not correct. "),));
         }
         else if(result.data["password"] != _passwordTextEditingController.text.trim())
         {
-          Scaffold.of(context).showSnackBar(SnackBar(content:Text("your Password is not correct. "),));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("your Password is not correct. "),));
         }
         else
           {
-            Scaffold.of(context).showSnackBar(SnackBar(content:Text("Welcome Dear Admin, "+result.data["name"]),));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Welcome Dear Admin, "+result.data["name"]),));
             setState(() {
               _adminIDTextEditingController.text="";
               _passwordTextEditingController.text="";
