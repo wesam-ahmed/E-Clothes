@@ -338,7 +338,8 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
     return downloadUrl;
   }
   saveIteminfo(String downloadUrl){
-    final itemsRef=Firestore.instance.collection(dropdownValue_Section).document(dropdownValue_Category).collection("items").document(productId).setData({
+    final itemsRef=Firestore.instance.collection(dropdownValue_Section).document(dropdownValue_Category)
+        .collection("items").document(productId).setData({
       "shortInfo":_shortInfoTextEditingController.text.trim(),
       "longDescription":_desctiptionTextEditingController.text.trim(),
       "price":int.parse(_priceTextEditingController.text),
@@ -355,6 +356,9 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       _titleTextEditingController.clear();
       _shortInfoTextEditingController.clear();
       _priceTextEditingController.clear();
+      dropdownValue_Section=null;
+      dropdownValue_Category=null;
+
     });
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminLogin.dart';
+import 'package:e_shop/Store/Section.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:e_shop/DialogBox/loadingDialog.dart';
@@ -123,7 +124,7 @@ class _LoginState extends State<Login>
     {
      readData(firebaseUser).then((s){
        Navigator.pop(context);
-       Route route = MaterialPageRoute(builder: (C) => StoreHome());
+       Route route = MaterialPageRoute(builder: (C) => Section());
        Navigator.pushReplacement(context, route);
      });
     }

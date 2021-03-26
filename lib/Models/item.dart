@@ -61,4 +61,5 @@ class PublishedDate {
 }
 class SectionKey{
   static String section;
+  static String category="Pants";
 }
