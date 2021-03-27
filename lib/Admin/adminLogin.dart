@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Authentication/authenication.dart';
+import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:flutter/material.dart';
@@ -142,6 +143,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen>
         else
           {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content:Text("Welcome Dear Admin, "+result.data["name"]),));
+            EcommerceApp.collectionAdmin = result.data["name"];
             setState(() {
               _adminIDTextEditingController.text="";
               _passwordTextEditingController.text="";

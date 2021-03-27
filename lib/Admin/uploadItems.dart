@@ -2,6 +2,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminShiftOrders.dart';
+import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -347,6 +348,8 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "thumbnailUrl":downloadUrl,
       "status":"available",
       "title":_titleTextEditingController.text.trim(),
+      "seller":EcommerceApp.collectionAdmin,
+      "idItem":DateTime.now().millisecondsSinceEpoch.toString(),
     });
     setState(() {
       file=null;

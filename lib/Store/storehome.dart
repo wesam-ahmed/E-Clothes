@@ -138,11 +138,11 @@ class _StoreHomeState extends State<StoreHome> {
                             shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
                           ),
                           onPressed: (){
-                            SectionKey.category="T-Shirts";
+                            SectionKey.category="T-Shirt";
                             Route route = MaterialPageRoute(builder: (_) => StoreHome());
                             Navigator.pushReplacement(context, route);
                           }
-                          ,child: Text("T-Shirts",style: TextStyle(fontSize: 20,),)),
+                          ,child: Text("T-Shirt",style: TextStyle(fontSize: 20,),)),
                       SizedBox(width: 5,),
                       TextButton(
                           style: TextButton.styleFrom(
@@ -335,7 +335,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       ?IconButton(
                       icon: Icon(Icons.add_shopping_cart,color: Colors.black,),
                       onPressed: (){
-                        checkItemInCart(model.shortInfo, context);
+                        checkItemInCart(model.idItem, context);
 
                       },
                     )
@@ -386,16 +386,16 @@ Widget card({Color primaryColor = Colors.redAccent, String imgPath})
     ),
   );
 }
-void checkItemInCart(String shortInfoAsID, BuildContext context)
+void checkItemInCart(String idItemAsId, BuildContext context)
 {
-  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).contains(shortInfoAsID)
+  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).contains(idItemAsId)
       ?Fluttertoast.showToast(msg: "Item is already in Cart")
-  :addItemToCart(shortInfoAsID,context);
+  :addItemToCart(idItemAsId,context);
 }
-addItemToCart(String shortInfoAsID,BuildContext context)
+addItemToCart(String idItemAsId,BuildContext context)
 {
  List tempCartList = EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
- tempCartList.add(shortInfoAsID);
+ tempCartList.add(idItemAsId);
 EcommerceApp.firestore.collection(EcommerceApp.collectionUser).document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
  .updateData({
   EcommerceApp.userCartList:tempCartList,

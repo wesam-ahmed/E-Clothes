@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminOrderCard.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Models/item.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart';
 import '../Widgets/loadingWidget.dart';
 
 class AdminShiftOrders extends StatefulWidget {
@@ -10,11 +13,12 @@ class AdminShiftOrders extends StatefulWidget {
   _MyOrdersState createState() => _MyOrdersState();
 }
 
-
 class _MyOrdersState extends State<AdminShiftOrders> {
   Future<bool> _backAdmin()async{
     return await Navigator.push(context, MaterialPageRoute(builder: (context) => UploadPage()));
   }
+  String dropdownValue_Section ;
+  String dropdownValue_Category ;
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -45,40 +49,100 @@ class _MyOrdersState extends State<AdminShiftOrders> {
             ),
           ],
         ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: Firestore.instance.collection("orders").snapshots(),
+        body: Container(
+          child: Column(
+            children: [
+               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  DropdownButton<String>(
+                    hint: dropdownValue_Section == null
+                        ? Text('Men')
+                        : Text(dropdownValue_Section),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue_Section = newValue;
+                      });
+                    },
+                    items: <String>['Men', 'Woman', 'Kids', 'Used']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    })
+                        .toList(),
+                  ),
+                  DropdownButton<String>(
+                    hint: dropdownValue_Category == null
+                        ? Text('Category')
+                        : Text(dropdownValue_Category),
+                    onChanged: (String newValue) {
+                      setState(() {
+                        dropdownValue_Category = newValue;
+                      });
+                    },
+                    items: <String>['Shoes', 'Shirts', 'T-Shirt', 'Pants','Jackets']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    })
+                        .toList(),
+                  ),
+                ],
+              ),
+              Expanded(
+                child:StreamBuilder<QuerySnapshot>(
+                stream: Firestore.instance.collection("orders").snapshots(),
+                builder: (c,snapshot){
+                  return snapshot.hasData
+                      ?ListView.builder(
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (c,index){
+                      return FutureBuilder<QuerySnapshot>(
+                        future:Firestore.instance.collection(dropdownValue_Section).document(dropdownValue_Category)
+                            .collection("items")
+                            .where("idItem",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
 
 
-          builder: (c,snapshot){
-            return snapshot.hasData
-                ?ListView.builder(
-              itemCount: snapshot.data.documents.length,
-              itemBuilder: (c,index){
-                return FutureBuilder<QuerySnapshot>(
-                  future:Firestore.instance
-                      .collection("items")
-                      .where("shortInfo",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
+                        builder: (c,snap){
+                          return snap.hasData ?
+                          AdminOrderCard(
+                            itemCount: snap.data.documents.length,
+                            data: snap.data.documents,
+                            orderId: snapshot.data.documents[index].documentID,
+                            orderBy: snapshot.data.documents[index].data["orderBy"],
+                            addressID: snapshot.data.documents[index].data["addressID"],
+                            category: dropdownValue_Category,
+                            section:dropdownValue_Section ,
+                          )
+                              :Center(child: circularProgress(),);
 
 
-                  builder: (c,snap){
-                    return snap.hasData ?
-                    AdminOrderCard(
-                      itemCount: snap.data.documents.length,
-                      data: snap.data.documents,
-                      orderId: snapshot.data.documents[index].documentID,
-                      orderBy: snapshot.data.documents[index].data["orderBy"],
-                      addressID: snapshot.data.documents[index].data["addressID"],
-                    )
-                        :Center(child: circularProgress(),);
+                        },
+                      );
+                    },
+                  )
+                      : Center(child: circularProgress(),);
+                },
+              ),)
 
 
-                  },
-                );
-              },
-            )
-                : Center(child: circularProgress(),);
-          },
-        ),
+
+            ],
+          ),
+        )
+
+
+
+
+
+
+
+
+
+
       ),
     ),);
   }
