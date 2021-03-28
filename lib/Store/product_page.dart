@@ -92,7 +92,7 @@ class _ProductPageState extends State<ProductPage> {
                     padding: EdgeInsets.only(top: 15.0),
                     child: Center(
                       child: InkWell(
-                        onTap: ()=>checkItemInCart(widget.itemModel.shortInfo, context),
+                        onTap: ()=>checkItemInCart(widget.itemModel.idItem, context),
                         child: Container(
                           decoration: new BoxDecoration(
                               gradient: new LinearGradient(

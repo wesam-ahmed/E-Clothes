@@ -13,8 +13,10 @@ class AdminOrderCard extends StatelessWidget
   final String orderId;
   final String addressID;
   final String orderBy;
+  final String section ;
+  final String category ;
 
-  AdminOrderCard({Key key,this.itemCount,this.data,this.orderId,this.addressID,this.orderBy}) :super(key: key);
+  AdminOrderCard({Key key,this.itemCount,this.data,this.orderId,this.addressID,this.orderBy, this.section, this.category}) :super(key: key);
   @override
   Widget build(BuildContext context)
   {
@@ -23,10 +25,11 @@ class AdminOrderCard extends StatelessWidget
         Route route;
         if(counter==0){
           counter=counter+1;
-          route=MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,addressID: addressID,orderBy: orderBy,));
+          route=MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,addressID: addressID,orderBy: orderBy,section:section,category:category));
 
         }
-        Navigator.push(context, route);
+        Navigator.push(context, MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,addressID: addressID,orderBy: orderBy,section:section,category:category)));
+
       },
       child: Container(
         decoration: new BoxDecoration(
