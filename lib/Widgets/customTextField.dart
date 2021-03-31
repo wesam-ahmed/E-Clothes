@@ -22,7 +22,7 @@ class CustomTextField extends StatelessWidget
     return Container
     (
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Colors.grey.shade100,
         borderRadius: BorderRadius.all(Radius.circular(10.0))
       ),
       padding: EdgeInsets.all(8),
