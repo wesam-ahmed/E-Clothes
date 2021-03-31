@@ -1,4 +1,3 @@
-import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
@@ -16,7 +15,12 @@ class AddAddress extends StatelessWidget {
   final cPinCode = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    Future<bool> _backStore() async{
+      return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+    }
+    return WillPopScope(
+      onWillPop: _backStore,
+        child:SafeArea(
       child: Scaffold(
         key: scaffoldKey,
         appBar: MyAppBar(),
@@ -33,6 +37,7 @@ class AddAddress extends StatelessWidget {
                         flatNumber: cFlatHomeNumber.text.trim(),
                         phoneNumber: cPhoneNumber.text.trim(),
                       ).toJson();
+
                       EcommerceApp.firestore.collection(EcommerceApp.collectionUser)
                       .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
                       .collection(EcommerceApp.subCollectionAddress)
@@ -40,6 +45,7 @@ class AddAddress extends StatelessWidget {
                       .setData(model)
                       .then((value){
                         final snack = SnackBar(content: Text("New Address added susccessfully."));
+                        // ignore: deprecated_member_use
                         scaffoldKey.currentState.showSnackBar(snack);
                         FocusScope.of(context).requestFocus(FocusNode());
                         formKey.currentState.reset();
@@ -89,8 +95,10 @@ class AddAddress extends StatelessWidget {
                     hint: "State / Country",
                     controller: cState,
                   ),
-                  MyTextField(
-                    hint: "Pin Code",
+                  TextField(
+                    decoration:InputDecoration(
+                      hintText:"Postal Code"
+                    ),
                     controller: cPinCode,
                   ),
                 ],
@@ -100,14 +108,14 @@ class AddAddress extends StatelessWidget {
         ),
       ),
       ),
-    );
+    ));
   }
 }
-
 class MyTextField extends StatelessWidget {
   final String hint;
   final TextEditingController controller;
   MyTextField({Key key, this.hint, this.controller,}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -115,7 +123,9 @@ class MyTextField extends StatelessWidget {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration.collapsed(hintText: hint),
+
         validator: (val)=> val.isEmpty ?"field can not be empty." : null,
+
       ),
     );
   }

@@ -1,7 +1,6 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminLogin.dart';
+import 'package:e_shop/Store/Section.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:e_shop/DialogBox/loadingDialog.dart';
@@ -24,7 +23,7 @@ class _LoginState extends State<Login>
   @override
   Widget build(BuildContext context)
   {
-    double _screenWidth = MediaQuery.of(context).size.width,_screenHeight = MediaQuery.of(context).size.height;
+    double _screenWidth = MediaQuery.of(context).size.width;
 
     return SingleChildScrollView(
       child: Container(
@@ -86,7 +85,7 @@ class _LoginState extends State<Login>
               width: _screenWidth*0.8,
               color: Colors.black,),
             SizedBox(height: 10,),
-            FlatButton.icon(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> AdminSignInPage())),
+            TextButton.icon(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> AdminSignInPage())),
               icon: (Icon(Icons.nature_people, color: Colors.black,)),
               label: Text("i'm Admin", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
             ),
@@ -125,7 +124,7 @@ class _LoginState extends State<Login>
     {
      readData(firebaseUser).then((s){
        Navigator.pop(context);
-       Route route = MaterialPageRoute(builder: (C) => StoreHome());
+       Route route = MaterialPageRoute(builder: (C) => Section());
        Navigator.pushReplacement(context, route);
      });
     }
