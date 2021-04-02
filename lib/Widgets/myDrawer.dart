@@ -1,4 +1,5 @@
 import 'package:e_shop/Authentication/authenication.dart';
+import 'package:e_shop/Authentication/login.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Address/addAddress.dart';
 import 'package:e_shop/Store/Search.dart';
@@ -111,7 +112,7 @@ class MyDrawer extends StatelessWidget {
                   title: Text("Logout",style: TextStyle(color: Colors.black),),
                   onTap: () {
                     EcommerceApp.auth.signOut().then((c) {
-                      Route route = MaterialPageRoute(builder: (C) => AuthenticScreen());
+                      Route route = MaterialPageRoute(builder: (C) => Login());
                       Navigator.pushReplacement(context, route);
                     });
                   },
