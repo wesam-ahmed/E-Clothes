@@ -58,8 +58,7 @@ class _MyOrdersState extends State<MyOrders> {
               itemCount: snapshot.data.documents.length,
               itemBuilder: (c,index){
                 return FutureBuilder<QuerySnapshot>(
-                  future:Firestore.instance
-                      .collection("Men").document("T-Shirt").collection("items")
+                  future:Firestore.instance.collection("items")
                       .where("idItem",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
 
 

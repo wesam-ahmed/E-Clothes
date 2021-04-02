@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Store/product_page.dart';
@@ -165,7 +164,10 @@ class _StoreHomeState extends State<StoreHome> {
                   slivers: [
                     SliverPersistentHeader(pinned: true,delegate: SearchBoxDelegate()),
                     StreamBuilder<QuerySnapshot>(
-                      stream: Firestore.instance.collection(SectionKey.section).document(SectionKey.category).collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),
+                      /*stream: Firestore.instance.collection(SectionKey.section).document(SectionKey.category).
+                      collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),*/
+                      stream:Firestore.instance.collection("items").
+                      where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString()).snapshots(),
                       builder: (context, dataSnapshot){
                         return !dataSnapshot.hasData
                             ?SliverToBoxAdapter(child: Center(child: circularProgress(),),)
@@ -176,6 +178,7 @@ class _StoreHomeState extends State<StoreHome> {
                           {
                             ItemModel model =ItemModel.fromJson(dataSnapshot.data.documents[index].data);
                             return sourceInfo(model, context);
+
                           },
                           itemCount: dataSnapshot.data.documents.length,
                         );
