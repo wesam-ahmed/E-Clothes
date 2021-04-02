@@ -33,6 +33,7 @@ class EcommerceApp
    static String collectionAdmin = "admins";
    static String collectionAdminItems = "items";
    static String adminItemList = 'adminList';
+   static String collectionAdminId = "id";
 
 
 }
