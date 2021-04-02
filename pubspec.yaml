@@ -42,6 +42,8 @@ flutter:
         - asset: assets/fonts/Signatra.ttf
 
   assets:
+    - images/google.png
+    - images/facebook.png
     - images/welcome.png
     - images/login.png
     - images/admin.png
