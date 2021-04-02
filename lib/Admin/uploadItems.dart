@@ -20,12 +20,12 @@ class UploadPage extends StatefulWidget
 
 class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMixin<UploadPage>
 {
-  String dropdownValue_Section ;
-  String dropdownValue_Category ;
+  String DropdownValue_Section ;
+  String DropdownValue_Category ;
 
   bool get wantKeepAlive => true;
   File file;
-  TextEditingController _desctiptionTextEditingController=TextEditingController();
+  TextEditingController _descriptionTextEditingController=TextEditingController();
   TextEditingController _priceTextEditingController=TextEditingController();
   TextEditingController _titleTextEditingController=TextEditingController();
   TextEditingController _shortInfoTextEditingController=TextEditingController();
@@ -88,10 +88,13 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
             Icon(Icons.shop_two,color: Colors.black, size:200),
             Padding(
               padding: EdgeInsets.only(top: 20),
-              child:RaisedButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-                child: Text("Add New Items",style: TextStyle(fontSize: 20,color: Colors.black),),
-                color: Colors.grey,
+              child:TextButton(
+                style: TextButton.styleFrom(primary: Colors.white,
+                  backgroundColor: Colors.black87,
+                  onSurface: Colors.grey,
+                ),
+                child: Text("Add New Items",style: TextStyle(fontSize: 20,color: Colors.white),),
+
                 onPressed: ()=>takeImage(context),
               ) ,
             )
@@ -131,7 +134,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   capturePhotoWithCamera()async{
     Navigator.pop(context);
     // ignore: deprecated_member_use
-    File imageFile=  await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 680.0,maxWidth: 970.0);
+    File imageFile=  await ImagePicker.pickImage(source: ImageSource.camera,maxHeight: 680.0,maxWidth: 970.0,imageQuality: 40);
     setState(() {
       file=imageFile;
     });
@@ -139,7 +142,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   pickPhotoFromGallery()async{
     Navigator.pop(context);
     // ignore: deprecated_member_use
-    File imageFile=  await ImagePicker.pickImage(source: ImageSource.gallery);
+    File imageFile=  await ImagePicker.pickImage(source: ImageSource.gallery,imageQuality: 40);
     setState(() {
       file=imageFile;
     });
@@ -225,9 +228,9 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
               width: 250.0,
               child: TextField(
                 style: TextStyle(color: Colors.black),
-                controller: _desctiptionTextEditingController,
+                controller: _descriptionTextEditingController,
                 decoration:  InputDecoration(
-                  hintText: "Desctiption",
+                  hintText: "Description",
                   hintStyle: TextStyle(color: Colors.blueGrey),
                   border: InputBorder.none,
                 ),
@@ -259,12 +262,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
             title: Container(
                 width: 250.0,
                 child: DropdownButton<String>(
-                  hint: dropdownValue_Section == null
+                  hint: DropdownValue_Section == null
                       ? Text('Section')
-                      : Text(dropdownValue_Section),
+                      : Text(DropdownValue_Section),
                   onChanged: (String newValue) {
                     setState(() {
-                      dropdownValue_Section = newValue;
+                      DropdownValue_Section = newValue;
                     });
                   },
                   items: <String>['Men', 'Woman', 'Kids', 'Used']
@@ -286,12 +289,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
             title: Container(
                 width: 250.0,
                 child: DropdownButton<String>(
-                  hint: dropdownValue_Category == null
+                  hint: DropdownValue_Category == null
                       ? Text('Category')
-                      : Text(dropdownValue_Category),
+                      : Text(DropdownValue_Category),
                   onChanged: (String newValue) {
                     setState(() {
-                      dropdownValue_Category = newValue;
+                      DropdownValue_Category = newValue;
                     });
                   },
                   items: <String>['Shoes', 'Shirts', 'T-Shirt', 'Pants','Jackets']
@@ -318,7 +321,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   clearFromInfo() {
     setState(() {
       file = null;
-      _desctiptionTextEditingController.clear();
+      _descriptionTextEditingController.clear();
       _priceTextEditingController.clear();
       _shortInfoTextEditingController.clear();
       _titleTextEditingController.clear();
@@ -332,35 +335,37 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
     saveIteminfo(imageDownloadUrl);
   }
   Future<String> uploadItemImage(mFileImage)async{
-    final StorageReference storageReference=FirebaseStorage.instance.ref().child(dropdownValue_Section).child(dropdownValue_Category).child("Items");
+    final StorageReference storageReference=FirebaseStorage.instance.ref().child(DropdownValue_Section).child(DropdownValue_Category);
     StorageUploadTask uploadTask=storageReference.child("product_$productId.jpg").putFile(mFileImage);
     StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
     String downloadUrl =await taskSnapshot.ref.getDownloadURL();
     return downloadUrl;
   }
   saveIteminfo(String downloadUrl){
-    final itemsRef=Firestore.instance.collection(dropdownValue_Section).document(dropdownValue_Category)
-        .collection("items").document(productId).setData({
+    final itemsRef=Firestore.instance.collection("items");
+    itemsRef.document(productId).setData({
       "shortInfo":_shortInfoTextEditingController.text.trim(),
-      "longDescription":_desctiptionTextEditingController.text.trim(),
+      "longDescription":_descriptionTextEditingController.text.trim(),
       "price":int.parse(_priceTextEditingController.text),
       "publishedDate": DateTime.now(),
       "thumbnailUrl":downloadUrl,
       "status":"available",
       "title":_titleTextEditingController.text.trim(),
-      "seller":EcommerceApp.collectionAdmin,
+      "seller":EcommerceApp.collectionAdminId,
       "idItem":DateTime.now().millisecondsSinceEpoch.toString(),
+      "section":DropdownValue_Section.toString(),
+      "category":DropdownValue_Category.toString(),
     });
     setState(() {
       file=null;
       uploading=false;
       productId=DateTime.now().millisecondsSinceEpoch.toString();
-      _desctiptionTextEditingController.clear();
+      _descriptionTextEditingController.clear();
       _titleTextEditingController.clear();
       _shortInfoTextEditingController.clear();
       _priceTextEditingController.clear();
-      dropdownValue_Section=null;
-      dropdownValue_Category=null;
+      DropdownValue_Section=null;
+      DropdownValue_Category=null;
 
     });
   }

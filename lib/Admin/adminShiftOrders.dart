@@ -52,7 +52,7 @@ class _MyOrdersState extends State<AdminShiftOrders> {
         body: Container(
           child: Column(
             children: [
-               Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              /* Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   DropdownButton<String>(
                     hint: dropdownValue_Section == null
@@ -91,20 +91,20 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                         .toList(),
                   ),
                 ],
-              ),
+              ),*/
               Expanded(
                 child:StreamBuilder<QuerySnapshot>(
                 stream: Firestore.instance.collection("orders").snapshots(),
+
                 builder: (c,snapshot){
                   return snapshot.hasData
                       ?ListView.builder(
                     itemCount: snapshot.data.documents.length,
                     itemBuilder: (c,index){
                       return FutureBuilder<QuerySnapshot>(
-                        future:Firestore.instance.collection(dropdownValue_Section).document(dropdownValue_Category)
-                            .collection("items")
-                            .where("idItem",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
-
+                        future:Firestore.instance.
+                        collection("items").where("idItem",
+                            whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
 
                         builder: (c,snap){
                           return snap.hasData ?
@@ -126,24 +126,13 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                   )
                       : Center(child: circularProgress(),);
                 },
-              ),)
-
-
-
+              ),
+              )
             ],
           ),
         )
-
-
-
-
-
-
-
-
-
-
       ),
-    ),);
+    ),
+    );
   }
 }

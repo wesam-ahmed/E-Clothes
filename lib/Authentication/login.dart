@@ -43,7 +43,8 @@ class _LoginState extends State<Login> {
         ),
         child: Form(
           key: _formKey,
-          child: Column(
+          child:SingleChildScrollView(child:
+          Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -93,7 +94,6 @@ class _LoginState extends State<Login> {
               SizedBox(
                 height: 20,
               ),
-
               CustomButton(
                 onPress: () {
                   _emailTextEditingController.text.isNotEmpty &&
@@ -153,7 +153,7 @@ class _LoginState extends State<Login> {
                 ),
               ),
             ],
-          ),
+          )),
         ),
       ),
     );

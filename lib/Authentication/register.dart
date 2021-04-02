@@ -56,7 +56,7 @@ class _RegisterState extends State<Register> {
               color: Colors.black,
             )),
       ),
-      body: Padding(
+      body:SingleChildScrollView(child: Padding(
         padding: const EdgeInsets.only(
           top: 50,
           right: 20,
@@ -134,7 +134,8 @@ class _RegisterState extends State<Register> {
             ],
           ),
         ),
-      ),
+      ),)
+      ,
     );
 
     /* return SingleChildScrollView(

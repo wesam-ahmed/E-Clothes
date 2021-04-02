@@ -67,7 +67,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
         ),
         child: Form(
           key: _formKey,
-          child: Column(
+          child: SingleChildScrollView(child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -148,6 +148,8 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
 
             ],
           ),
+          )
+
         ),
       ),
     );
@@ -278,6 +280,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
             content: Text("Welcome Dear Admin, " + result.data["name"]),
           ));
           EcommerceApp.collectionAdmin = result.data["name"];
+          EcommerceApp.collectionAdminId = result.data["id"];
           setState(() {
             _adminIDTextEditingController.text = "";
             _passwordTextEditingController.text = "";
