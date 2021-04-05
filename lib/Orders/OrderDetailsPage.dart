@@ -29,6 +29,7 @@ OrderDetails({Key key,this.orderID}):super(key: key);
                   .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
                   .collection(EcommerceApp.collectionOrders)
                   .document(orderID).get(),
+
             builder: (c,snapshot){
                 Map dataMap;
                 if(snapshot.hasData)

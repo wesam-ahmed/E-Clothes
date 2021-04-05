@@ -98,8 +98,8 @@ class _CartPageState extends State<CartPage>
             },),
           ),
           StreamBuilder<QuerySnapshot>(
-            stream: EcommerceApp.firestore.collection(SectionKey.section).document(SectionKey.category)
-                .collection("items")
+            stream: EcommerceApp.firestore
+                .collection("items").where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString())
             .where("idItem", whereIn: EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList)).snapshots(),
             builder: (context, snapshot)
               {

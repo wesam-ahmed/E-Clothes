@@ -64,8 +64,9 @@ class AdminOrderDetails extends StatelessWidget {
                     ),
                     Divider(height: 2,),
                     FutureBuilder<QuerySnapshot>(
-                      future: EcommerceApp.firestore.collection(section).document(category)
-                      .collection("items").where("idItem",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
+                      future: EcommerceApp.firestore
+                      .collection("items").where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString()).
+                      where("idItem",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
                       builder: (c,dataSnapshot){
                         return dataSnapshot.hasData ?
                         OrderCard(
@@ -271,6 +272,9 @@ class AdminShippingDetails extends StatelessWidget {
   confirmParcelShifted(BuildContext context ,String mOrderId)
   {
     EcommerceApp.firestore
+        .collection(EcommerceApp.collectionUser)
+        .document(EcommerceApp.sharedPreferences
+        .getString(EcommerceApp.userUID))
         .collection(EcommerceApp.collectionOrders)
         .document(mOrderId)
         .delete();
