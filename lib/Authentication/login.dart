@@ -11,6 +11,8 @@ import 'package:e_shop/Widgets/custom_button_social.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../Store/storehome.dart';
 import 'package:e_shop/Config/config.dart';
 
@@ -43,8 +45,8 @@ class _LoginState extends State<Login> {
         ),
         child: Form(
           key: _formKey,
-          child:SingleChildScrollView(child:
-          Column(
+          child: SingleChildScrollView(
+              child: Column(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -106,6 +108,7 @@ class _LoginState extends State<Login> {
                               message: "please write email and password.",
                             );
                           });
+
                 },
                 text: 'SIGN IN',
               ),
@@ -122,7 +125,7 @@ class _LoginState extends State<Login> {
               CustomButtonSocial(
                 text: 'Sign In with Facebook',
                 onPress: () {
-                  //controller.facebookSignInMethod();
+                  Signinfacebook();
                 },
                 imageName: 'images/facebook.png',
               ),
@@ -132,7 +135,7 @@ class _LoginState extends State<Login> {
               CustomButtonSocial(
                 text: 'Sign In with Google',
                 onPress: () {
-                  //controller.googleSignInMethod();
+                  SignInG();
                 },
                 imageName: 'images/google.png',
               ),
@@ -144,7 +147,7 @@ class _LoginState extends State<Login> {
                     MaterialPageRoute(builder: (context) => AdminSignInPage())),
                 icon: (Icon(
                   Icons.nature_people,
-                  color:primaryColor ,
+                  color: primaryColor,
                 )),
                 label: Text(
                   "i'm Admin",
@@ -157,6 +160,7 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+
     /* return SingleChildScrollView(
       child: Container(
         child: Column(
@@ -228,6 +232,32 @@ class _LoginState extends State<Login> {
   }
 
   FirebaseAuth _auth = FirebaseAuth.instance;
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+  FacebookLogin _facebookLogin=FacebookLogin();
+  void Signinfacebook()async{
+   FacebookLoginResult result= await _facebookLogin.logIn(['email']);
+    final accessToken=result.accessToken.token;
+    if(result.status==FacebookLoginStatus.loggedIn){
+       final faceCredential=FacebookAuthProvider.getCredential(accessToken:accessToken);
+       await _auth.signInWithCredential(faceCredential);
+    }
+  }
+
+  void SignInG() async {
+    GoogleSignInAccount account = await _googleSignIn.signIn();
+    GoogleSignInAuthentication authentication = await account.authentication;
+    AuthCredential credential = GoogleAuthProvider.getCredential(
+        idToken: authentication.idToken,
+        accessToken: authentication.accessToken);
+    FirebaseUser user= (await _auth.signInWithCredential(credential)).user;
+
+    readData(user).then((s) {
+      Navigator.pop(context);
+      Route route = MaterialPageRoute(builder: (C) => Section());
+      Navigator.pushReplacement(context, route);
+    });
+
+  }
 
   void loginUser() async {
     showDialog(
@@ -284,4 +314,6 @@ class _LoginState extends State<Login> {
           .setStringList(EcommerceApp.userCartList, carList);
     });
   }
+
 }
+

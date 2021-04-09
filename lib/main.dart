@@ -15,10 +15,12 @@ import 'Counters/changeAddresss.dart';
 import 'Counters/totalMoney.dart';
 import 'Store/Section.dart';
 import 'Store/storehome.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async
 {
   WidgetsFlutterBinding.ensureInitialized();
+ // await Firebase.initializeApp();
   EcommerceApp.auth=FirebaseAuth.instance;
   EcommerceApp.sharedPreferences = await SharedPreferences.getInstance();
   EcommerceApp.firestore = Firestore.instance;

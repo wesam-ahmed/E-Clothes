@@ -26,7 +26,7 @@ class AdminSignInPage extends StatelessWidget {
           )),
         ),
         title: Text(
-          "Lepsy",
+          "Lebsy",
           style: TextStyle(
               fontSize: 55.0, color: Colors.white, fontFamily: "Signatra"),
         ),
