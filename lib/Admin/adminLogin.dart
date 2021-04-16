@@ -18,12 +18,13 @@ class AdminSignInPage extends StatelessWidget {
         flexibleSpace: Container(
           decoration: new BoxDecoration(
               gradient: new LinearGradient(
-            colors: [Colors.white],
+            colors: [Colors.white,Colors.grey],
             begin: const FractionalOffset(0.0, 0.0),
             end: const FractionalOffset(1.0, 0.0),
             stops: [0.0, 1.0],
             tileMode: TileMode.clamp,
-          )),
+          )
+          ),
         ),
         title: Text(
           "Lebsy",
