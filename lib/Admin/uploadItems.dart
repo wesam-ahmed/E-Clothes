@@ -8,6 +8,7 @@ import 'package:e_shop/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:image_picker/image_picker.dart';
 
 
@@ -22,6 +23,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 {
   String DropdownValue_Section ;
   String DropdownValue_Category ;
+  List<String> colorChecked;
+  List<String> sizeChecked;
+
+  //var size=[];
+  //var itemcolor=[];
+
 
   bool get wantKeepAlive => true;
   File file;
@@ -311,6 +318,41 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
           ),
           Divider(color: Colors.grey,),
+          ListTile(
+    leading:Icon(Icons.add_road_rounded,color: Colors.grey,),
+    title: SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: CheckboxGroup(
+
+      orientation: GroupedButtonsOrientation.HORIZONTAL,
+        labels: <String>[
+          "XS", "S", "M", "L", "XL", "XXL", "XXXL",
+        ],
+        onSelected: (List<String> sizeChecked) => print(sizeChecked.toString())
+    ),
+    )
+
+
+
+    ),
+          Divider(color: Colors.grey,),
+          ListTile(
+              leading:Icon(Icons.color_lens_outlined,color: Colors.grey,),
+              title: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: CheckboxGroup(
+                    orientation: GroupedButtonsOrientation.HORIZONTAL,
+                    labels: <String> [
+                      "Red", "Blue", "Green", "Orange", "White", "Black", "Yellow", "Grey", "Violet", "Brown",
+                    ],
+                    onSelected: (List<String> colorChecked) => print(colorChecked.toString())
+                ),
+              )
+
+
+
+          ),
+
 
         ],
       ),
