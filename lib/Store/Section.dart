@@ -1,6 +1,7 @@
 import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Store/storeS.dart';
 import 'package:e_shop/Store/storehome.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,6 +34,8 @@ class _SectionState extends State<Section>{
   }
   @override
   Widget build(BuildContext context) {
+
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -43,10 +46,10 @@ class _SectionState extends State<Section>{
           child: Center(
             child: Column(
               children: [
+                Divider(height: 5,),
                 TextButton(style: TextButton.styleFrom(
-            primary: Colors.white,
-              backgroundColor: Colors.black87,
-              onSurface: Colors.grey,
+            primary: primaryColor,
+              onSurface: Colors.black87,
             ),
                     child: Text("Men",style: TextStyle(fontSize: 50),),
                     onPressed:() {
@@ -55,10 +58,14 @@ class _SectionState extends State<Section>{
                       SectionKey.section="Men";
                     }
                 ),
+
                 Divider(height: 5,),
-                TextButton(style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: Colors.red,
+                 SizedBox(height: 20,),
+                Divider(height: 5,),
+
+                 TextButton(style: TextButton.styleFrom(
+                  primary: primaryColor,
+
                   onSurface: Colors.grey,
                 ),
                     child: Text("Woman",style: TextStyle(fontSize: 50),),
@@ -69,9 +76,10 @@ class _SectionState extends State<Section>{
                     }
                 ),
                 Divider(height: 5,),
+                SizedBox(height: 20,),
+                Divider(height: 5,),
                 TextButton(style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: Colors.cyan,
+                  primary:primaryColor,
                   onSurface: Colors.grey,
                 ),
                     child: Text("Kids",style: TextStyle(fontSize: 50),),
@@ -82,10 +90,11 @@ class _SectionState extends State<Section>{
                     }
                 ),
                 Divider(height: 5,),
+                SizedBox(height: 20,),
+                Divider(height: 5,),
 
                 TextButton(style: TextButton.styleFrom(
-                  primary: Colors.white,
-                  backgroundColor: Colors.deepPurple,
+                  primary: primaryColor,
                   onSurface: Colors.grey,
                 ),
                     child: Text("Used",style: TextStyle(fontSize: 50),),
@@ -94,7 +103,8 @@ class _SectionState extends State<Section>{
                       Navigator.pushReplacement(context, route);
                       SectionKey.section="Used";
                     }
-                )
+                ),
+                Divider(height: 5,),
               ],
             ),
 
