@@ -1,10 +1,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
-import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
 import 'package:e_shop/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +43,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
               ),
               SizedBox(height: 10.0,),
+              // ignore: deprecated_member_use
               FlatButton(
                 color: Colors.black87,
                 textColor: Colors.white,
@@ -59,7 +58,7 @@ class _PaymentPageState extends State<PaymentPage> {
       ),
     );
   }
- addOrderDetails(){
+  addOrderDetails(){
     writeOrderDetalisForUser({
       EcommerceApp.addressID:widget.addressId,
       EcommerceApp.totalAmount:widget.totalAmount,
@@ -100,7 +99,6 @@ class _PaymentPageState extends State<PaymentPage> {
     });
 
   }
-
   Future writeOrderDetalisForUser(Map<String,dynamic>data)async{
     await EcommerceApp.firestore.collection(EcommerceApp.collectionUser).
     document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)).

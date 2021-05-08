@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
-import 'package:e_shop/Counters/ItemQuantity.dart';
 import 'package:e_shop/Models/address.dart';
 import 'package:e_shop/Orders/placeOrderPayment.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
@@ -9,7 +8,6 @@ import 'package:e_shop/Widgets/wideButton.dart';
 import 'package:e_shop/Counters/changeAddresss.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import 'addAddress.dart';
@@ -180,7 +178,7 @@ class _AddressCardState extends State<AddressCard> {
                             ),
                             TableRow(
                                 children: [
-                                  KeyText(msg: "Pin Code",),
+                                  KeyText(msg: "Postal Code",),
                                   Text(widget.model.pincode),
                                 ]
                             ),
@@ -207,9 +205,6 @@ class _AddressCardState extends State<AddressCard> {
           ),
         ),
       );
-    return InkWell(
-
-    );
   }
 }
 

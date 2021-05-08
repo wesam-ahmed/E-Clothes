@@ -1,12 +1,13 @@
 import 'package:e_shop/Authentication/authenication.dart';
+import 'package:e_shop/Authentication/login.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Address/addAddress.dart';
 import 'package:e_shop/Store/Search.dart';
 import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Orders/myOrders.dart';
 import 'package:e_shop/Store/storehome.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class MyDrawer extends StatelessWidget {
   @override
@@ -34,12 +35,14 @@ class MyDrawer extends StatelessWidget {
                     height: 160,
                     width: 160,
                     child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        EcommerceApp.sharedPreferences.getString(EcommerceApp.userAvatarUrl),
+                      backgroundImage: EcommerceApp.sharedPreferences.getString(EcommerceApp.userAvatarUrl)==null ?
+                      AssetImage('images/google.png')
+                          :NetworkImage(EcommerceApp.sharedPreferences.getString(EcommerceApp.userAvatarUrl),),
+
                       ),
+
                     ),
                   ),
-                ),
                 SizedBox(height: 10,),
                 Text(
                   EcommerceApp.sharedPreferences.getString(EcommerceApp.userName),
@@ -112,7 +115,7 @@ class MyDrawer extends StatelessWidget {
                   title: Text("Logout",style: TextStyle(color: Colors.black),),
                   onTap: () {
                     EcommerceApp.auth.signOut().then((c) {
-                      Route route = MaterialPageRoute(builder: (C) => AuthenticScreen());
+                      Route route = MaterialPageRoute(builder: (C) => Login());
                       Navigator.pushReplacement(context, route);
                     });
                   },

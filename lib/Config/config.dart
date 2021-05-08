@@ -30,4 +30,10 @@ class EcommerceApp
    static final String orderTime ='orderTime';
    static final String isSuccess ='isSuccess';
 
+   static String collectionAdmin = "admins";
+   static String collectionAdminItems = "items";
+   static String adminItemList = 'adminList';
+   static String collectionAdminId = "id";
+
+
 }

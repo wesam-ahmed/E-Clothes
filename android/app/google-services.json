@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "888333560778",
+    "firebase_url": "https://eshop-26d4e-default-rtdb.firebaseio.com",
     "project_id": "eshop-26d4e",
     "storage_bucket": "eshop-26d4e.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "888333560778-95nmm4man1f2ehsoc7f8gm49q9sbt5h0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cs8.eshop",
+            "certificate_hash": "56bcd27144ec9d117bc8759638b906cded63e77d"
+          }
+        },
         {
           "client_id": "888333560778-mei7q0vnmrp59lquq52ar7vqdft5en33.apps.googleusercontent.com",
           "client_type": 3

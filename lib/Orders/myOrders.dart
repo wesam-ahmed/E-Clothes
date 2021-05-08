@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Models/item.dart';
+import 'package:e_shop/Store/storehome.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:flutter/services.dart';
@@ -10,12 +12,15 @@ class MyOrders extends StatefulWidget {
   _MyOrdersState createState() => _MyOrdersState();
 }
 
-
-
 class _MyOrdersState extends State<MyOrders> {
+  Future<bool> _backStore()async{
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+  }
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
+    return WillPopScope(
+      onWillPop: _backStore,
+      child: SafeArea(
       child: Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
@@ -42,18 +47,19 @@ class _MyOrdersState extends State<MyOrders> {
         ],
       ),
         body: StreamBuilder<QuerySnapshot>(
-          stream: EcommerceApp.firestore.collection(EcommerceApp.collectionUser)
+          stream: EcommerceApp.firestore
+              .collection(EcommerceApp.collectionUser)
               .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
               .collection(EcommerceApp.collectionOrders).snapshots(),
+
           builder: (c,snapshot){
             return snapshot.hasData
                 ?ListView.builder(
               itemCount: snapshot.data.documents.length,
               itemBuilder: (c,index){
                 return FutureBuilder<QuerySnapshot>(
-                  future:Firestore.instance
-                      .collection("item")
-                      .where("shortInfo",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
+                  future:Firestore.instance.collection("items")
+                      .where("idItem",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
 
 
                   builder: (c,snap){
@@ -63,8 +69,6 @@ class _MyOrdersState extends State<MyOrders> {
                       orderId: snapshot.data.documents[index].documentID,
                     )
                         :Center(child: circularProgress(),);
-
-
                   },
                 );
               },
@@ -73,6 +77,6 @@ class _MyOrdersState extends State<MyOrders> {
           },
         ),
       ),
-    );
+    ));
   }
 }
