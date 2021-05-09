@@ -1,15 +1,11 @@
-import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Store/product_page.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
 import 'package:e_shop/Widgets/constance.dart';
-import 'package:e_shop/Widgets/constance.dart';
-import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +17,8 @@ import '../Models/item.dart';
 import 'Section.dart';
 
 double width;
+Future<QuerySnapshot> docList;
+
 
 class StoreHome extends StatefulWidget {
   @override
@@ -38,11 +36,7 @@ class _StoreHomeState extends State<StoreHome> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String>names=<String>['Jacket','s','s','s','s'];
-    width = MediaQuery
-        .of(context)
-        .size
-        .width;
+    width = MediaQuery.of(context).size.width;
     return WillPopScope(
         onWillPop: _backStore,
         child: SafeArea(
@@ -273,153 +267,194 @@ class _StoreHomeState extends State<StoreHome> {
                   ),
                 )),*/
             Container(
-              padding: EdgeInsets.only(top: 20,left: 20,right: 20),
+              padding: EdgeInsets.only(top: 10,left: 10,right: 10),
               child: Column(
                 children: [
-                  Container(
+                 /* Container(
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
                       color: Colors.grey.shade200,
                     ),
                     child: TextFormField(
+                      onChanged: (value) {
+                        startSearching(value);
+                      },
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         prefixIcon: Icon(Icons.search,color: Colors.black,),
                       ),
                     ),
-                  ),
-                  SizedBox(height: 30,),
-                  CustomText(text: "Categorise",),
-                  SizedBox(height: 20,),
-                 Container(
-                   height: 55,
+                  ),*/
+                  Expanded(child: CustomScrollView(
+                    slivers: [
+                      SliverPersistentHeader(pinned: true, delegate: SearchBoxDelegate()),
+                      SliverToBoxAdapter(child:Container(
+                        margin: EdgeInsets.only(top: 1,bottom: 10),
+                        child:Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              CustomText(text: "Categorise",),
+                              SingleChildScrollView(padding: EdgeInsets.only( top: 5,bottom: 10),
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    FloatingActionButton.extended(
+                                      heroTag: "Shoes",
+                                      onPressed: () {
+                                        SectionKey.category = "Shoes";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => StoreHome());
+                                        Navigator.pushReplacement(context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/Jacket.png"),
+                                      label: Text("Jacket",style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10,),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Shirts",
+                                      onPressed: () {
+                                        SectionKey.category = "Shirts";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => StoreHome());
+                                        Navigator.pushReplacement(context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/tshirt.png"),
+                                      label: Text("T-shirt",style: TextStyle(color: Colors.black),),
 
-                   child:Center(
-                     child: Column(
-                       mainAxisSize: MainAxisSize.max,
-                     children: [
-                       SingleChildScrollView(
-                       scrollDirection: Axis.horizontal,
-                         child: Row(
+                                    ),
+                                    SizedBox(width: 10,),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Pants",
+                                      onPressed: () {
+                                        SectionKey.category = "Pants";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => StoreHome());
+                                        Navigator.pushReplacement(context, route);
+                                      },
 
-                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                         children: [
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/jeans.png"),
+                                      label: Text("trousers",style: TextStyle(color: Colors.black),),
 
-                           FloatingActionButton.extended(
-                               onPressed: () {
-                                 SectionKey.category = "Pants";
-                                 Route route = MaterialPageRoute(
-                                     builder: (_) => StoreHome());
-                                 Navigator.pushReplacement(context, route);
-                               },
+                                    ),
+                                    SizedBox(width: 10,),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Jackets",
+                                      onPressed: () {
+                                        SectionKey.category = "Jackets";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => StoreHome());
+                                        Navigator.pushReplacement(context, route);
+                                      },
 
-                             backgroundColor: Colors.grey.shade100,
-                             icon: Image.asset("images/Jacket.png"),
-                             label: Text("Jacket",style: TextStyle(color: Colors.black),),
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/hooded-jacket.png"),
+                                      label: Text("Hoodies",style: TextStyle(color: Colors.black),),
 
-                           ),
-                           SizedBox(width: 10,),
-                           FloatingActionButton.extended(
-                             onPressed: () {
-                               SectionKey.category = "Pants";
-                               Route route = MaterialPageRoute(
-                                   builder: (_) => StoreHome());
-                               Navigator.pushReplacement(context, route);
-                             },
+                                    ),
+                                    SizedBox(width: 10,),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Sneakers",
+                                      onPressed: () {
+                                        SectionKey.category = "Sneakers";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => StoreHome());
+                                        Navigator.pushReplacement(context, route);
+                                      },
 
-                             backgroundColor: Colors.grey.shade100,
-                             icon: Image.asset("images/tshirt.png"),
-                             label: Text("T-shirt",style: TextStyle(color: Colors.black),),
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/sneakers.png"),
+                                      label: Text("shoes",style: TextStyle(color: Colors.black),),
 
-                           ),
-                           SizedBox(width: 10,),
-                           FloatingActionButton.extended(
-                             onPressed: () {
-                               SectionKey.category = "Pants";
-                               Route route = MaterialPageRoute(
-                                   builder: (_) => StoreHome());
-                               Navigator.pushReplacement(context, route);
-                             },
+                                    ),
+                                    SizedBox(width: 10,),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Shorts",
+                                      onPressed: () {
+                                        SectionKey.category = "Shorts";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => StoreHome());
+                                        Navigator.pushReplacement(context, route);
+                                      },
 
-                             backgroundColor: Colors.grey.shade100,
-                             icon: Image.asset("images/jeans.png"),
-                             label: Text("trousers",style: TextStyle(color: Colors.black),),
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/shorts.png"),
+                                      label: Text("shorts",style: TextStyle(color: Colors.black),),
 
-                           ),
-                           SizedBox(width: 10,),
-                           FloatingActionButton.extended(
-                             onPressed: () {
-                               SectionKey.category = "Pants";
-                               Route route = MaterialPageRoute(
-                                   builder: (_) => StoreHome());
-                               Navigator.pushReplacement(context, route);
-                             },
+                                    ),
+                                    SizedBox(width: 10,),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Bags",
+                                      onPressed: () {
+                                        SectionKey.category = "Bags";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => StoreHome());
+                                        Navigator.pushReplacement(context, route);
+                                      },
 
-                             backgroundColor: Colors.grey.shade100,
-                             icon: Image.asset("images/hooded-jacket.png"),
-                             label: Text("Hoodies",style: TextStyle(color: Colors.black),),
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/bags.png"),
+                                      label: Text("accessories",style: TextStyle(color: Colors.black),),
 
-                           ),
-                           SizedBox(width: 10,),
-                           FloatingActionButton.extended(
-                             onPressed: () {
-                               SectionKey.category = "Pants";
-                               Route route = MaterialPageRoute(
-                                   builder: (_) => StoreHome());
-                               Navigator.pushReplacement(context, route);
-                             },
+                                    ),
 
-                             backgroundColor: Colors.grey.shade100,
-                             icon: Image.asset("images/sneakers.png"),
-                             label: Text("shoes",style: TextStyle(color: Colors.black),),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
 
-                           ),
-                           SizedBox(width: 10,),
-                           FloatingActionButton.extended(
-                             onPressed: () {
-                               SectionKey.category = "Pants";
-                               Route route = MaterialPageRoute(
-                                   builder: (_) => StoreHome());
-                               Navigator.pushReplacement(context, route);
-                             },
+                        ) ,
 
-                             backgroundColor: Colors.grey.shade100,
-                             icon: Image.asset("images/shorts.png"),
-                             label: Text("shorts",style: TextStyle(color: Colors.black),),
+                      ),
+                      ),
 
-                           ),
-                           SizedBox(width: 10,),
-                           FloatingActionButton.extended(
-                             onPressed: () {
-                               SectionKey.category = "Pants";
-                               Route route = MaterialPageRoute(
-                                   builder: (_) => StoreHome());
-                               Navigator.pushReplacement(context, route);
-                             },
+                      StreamBuilder<QuerySnapshot>(
+                        /*stream: Firestore.instance.collection(SectionKey.section).document(SectionKey.category).
+                      collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),*/
+                        stream: Firestore.instance
+                            .collection("items")
+                            .where("section",
+                            isEqualTo: SectionKey.section.toString())
+                            .where("category",
+                            isEqualTo: SectionKey.category.toString())
+                            .snapshots(),
+                        builder: (context, dataSnapshot) {
+                          return !dataSnapshot.hasData
+                              ? SliverToBoxAdapter(
+                            child: Center(
+                              child: circularProgress(),
+                            ),
+                          )
+                              : SliverStaggeredGrid.countBuilder(
+                            crossAxisCount: 1,
+                            staggeredTileBuilder: (c) =>
+                                StaggeredTile.fit(1),
+                            itemBuilder: (context, index) {
+                              ItemModel model = ItemModel.fromJson(
+                                  dataSnapshot
+                                      .data.documents[index].data);
+                              return sourceInfo(model, context);
+                            },
+                            itemCount: dataSnapshot.data.documents
+                                .length,
+                          );
+                        },
+                      ),
+                    ],
+                  )),
 
-                             backgroundColor: Colors.grey.shade100,
-                             icon: Image.asset("images/bags.png"),
-                             label: Text("accessories",style: TextStyle(color: Colors.black),),
-
-                           ),
-
-                         ],
-                         ),
-                       ),
-
-
-
-                     ],
-                     ),
-
-                   ) ,
-
-                 ),
 
 
 
 
                 ],
               ),
+
 
             ),
           ),
@@ -672,4 +707,8 @@ addItemToCart(String idItemAsId, BuildContext context) {
         .setStringList(EcommerceApp.userCartList, tempCartList);
     Provider.of<CartItemCounter>(context, listen: false).displayResult();
   });
+}
+Future startSearching(String query) async
+{
+  docList = Firestore.instance.collection("items").where("shortInfo",isGreaterThanOrEqualTo: query).getDocuments();
 }
