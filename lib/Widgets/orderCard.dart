@@ -20,7 +20,7 @@ OrderCard({Key key,this.itemCount,this.data,this.orderId}):super(key:key);
          route=MaterialPageRoute(builder: (c)=>OrderDetails(orderID: orderId,));
 
        }
-       Navigator.push(context, route);
+       Navigator.push(context, MaterialPageRoute(builder: (c)=>OrderDetails(orderID: orderId,)));
       },
       child: Container(
         decoration: new BoxDecoration(

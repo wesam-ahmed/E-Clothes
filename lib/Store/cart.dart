@@ -98,8 +98,9 @@ class _CartPageState extends State<CartPage>
             },),
           ),
           StreamBuilder<QuerySnapshot>(
-            stream: EcommerceApp.firestore.collection("items")
-            .where("shortInfo", whereIn: EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList)).snapshots(),
+            stream: EcommerceApp.firestore
+                .collection("items").where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString())
+            .where("idItem", whereIn: EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList)).snapshots(),
             builder: (context, snapshot)
               {
                 return !snapshot.hasData
@@ -126,7 +127,7 @@ class _CartPageState extends State<CartPage>
                               Provider.of<TotalAmount>(context, listen: false).display(totalAmount);
                             });
                           }
-                          return sourceInfo(model, context, removeCartFunction: () => removeItemFromUserCart(model.shortInfo));
+                          return sourceInfo(model, context, removeCartFunction: () => removeItemFromUserCart(model.idItem));
                         },
                       childCount: snapshot.hasData ?  snapshot.data.documents.length : 0,
                     ),
@@ -156,10 +157,10 @@ class _CartPageState extends State<CartPage>
       ),
     );
   }
-  removeItemFromUserCart(String shortInfoAsId)
+  removeItemFromUserCart(String idItemAsId)
   {
     List tempCartList = EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
-    tempCartList.remove(shortInfoAsId);
+    tempCartList.remove(idItemAsId);
     EcommerceApp.firestore.collection(EcommerceApp.collectionUser).document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
         .updateData({
       EcommerceApp.userCartList:tempCartList,

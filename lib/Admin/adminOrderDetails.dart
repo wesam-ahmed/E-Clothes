@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
 import 'package:e_shop/Models/address.dart';
@@ -16,8 +17,10 @@ class AdminOrderDetails extends StatelessWidget {
   final String orderId;
   final String orderBy;
   final String addressID;
+  final String section ;
+  final String category ;
 
-  AdminOrderDetails({Key key,this.orderId,this.orderBy,this.addressID}):super(key: key);
+  AdminOrderDetails({Key key,this.orderId,this.orderBy,this.addressID,this.section,this.category}):super(key: key);
   @override
   Widget build(BuildContext context) {
     getOrderId = orderId;
@@ -43,7 +46,7 @@ class AdminOrderDetails extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                         dataMap[EcommerceApp.totalAmount].toString()+ "+EG",
+                         dataMap[EcommerceApp.totalAmount].toString()+ " EG",
                           style:  TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -61,7 +64,9 @@ class AdminOrderDetails extends StatelessWidget {
                     ),
                     Divider(height: 2,),
                     FutureBuilder<QuerySnapshot>(
-                      future: EcommerceApp.firestore.collection("items").where("shortInfo",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
+                      future: EcommerceApp.firestore
+                      .collection("items").where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString()).
+                      where("idItem",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
                       builder: (c,dataSnapshot){
                         return dataSnapshot.hasData ?
                         OrderCard(
@@ -176,7 +181,7 @@ class AdminShippingDetails extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 10.0,),
           child: Text(
-            "Shimpment Details:",
+            "Shipment Details:",
             style: TextStyle(color: Colors.black,fontWeight:FontWeight.bold),
           ),
         ),
@@ -217,7 +222,7 @@ class AdminShippingDetails extends StatelessWidget {
               ),
               TableRow(
                   children: [
-                    KeyText(msg: "Pin Code",),
+                    KeyText(msg: "Postal Code",),
                     Text(model.pincode),
                   ]
               ),
@@ -267,6 +272,9 @@ class AdminShippingDetails extends StatelessWidget {
   confirmParcelShifted(BuildContext context ,String mOrderId)
   {
     EcommerceApp.firestore
+        .collection(EcommerceApp.collectionUser)
+        .document(EcommerceApp.sharedPreferences
+        .getString(EcommerceApp.userUID))
         .collection(EcommerceApp.collectionOrders)
         .document(mOrderId)
         .delete();
@@ -274,7 +282,7 @@ class AdminShippingDetails extends StatelessWidget {
     getOrderId ="";
     Route route = MaterialPageRoute(builder: (c)=> UploadPage());
     Navigator.pushReplacement(context, route);
-    Fluttertoast.showToast(msg: "Parcel has been Shifted.");
+    Fluttertoast.showToast(msg: "Product has been Shifted.");
 
 
   }

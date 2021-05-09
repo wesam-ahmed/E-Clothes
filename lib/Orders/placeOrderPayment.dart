@@ -43,6 +43,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
               ),
               SizedBox(height: 10.0,),
+              // ignore: deprecated_member_use
               FlatButton(
                 color: Colors.black87,
                 textColor: Colors.white,

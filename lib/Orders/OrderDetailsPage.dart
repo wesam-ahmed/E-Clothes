@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
 import 'package:e_shop/Models/address.dart';
@@ -28,6 +29,7 @@ OrderDetails({Key key,this.orderID}):super(key: key);
                   .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
                   .collection(EcommerceApp.collectionOrders)
                   .document(orderID).get(),
+
             builder: (c,snapshot){
                 Map dataMap;
                 if(snapshot.hasData)
@@ -51,7 +53,8 @@ OrderDetails({Key key,this.orderID}):super(key: key);
                           ),
                           Padding(padding: EdgeInsets.all(4)
                           ,child: Text(
-                              "OrderId: "+getOrderId
+                              "OrderId: "+orderID
+
                             ),
                           ),
                           Padding(padding: EdgeInsets.all(4)
@@ -62,7 +65,7 @@ OrderDetails({Key key,this.orderID}):super(key: key);
                           ),
                           Divider(height: 2,),
                           FutureBuilder<QuerySnapshot>(
-                            future: EcommerceApp.firestore.collection("items").where("shortInfo",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
+                            future: EcommerceApp.firestore.collection("items").where("idItemAsId",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
                             builder: (c,dataSnapshot){
                               return dataSnapshot.hasData ?
                                   OrderCard(
@@ -281,7 +284,7 @@ class ShippingDetails extends StatelessWidget {
         .delete();
 
     getOrderId ="";
-    Route route = MaterialPageRoute(builder: (c)=> SplashScreen());
+    Route route = MaterialPageRoute(builder: (c)=> StoreHome());
     Navigator.pushReplacement(context, route);
     Fluttertoast.showToast(msg: "Order has been Received");
 

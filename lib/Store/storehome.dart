@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Store/product_page.dart';
@@ -13,8 +14,10 @@ import '../Widgets/loadingWidget.dart';
 import '../Widgets/myDrawer.dart';
 import '../Widgets/searchBox.dart';
 import '../Models/item.dart';
+import 'Section.dart';
 
 double width;
+
 
 class StoreHome extends StatefulWidget {
   @override
@@ -23,31 +26,15 @@ class StoreHome extends StatefulWidget {
 
 class _StoreHomeState extends State<StoreHome> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  Future<bool> _onWillPop() async {
-    return (await showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('Do you want to exit an App'),
-        actions: <Widget>[
-          new FlatButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
-          ),
-          new FlatButton(
-            onPressed: () => SystemNavigator.pop(),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    )) ?? false;
+  Future<bool> _backStore()async{
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => Section()));
   }
 
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: _backStore,
       child:SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
@@ -107,28 +94,105 @@ class _StoreHomeState extends State<StoreHome> {
           ],
         ),
         drawer: MyDrawer(),
-        body: CustomScrollView(
-          slivers: [
-            SliverPersistentHeader(pinned:true,delegate: SearchBoxDelegate()),
-            StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance.collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),
-              builder: (context, dataSnapshot){
-                return !dataSnapshot.hasData
-                    ?SliverToBoxAdapter(child: Center(child: circularProgress(),),)
-                    :SliverStaggeredGrid.countBuilder(
-                  crossAxisCount: 1,
-                    staggeredTileBuilder: (c)=> StaggeredTile.fit(1),
-                  itemBuilder: (context,index)
-                  {
-                    ItemModel model =ItemModel.fromJson(dataSnapshot.data.documents[index].data);
-                    return sourceInfo(model, context);
-                  },
-                  itemCount: dataSnapshot.data.documents.length,
-                );
-              },
-            ),
+        body: Container(
+          child:Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.max ,
+              children: [
+
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: Colors.deepPurple,
+                            shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                          ),
+                          onPressed: (){
+                            SectionKey.category="Pants";
+                            Route route = MaterialPageRoute(builder: (_) => StoreHome());
+                            Navigator.pushReplacement(context, route);
+                          }, child: Text("Pants",style: TextStyle(fontSize: 20,),)),
+                      SizedBox(width: 5,),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: Colors.red,
+                            shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                          ),
+                          onPressed: (){
+                            SectionKey.category="Shirts";
+                            Route route = MaterialPageRoute(builder: (_) => StoreHome());
+                            Navigator.pushReplacement(context, route);
+                          }
+                          ,child: Text("Shirts",style: TextStyle(fontSize: 20,),)),
+                      SizedBox(width: 5,),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: Colors.greenAccent,
+                            shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                          ),
+                          onPressed: (){
+                            SectionKey.category="T-Shirt";
+                            Route route = MaterialPageRoute(builder: (_) => StoreHome());
+                            Navigator.pushReplacement(context, route);
+                          }
+                          ,child: Text("T-Shirt",style: TextStyle(fontSize: 20,),)),
+                      SizedBox(width: 5,),
+                      TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: Colors.lightGreen,
+                            shape: const BeveledRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5))),
+                          ),
+                          onPressed: (){
+                            SectionKey.category="Jackets";
+                            Route route = MaterialPageRoute(builder: (_) => StoreHome());
+                            Navigator.pushReplacement(context, route);
+                          }
+                          ,child: Text("Jackets",style: TextStyle(fontSize: 20,),)),
+                      SizedBox(width: 5,),
+                    ],
+                  ),
+                ),
+
+                Expanded(child: CustomScrollView(
+                  slivers: [
+                    SliverPersistentHeader(pinned: true,delegate: SearchBoxDelegate()),
+                    StreamBuilder<QuerySnapshot>(
+                      /*stream: Firestore.instance.collection(SectionKey.section).document(SectionKey.category).
+                      collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),*/
+                      stream:Firestore.instance.collection("items").
+                      where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString()).snapshots(),
+                      builder: (context, dataSnapshot){
+                        return !dataSnapshot.hasData
+                            ?SliverToBoxAdapter(child: Center(child: circularProgress(),),)
+                            :SliverStaggeredGrid.countBuilder(
+                          crossAxisCount: 1,
+                          staggeredTileBuilder: (c)=> StaggeredTile.fit(1),
+                          itemBuilder: (context,index)
+                          {
+                            ItemModel model =ItemModel.fromJson(dataSnapshot.data.documents[index].data);
+                            return sourceInfo(model, context);
+
+                          },
+                          itemCount: dataSnapshot.data.documents.length,
+                        );
+                      },
+                    ),
+                  ],
+                ))
+                ,
           ],
+            ),
+          )
+
         ),
+
       ),
     )
     );
@@ -274,7 +338,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       ?IconButton(
                       icon: Icon(Icons.add_shopping_cart,color: Colors.black,),
                       onPressed: (){
-                        checkItemInCart(model.shortInfo, context);
+                        checkItemInCart(model.idItem, context);
 
                       },
                     )
@@ -325,16 +389,16 @@ Widget card({Color primaryColor = Colors.redAccent, String imgPath})
     ),
   );
 }
-void checkItemInCart(String shortInfoAsID, BuildContext context)
+void checkItemInCart(String idItemAsId, BuildContext context)
 {
-  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).contains(shortInfoAsID)
+  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).contains(idItemAsId)
       ?Fluttertoast.showToast(msg: "Item is already in Cart")
-  :addItemToCart(shortInfoAsID,context);
+  :addItemToCart(idItemAsId,context);
 }
-addItemToCart(String shortInfoAsID,BuildContext context)
+addItemToCart(String idItemAsId,BuildContext context)
 {
  List tempCartList = EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
- tempCartList.add(shortInfoAsID);
+ tempCartList.add(idItemAsId);
 EcommerceApp.firestore.collection(EcommerceApp.collectionUser).document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
  .updateData({
   EcommerceApp.userCartList:tempCartList,
