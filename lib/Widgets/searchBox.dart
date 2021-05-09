@@ -17,40 +17,23 @@ class SearchBoxDelegate extends SliverPersistentHeaderDelegate {
           Navigator.pushReplacement(context, route);
         },
         child: Container(
-          decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                colors: [Colors.white,Colors.grey],
-                begin:const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0,1.0],
-                tileMode: TileMode.clamp,
-              )
-          ),
           alignment: Alignment.center,
           width: MediaQuery.of(context).size.width,
           height:80.0,
           child: InkWell(
             child: Container(
-              margin: EdgeInsets.only(left: 10.0,right: 10.0),
               width: MediaQuery.of(context).size.width,
               height: 50.0,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(6.0),
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                color: Colors.grey.shade200,
               ),
               child: Row(
                 children: [
                   Padding(
                     padding: EdgeInsets.only(left: 8.0),
-                    child: Icon(
-                      Icons.search,
-                      color: Colors.blueGrey,
-                    ),
+                    child: Icon(Icons.search,color: Colors.black,)
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 8.0),
-                    child: Text("Search here"),
-                  ),
+
                 ],
               ),
             ),
