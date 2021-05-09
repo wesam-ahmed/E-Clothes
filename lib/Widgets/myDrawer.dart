@@ -150,6 +150,7 @@ class MyDrawer extends StatelessWidget {
                                 :NetworkImage(EcommerceApp.sharedPreferences.getString(EcommerceApp.userAvatarUrl),),
 
                           ),
+
                    /* Container(
                         width: 120,
                         height: 120,
@@ -186,6 +187,7 @@ class MyDrawer extends StatelessWidget {
               ),
               SizedBox(height: 80,),
               Container(
+
                   child:ListTile(
                     leading: Icon(Icons.home,color: primaryColor,),
                     title: Text("Home",style: TextStyle(color: Colors.black),),

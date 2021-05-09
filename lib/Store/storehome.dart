@@ -65,9 +65,9 @@ class _StoreHomeState extends State<StoreHome> {
               title: Text(
                 "LAPSNY",
                 style: TextStyle(
-                    fontSize: 20.0,
-                    color:primaryColor,
-                    ),
+                  fontSize: 20.0,
+                  color:primaryColor,
+                ),
               ),
               centerTitle: true,
               actions: [
@@ -84,7 +84,7 @@ class _StoreHomeState extends State<StoreHome> {
                         Navigator.pushReplacement(context, route);
                       },
                     ),
-                   /* Positioned(
+                    /* Positioned(
                         child: Stack(
                           children: [
                             Icon(
@@ -270,7 +270,7 @@ class _StoreHomeState extends State<StoreHome> {
               padding: EdgeInsets.only(top: 10,left: 10,right: 10),
               child: Column(
                 children: [
-                 /* Container(
+                  /* Container(
                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
                       color: Colors.grey.shade200,
                     ),
