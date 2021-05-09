@@ -294,6 +294,7 @@ class _StoreHomeState extends State<StoreHome> {
                             mainAxisSize: MainAxisSize.max,
                             children: [
                               CustomText(text: "Categorise",),
+                              SizedBox(height: 10),
                               SingleChildScrollView(padding: EdgeInsets.only( top: 5,bottom: 10),
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
