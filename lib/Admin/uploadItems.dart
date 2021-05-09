@@ -104,7 +104,23 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
                 onPressed: ()=>takeImage(context),
               ) ,
-            )
+
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child:TextButton(
+                style: TextButton.styleFrom(primary: Colors.white,
+                  backgroundColor: Colors.black87,
+                  onSurface: Colors.grey,
+                ),
+                child: Text("My Items",style: TextStyle(fontSize: 20,color: Colors.white),),
+
+                onPressed: (){
+
+                },
+              ) ,
+
+            ),
 
           ],
         ),
