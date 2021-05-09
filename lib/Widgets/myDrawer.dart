@@ -150,7 +150,8 @@ class MyDrawer extends StatelessWidget {
                                 :NetworkImage(EcommerceApp.sharedPreferences.getString(EcommerceApp.userAvatarUrl),),
 
                           ),
-                          /* Container(
+
+                   /* Container(
                         width: 120,
                         height: 120,
                         decoration: BoxDecoration(
@@ -186,18 +187,19 @@ class MyDrawer extends StatelessWidget {
               ),
               SizedBox(height: 80,),
               Container(
-                child:ListTile(
-                  leading: Icon(Icons.home,color: primaryColor,),
-                  title: Text("Home",style: TextStyle(color: Colors.black),),
-                  trailing: Icon(
-                    Icons.navigate_next,
-                    color: Colors.black,
+
+                  child:ListTile(
+                    leading: Icon(Icons.home,color: primaryColor,),
+                    title: Text("Home",style: TextStyle(color: Colors.black),),
+                    trailing: Icon(
+                      Icons.navigate_next,
+                      color: Colors.black,
+                    ),
+                    onTap: (){
+                      Route route = MaterialPageRoute(builder: (C) => StoreHome());
+                      Navigator.pushReplacement(context, route);
+                    },
                   ),
-                  onTap: (){
-                    Route route = MaterialPageRoute(builder: (C) => StoreHome());
-                    Navigator.pushReplacement(context, route);
-                  },
-                ),
               ),
               Divider(height: 5,color: Colors.grey.shade200,thickness: 2,),
               Container(
