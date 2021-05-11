@@ -96,30 +96,10 @@ Widget sourceInfoProducts(ItemModel model, BuildContext context,
             Expanded(child: Column(children: [
               Text(model.title, style: TextStyle(color: Colors.black, fontSize: 14.0),),
               Text(model.shortInfo, style: TextStyle(color: Colors.black54, fontSize: 12.0),),
+              Text(model.price.toString(), style: TextStyle(color: Colors.black54, fontSize: 12.0),),
               Align(
                 alignment: Alignment.centerRight,
-                child: removeCartFunction == null
-                    ? IconButton(
-                  icon: Icon(
-                    Icons.add_shopping_cart,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    checkItemInCart(model.idItem, context);
-                  },
-                )
-                    : IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.black,
-                  ),
-                  onPressed: () {
-                    removeCartFunction();
-                    Route route = MaterialPageRoute(
-                        builder: (C) => StoreHome());
-                    Navigator.pushReplacement(context, route);
-                  },
-                ),
+
               ),
             ],),),
 

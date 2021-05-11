@@ -158,6 +158,7 @@ Widget sourceInfoCompare(ItemModel model, BuildContext context,
             Expanded(child: Column(children: [
               Text(model.title, style: TextStyle(color: Colors.black, fontSize: 14.0),),
               Text(model.shortInfo, style: TextStyle(color: Colors.black54, fontSize: 12.0),),
+              Text(model.price.toString(), style: TextStyle(color: Colors.black54, fontSize: 12.0),),
               Align(
                 alignment: Alignment.centerRight,
                 child: removeCartFunction == null

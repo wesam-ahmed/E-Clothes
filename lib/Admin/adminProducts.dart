@@ -50,17 +50,30 @@ class _AdminProductsState extends State<AdminProducts> {
             drawer: MyDrawer(),
             body:Column(
               children: [
-                SizedBox(height: 20,),
-                TextButton(
-                    onPressed: (){
-                  _shortInfoTextEditingController..text=widget.itemModel.title.toString();
-                  _descriptionTextEditingController..text=widget.itemModel.longDescription.toString();
-                  _priceTextEditingController..text=widget.itemModel.price.toString();
-                  _shortInfoTextEditingController..text=widget.itemModel.shortInfo.toString();
-                  _titleTextEditingController..text=widget.itemModel.title.toString();
-                  DropdownValue_Section=widget.itemModel.section.toString();
-                  DropdownValue_Category=widget.itemModel.category.toString();
-                }, child: Text("Show to Edit",style: TextStyle(fontSize: 30,backgroundColor: Colors.green,color: Colors.white,),)),
+                SizedBox(height: 5,),
+                Row(mainAxisAlignment: MainAxisAlignment.center
+                  ,children: [
+                  TextButton(
+                      onPressed: (){
+                        _shortInfoTextEditingController..text=widget.itemModel.title.toString();
+                        _descriptionTextEditingController..text=widget.itemModel.longDescription.toString();
+                        _priceTextEditingController..text=widget.itemModel.price.toString();
+                        _shortInfoTextEditingController..text=widget.itemModel.shortInfo.toString();
+                        _titleTextEditingController..text=widget.itemModel.title.toString();
+                        DropdownValue_Section=widget.itemModel.section.toString();
+                        DropdownValue_Category=widget.itemModel.category.toString();
+                      }, child: Text("Show to Edit",style: TextStyle(color: Colors.green,),)),
+                  TextButton(child: Text("Update"),onPressed: (){
+                    saveIteminfo();
+                    Route route = MaterialPageRoute(builder: (_) => AdminOrders());
+                    Navigator.pushReplacement(context, route);
+                  },),
+                  TextButton(child: Text("Delete",style: TextStyle(color: Colors.red),),onPressed: (){
+                    DeleteItem();
+                    Route route = MaterialPageRoute(builder: (_) => AdminOrders());
+                    Navigator.pushReplacement(context, route);
+                  },),
+                ],),
                 Expanded(
                   child: ListView(
                     children: [
@@ -148,9 +161,7 @@ class _AdminProductsState extends State<AdminProducts> {
                         title: Container(
                             width: 250.0,
                             child: DropdownButton<String>(
-                              hint: DropdownValue_Section == null
-                                  ? Text('Section')
-                                  : Text(widget.itemModel.section),
+                              hint: Text(widget.itemModel.section),
                               onChanged: (String newValue) {
                                 setState(() {
                                   DropdownValue_Section = newValue;
@@ -175,9 +186,7 @@ class _AdminProductsState extends State<AdminProducts> {
                         title: Container(
                             width: 250.0,
                             child: DropdownButton<String>(
-                              hint: DropdownValue_Category == null
-                                  ? Text('Category')
-                                  : Text(widget.itemModel.category),
+                              hint:  Text(widget.itemModel.category),
                               onChanged: (String newValue) {
                                 setState(() {
                                   DropdownValue_Category = newValue;
@@ -246,6 +255,31 @@ class _AdminProductsState extends State<AdminProducts> {
   );
 
   }
+  saveIteminfo(){
+    final itemsRef=Firestore.instance.collection("items");
+    itemsRef.document(widget.itemModel.idItem).updateData({
+      "shortInfo":_shortInfoTextEditingController.text.trim(),
+      "longDescription":_descriptionTextEditingController.text.trim(),
+      "price":int.parse(_priceTextEditingController.text),
+      "title":_titleTextEditingController.text.trim(),
+      "section":DropdownValue_Section.toString(),
+      "category":DropdownValue_Category.toString(),
+    });
+    setState(() {
+      _descriptionTextEditingController.clear();
+      _titleTextEditingController.clear();
+      _shortInfoTextEditingController.clear();
+      _priceTextEditingController.clear();
+      DropdownValue_Section=null;
+      DropdownValue_Category=null;
+
+    });
+  }
+  DeleteItem(){
+    final itemsRef=Firestore.instance.collection("items");
+    itemsRef.document(widget.itemModel.idItem).delete();
+  }
+
 
 }
 

@@ -414,7 +414,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "status":"available",
       "title":_titleTextEditingController.text.trim(),
       "seller":EcommerceApp.collectionAdminId,
-      "idItem":DateTime.now().millisecondsSinceEpoch.toString(),
+      "idItem":productId,
       "section":DropdownValue_Section.toString(),
       "category":DropdownValue_Category.toString(),
     });
