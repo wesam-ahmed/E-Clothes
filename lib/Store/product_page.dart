@@ -83,46 +83,48 @@ class _ProductPageState extends State<ProductPage> {
                 ],
               ),
             ),
-            Flexible(child: CustomScrollView(slivers: [
-              SliverToBoxAdapter(),
-              StreamBuilder<QuerySnapshot>(
+            Expanded(child: CustomScrollView(
+              scrollDirection: Axis.horizontal,
+              slivers: [
+                SliverToBoxAdapter(child: Text("Related"),),
+                StreamBuilder<QuerySnapshot>(
+                  stream: Firestore.instance
+                      .collection("items")
+                      .where("price",
+                      isLessThanOrEqualTo: widget.itemModel.price)
+                      .where("category",
+                      isEqualTo: widget.itemModel.category)
+                      .where("section",
+                      isEqualTo: widget.itemModel.section)
+                      .snapshots(),
+                  builder: (context, dataSnapshot) {
+                    return !dataSnapshot.hasData
+                        ? SliverToBoxAdapter(
+                      child: Center(
+                        child: circularProgress(),
+                      ),
+                    )
+                        : SliverStaggeredGrid.countBuilder(
+                      crossAxisCount: 1,
+                      staggeredTileBuilder: (c) =>
+                          StaggeredTile.fit(1),
+                      itemBuilder: (context, index) {
+                        ItemModel model = ItemModel.fromJson(
+                            dataSnapshot
+                                .data.documents[index].data);
+                        return sourceInfoCompare(model, context);
+                      },
+                      itemCount: dataSnapshot.data.documents
+                          .length,
+                    );
+                  },
+                ),
 
-                stream: Firestore.instance
-                    .collection("items")
-                    .where("price",
-                    isLessThanOrEqualTo: widget.itemModel.price)
-                    .where("category",
-                    isEqualTo: widget.itemModel.category)
-                    .where("section",
-                    isEqualTo: widget.itemModel.section)
-                    .snapshots(),
-                builder: (context, dataSnapshot) {
-                  return !dataSnapshot.hasData
-                      ? SliverToBoxAdapter(
-                    child: Center(
-                      child: circularProgress(),
-                    ),
-                  )
-                      : SliverStaggeredGrid.countBuilder(
-                    crossAxisCount: 1,
-                    staggeredTileBuilder: (c) =>
-                        StaggeredTile.fit(1),
-                    itemBuilder: (context, index) {
-                      ItemModel model = ItemModel.fromJson(
-                          dataSnapshot
-                              .data.documents[index].data);
-                      return sourceInfo(model, context);
-                    },
-                    itemCount: dataSnapshot.data.documents
-                        .length,
-                  );
-                },
-              ),
+              ],
 
-            ],
+              ),)
 
-            ),
-            )
+
           ],
         )
 
@@ -133,6 +135,62 @@ class _ProductPageState extends State<ProductPage> {
 
   }
 
+}
+Widget sourceInfoCompare(ItemModel model, BuildContext context,
+    {Color background, removeCartFunction}) {
+  return InkWell(
+    onTap: () {
+      Route route =
+      MaterialPageRoute(builder: (c) => ProductPage(itemModel: model));
+      Navigator.pushReplacement(context, route);
+    },
+    splashColor: Colors.grey,
+    child: Padding(
+      padding: EdgeInsets.all(5.0),
+      child: Container(
+
+        height: 230,
+        width: width,
+        child: Column(
+          children: [
+            Image.network(model.thumbnailUrl, width: 140.0, height: 140.0,),
+            SizedBox(width: 4.0,),
+            Expanded(child: Column(children: [
+              Text(model.title, style: TextStyle(color: Colors.black, fontSize: 14.0),),
+              Text(model.shortInfo, style: TextStyle(color: Colors.black54, fontSize: 12.0),),
+              Align(
+                alignment: Alignment.centerRight,
+                child: removeCartFunction == null
+                    ? IconButton(
+                  icon: Icon(
+                    Icons.add_shopping_cart,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    checkItemInCart(model.idItem, context);
+                  },
+                )
+                    : IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    removeCartFunction();
+                    Route route = MaterialPageRoute(
+                        builder: (C) => StoreHome());
+                    Navigator.pushReplacement(context, route);
+                  },
+                ),
+              ),
+            ],),),
+
+
+          ],
+        ),
+      ),
+    ),
+  );
 }
 
 const boldTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
