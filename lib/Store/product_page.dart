@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
+import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/myDrawer.dart';
 import 'package:e_shop/Models/item.dart';
@@ -10,25 +11,32 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
+
   ProductPage({this.itemModel});
+
   @override
   _ProductPageState createState() => _ProductPageState();
 }
+
 class _ProductPageState extends State<ProductPage> {
-  Future<bool> _backStore()async{
-    return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+  Future<bool> _backStore() async {
+    return await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => StoreHome()));
   }
-  int quantityOfItems=1;
+
+  int quantityOfItems = 1;
+
   @override
-  Widget build(BuildContext context)
-  {Size screenSize =MediaQuery.of(context).size;
+  Widget build(BuildContext context) {
+    Size screenSize = MediaQuery.of(context).size;
     return WillPopScope(
         onWillPop: _backStore,
-        child:SafeArea(
-      child: Scaffold(
-        appBar: MyAppBar(),
-        drawer: MyDrawer(),
-        body:Column(
+        child: SafeArea(
+          child: Scaffold(
+              //appBar: MyAppBar(),
+              drawer: MyDrawer(),
+              body:
+                  /*Column(
           children: [
             Container(
               padding: EdgeInsets.all(8.0),
@@ -126,17 +134,98 @@ class _ProductPageState extends State<ProductPage> {
 
 
           ],
-        )
+        )*/
+                  SingleChildScrollView(
+                child: Container(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 270,
+                        child: Image.network(
+                          widget.itemModel.thumbnailUrl,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(18),
+                          child: Column(
+                        children: [
+                          CustomText(
+                            text: widget.itemModel.title,
+                            fontSize: 26,
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(children: [
+                            Container(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(16),
+                                    width: MediaQuery.of(context).size.width*.44,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                                      border: Border.all(color: Colors.grey)
+
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        CustomText(text: "Size",),
+                                        CustomText(text: "M",),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(width: 5,),
+                                  Container(
+                                    padding: EdgeInsets.all(16),
+                                    width: MediaQuery.of(context).size.width*.44,
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(color: Colors.grey)
+
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        CustomText(text: "Color",),
+                                        Container(
+                                          height: 10,
+                                          width: 20,
+                                          padding: EdgeInsets.all(12),
+                                          decoration: BoxDecoration(color: Colors.white,
+                                          border: Border.all(color: Colors.grey),
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+
+                                ],
+                              ),
+                            )
+                          ],),
+                          SizedBox(height: 15,),
+                          CustomText(text: 'Details',fontSize: 26,),
+                          SizedBox(height: 15,),
+                          CustomText(text: widget.itemModel.longDescription,fontSize: 16,height: 1,),
 
 
-      ),
-    )
-    );
-
+                        ],
+                      )),
+                    ],
+                  ),
+                ),
+              )),
+        ));
   }
-
 }
-Widget sourceInfoCompare(ItemModel model, BuildContext context,
+/*Widget sourceInfoCompare(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
   return InkWell(
     onTap: () {
@@ -192,7 +281,7 @@ Widget sourceInfoCompare(ItemModel model, BuildContext context,
       ),
     ),
   );
-}
+}*/
 
 const boldTextStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
 const largeTextStyle = TextStyle(fontWeight: FontWeight.normal, fontSize: 20);
