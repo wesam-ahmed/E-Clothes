@@ -118,174 +118,17 @@ class _StoreHomeState extends State<StoreHome> {
               ],
             ),
             drawer: MyDrawer(),
+
             body:
-                /*Container(
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                  primary: Colors.white,
-                                  backgroundColor: Colors.deepPurple,
-                                  shape: const BeveledRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                ),
-                                onPressed: () {
-                                  SectionKey.category = "Pants";
-                                  Route route = MaterialPageRoute(
-                                      builder: (_) => StoreHome());
-                                  Navigator.pushReplacement(context, route);
-                                },
-                                child: Text(
-                                  "Pants",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                  primary: Colors.white,
-                                  backgroundColor: Colors.red,
-                                  shape: const BeveledRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                ),
-                                onPressed: () {
-                                  SectionKey.category = "Shirts";
-                                  Route route = MaterialPageRoute(
-                                      builder: (_) => StoreHome());
-                                  Navigator.pushReplacement(context, route);
-                                },
-                                child: Text(
-                                  "Shirts",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                  primary: Colors.white,
-                                  backgroundColor: Colors.greenAccent,
-                                  shape: const BeveledRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                ),
-                                onPressed: () {
-                                  SectionKey.category = "T-Shirt";
-                                  Route route = MaterialPageRoute(
-                                      builder: (_) => StoreHome());
-                                  Navigator.pushReplacement(context, route);
-                                },
-                                child: Text(
-                                  "T-Shirt",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                  primary: Colors.white,
-                                  backgroundColor: Colors.lightGreen,
-                                  shape: const BeveledRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                ),
-                                onPressed: () {
-                                  SectionKey.category = "Jackets";
-                                  Route route = MaterialPageRoute(
-                                      builder: (_) => StoreHome());
-                                  Navigator.pushReplacement(context, route);
-                                },
-                                child: Text(
-                                  "Jackets",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                  ),
-                                )),
-                            SizedBox(
-                              width: 5,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                          child: CustomScrollView(
-                            slivers: [
-                              SliverPersistentHeader(
-                                  pinned: true, delegate: SearchBoxDelegate()),
-                              StreamBuilder<QuerySnapshot>(
-                                /*stream: Firestore.instance.collection(SectionKey.section).document(SectionKey.category).
-                      collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),*/
-                                stream: Firestore.instance
-                                    .collection("items")
-                                    .where("section",
-                                    isEqualTo: SectionKey.section.toString())
-                                    .where("category",
-                                    isEqualTo: SectionKey.category.toString())
-                                    .snapshots(),
-                                builder: (context, dataSnapshot) {
-                                  return !dataSnapshot.hasData
-                                      ? SliverToBoxAdapter(
-                                    child: Center(
-                                      child: circularProgress(),
-                                    ),
-                                  )
-                                      : SliverStaggeredGrid.countBuilder(
-                                    crossAxisCount: 1,
-                                    staggeredTileBuilder: (c) =>
-                                        StaggeredTile.fit(1),
-                                    itemBuilder: (context, index) {
-                                      ItemModel model = ItemModel.fromJson(
-                                          dataSnapshot
-                                              .data.documents[index].data);
-                                      return sourceInfo(model, context);
-                                    },
-                                    itemCount: dataSnapshot.data.documents
-                                        .length,
-                                  );
-                                },
-                              ),
-                            ],
-                          )),
-                    ],
-                  ),
-                )),*/
+                
                 Container(
               padding: EdgeInsets.only(top: 10, left: 10, right: 10),
               child: Column(
                 children: [
-                  /* Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                      color: Colors.grey.shade200,
-                    ),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        startSearching(value);
-                      },
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        prefixIcon: Icon(Icons.search,color: Colors.black,),
-                      ),
-                    ),
-                  ),*/
+            
                   Expanded(
                       child: CustomScrollView(
+
                     slivers: [
                       SliverPersistentHeader(
                           floating: true, delegate: SearchBoxDelegate()),
@@ -478,6 +321,7 @@ class _StoreHomeState extends State<StoreHome> {
                       ),
                     ],
                   )),
+
                 ],
               ),
             ),
@@ -516,6 +360,8 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                     height: 150.0,
                       fit: BoxFit.fill,
                   ),
+
+
                 )),
             SizedBox(height: 10,),
             CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
@@ -525,65 +371,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
             CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
           ],
         ),
-        /*child: Column(
-          children: [
-            Container(decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-            ),
-
-                child: Image.network(
-              model.thumbnailUrl,
-              width: 140.0,
-              height: 140.0,
-            )),
-            SizedBox(
-              width: 4.0,
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  Text(
-                    model.title,
-                    style: TextStyle(color: Colors.black, fontSize: 14.0),
-                  ),
-                  Text(
-                    model.shortInfo,
-                    style: TextStyle(color: Colors.black54, fontSize: 12.0),
-                  ),
-                  Text(
-                    model.price.toString(),
-                    style: TextStyle(color: Colors.black54, fontSize: 12.0),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: removeCartFunction == null
-                        ? IconButton(
-                            icon: Icon(
-                              Icons.add_shopping_cart,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              checkItemInCart(model.idItem, context);
-                            },
-                          )
-                        : IconButton(
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.black,
-                            ),
-                            onPressed: () {
-                              removeCartFunction();
-                              Route route = MaterialPageRoute(
-                                  builder: (C) => StoreHome());
-                              Navigator.pushReplacement(context, route);
-                            },
-                          ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),*/
+        
       ),
     ),
   );
@@ -636,7 +424,10 @@ addItemToCart(String idItemAsId, BuildContext context) {
         .setStringList(EcommerceApp.userCartList, tempCartList);
     Provider.of<CartItemCounter>(context, listen: false).displayResult();
   });
+
 }
+
+
 
 Future startSearching(String query) async {
   docList = Firestore.instance
@@ -644,3 +435,4 @@ Future startSearching(String query) async {
       .where("shortInfo", isGreaterThanOrEqualTo: query)
       .getDocuments();
 }
+
