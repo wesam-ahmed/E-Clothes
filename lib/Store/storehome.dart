@@ -17,13 +17,12 @@ import '../Models/item.dart';
 import 'Section.dart';
 
 double width;
-Future<QuerySnapshot> docList;
 
+Future<QuerySnapshot> docList;
 
 class StoreHome extends StatefulWidget {
   @override
   _StoreHomeState createState() => _StoreHomeState();
-
 }
 
 class _StoreHomeState extends State<StoreHome> {
@@ -66,7 +65,7 @@ class _StoreHomeState extends State<StoreHome> {
                 "LAPSNY",
                 style: TextStyle(
                   fontSize: 20.0,
-                  color:primaryColor,
+                  color: primaryColor,
                 ),
               ),
               centerTitle: true,
@@ -80,7 +79,7 @@ class _StoreHomeState extends State<StoreHome> {
                       ),
                       onPressed: () {
                         Route route =
-                        MaterialPageRoute(builder: (C) => CartPage());
+                            MaterialPageRoute(builder: (C) => CartPage());
                         Navigator.pushReplacement(context, route);
                       },
                     ),
@@ -119,7 +118,8 @@ class _StoreHomeState extends State<StoreHome> {
               ],
             ),
             drawer: MyDrawer(),
-            body: /*Container(
+            body:
+                /*Container(
                 child: Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.max,
@@ -266,8 +266,8 @@ class _StoreHomeState extends State<StoreHome> {
                     ],
                   ),
                 )),*/
-            Container(
-              padding: EdgeInsets.only(top: 10,left: 10,right: 10),
+                Container(
+              padding: EdgeInsets.only(top: 10, left: 10, right: 10),
               child: Column(
                 children: [
                   /* Container(
@@ -284,179 +284,202 @@ class _StoreHomeState extends State<StoreHome> {
                       ),
                     ),
                   ),*/
-                  Expanded(child: CustomScrollView(
+                  Expanded(
+                      child: CustomScrollView(
                     slivers: [
-                      SliverPersistentHeader(pinned: true, delegate: SearchBoxDelegate()),
-                      SliverToBoxAdapter(child:Container(
-                        margin: EdgeInsets.only(top: 1,bottom: 10),
-                        child:Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              CustomText(text: "Categorise",),
-                              SizedBox(height: 10),
-                              SingleChildScrollView(padding: EdgeInsets.only( top: 5,bottom: 10),
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    FloatingActionButton.extended(
-                                      heroTag: "Shoes",
-                                      onPressed: () {
-                                        SectionKey.category = "Shoes";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(context, route);
-                                      },
-                                      backgroundColor: Colors.grey.shade100,
-                                      icon: Image.asset("images/Jacket.png"),
-                                      label: Text("Jacket",style: TextStyle(color: Colors.black),
-                                      ),
-                                    ),
-                                    SizedBox(width: 10,),
-                                    FloatingActionButton.extended(
-                                      heroTag: "Shirts",
-                                      onPressed: () {
-                                        SectionKey.category = "Shirts";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(context, route);
-                                      },
-                                      backgroundColor: Colors.grey.shade100,
-                                      icon: Image.asset("images/tshirt.png"),
-                                      label: Text("T-shirt",style: TextStyle(color: Colors.black),),
-
-                                    ),
-                                    SizedBox(width: 10,),
-                                    FloatingActionButton.extended(
-                                      heroTag: "Pants",
-                                      onPressed: () {
-                                        SectionKey.category = "Pants";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(context, route);
-                                      },
-
-                                      backgroundColor: Colors.grey.shade100,
-                                      icon: Image.asset("images/jeans.png"),
-                                      label: Text("trousers",style: TextStyle(color: Colors.black),),
-
-                                    ),
-                                    SizedBox(width: 10,),
-                                    FloatingActionButton.extended(
-                                      heroTag: "Jackets",
-                                      onPressed: () {
-                                        SectionKey.category = "Jackets";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(context, route);
-                                      },
-
-                                      backgroundColor: Colors.grey.shade100,
-                                      icon: Image.asset("images/hooded-jacket.png"),
-                                      label: Text("Hoodies",style: TextStyle(color: Colors.black),),
-
-                                    ),
-                                    SizedBox(width: 10,),
-                                    FloatingActionButton.extended(
-                                      heroTag: "Sneakers",
-                                      onPressed: () {
-                                        SectionKey.category = "Sneakers";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(context, route);
-                                      },
-
-                                      backgroundColor: Colors.grey.shade100,
-                                      icon: Image.asset("images/sneakers.png"),
-                                      label: Text("shoes",style: TextStyle(color: Colors.black),),
-
-                                    ),
-                                    SizedBox(width: 10,),
-                                    FloatingActionButton.extended(
-                                      heroTag: "Shorts",
-                                      onPressed: () {
-                                        SectionKey.category = "Shorts";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(context, route);
-                                      },
-
-                                      backgroundColor: Colors.grey.shade100,
-                                      icon: Image.asset("images/shorts.png"),
-                                      label: Text("shorts",style: TextStyle(color: Colors.black),),
-
-                                    ),
-                                    SizedBox(width: 10,),
-                                    FloatingActionButton.extended(
-                                      heroTag: "Bags",
-                                      onPressed: () {
-                                        SectionKey.category = "Bags";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(context, route);
-                                      },
-
-                                      backgroundColor: Colors.grey.shade100,
-                                      icon: Image.asset("images/bags.png"),
-                                      label: Text("accessories",style: TextStyle(color: Colors.black),),
-
-                                    ),
-
-                                  ],
+                      SliverPersistentHeader(
+                          floating: true, delegate: SearchBoxDelegate()),
+                      SliverToBoxAdapter(
+                        child: Container(
+                          margin: EdgeInsets.only(top: 1, bottom: 10),
+                          child: Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                CustomText(
+                                  text: "Categorise",
                                 ),
-                              ),
-                            ],
+                                SizedBox(height: 10),
+                                SingleChildScrollView(
+                                  padding: EdgeInsets.only(top: 5, bottom: 10),
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      FloatingActionButton.extended(
+                                        heroTag: "Shoes",
+                                        onPressed: () {
+                                          SectionKey.category = "Shoes";
+                                          Route route = MaterialPageRoute(
+                                              builder: (_) => StoreHome());
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        backgroundColor: Colors.grey.shade100,
+                                        icon: Image.asset("images/Jacket.png"),
+                                        label: Text(
+                                          "Jacket",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      FloatingActionButton.extended(
+                                        heroTag: "Shirts",
+                                        onPressed: () {
+                                          SectionKey.category = "Shirts";
+                                          Route route = MaterialPageRoute(
+                                              builder: (_) => StoreHome());
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        backgroundColor: Colors.grey.shade100,
+                                        icon: Image.asset("images/tshirt.png"),
+                                        label: Text(
+                                          "T-shirt",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      FloatingActionButton.extended(
+                                        heroTag: "Pants",
+                                        onPressed: () {
+                                          SectionKey.category = "Pants";
+                                          Route route = MaterialPageRoute(
+                                              builder: (_) => StoreHome());
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        backgroundColor: Colors.grey.shade100,
+                                        icon: Image.asset("images/jeans.png"),
+                                        label: Text(
+                                          "trousers",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      FloatingActionButton.extended(
+                                        heroTag: "Jackets",
+                                        onPressed: () {
+                                          SectionKey.category = "Jackets";
+                                          Route route = MaterialPageRoute(
+                                              builder: (_) => StoreHome());
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        backgroundColor: Colors.grey.shade100,
+                                        icon: Image.asset(
+                                            "images/hooded-jacket.png"),
+                                        label: Text(
+                                          "Hoodies",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      FloatingActionButton.extended(
+                                        heroTag: "Sneakers",
+                                        onPressed: () {
+                                          SectionKey.category = "Sneakers";
+                                          Route route = MaterialPageRoute(
+                                              builder: (_) => StoreHome());
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        backgroundColor: Colors.grey.shade100,
+                                        icon:
+                                            Image.asset("images/sneakers.png"),
+                                        label: Text(
+                                          "shoes",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      FloatingActionButton.extended(
+                                        heroTag: "Shorts",
+                                        onPressed: () {
+                                          SectionKey.category = "Shorts";
+                                          Route route = MaterialPageRoute(
+                                              builder: (_) => StoreHome());
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        backgroundColor: Colors.grey.shade100,
+                                        icon: Image.asset("images/shorts.png"),
+                                        label: Text(
+                                          "shorts",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      FloatingActionButton.extended(
+                                        heroTag: "Bags",
+                                        onPressed: () {
+                                          SectionKey.category = "Bags";
+                                          Route route = MaterialPageRoute(
+                                              builder: (_) => StoreHome());
+                                          Navigator.pushReplacement(
+                                              context, route);
+                                        },
+                                        backgroundColor: Colors.grey.shade100,
+                                        icon: Image.asset("images/bags.png"),
+                                        label: Text(
+                                          "accessories",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-
-                        ) ,
-
+                        ),
                       ),
-                      ),
-
                       StreamBuilder<QuerySnapshot>(
-                        /*stream: Firestore.instance.collection(SectionKey.section).document(SectionKey.category).
-                      collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),*/
                         stream: Firestore.instance
                             .collection("items")
                             .where("section",
-                            isEqualTo: SectionKey.section.toString())
+                                isEqualTo: SectionKey.section.toString())
                             .where("category",
-                            isEqualTo: SectionKey.category.toString())
+                                isEqualTo: SectionKey.category.toString())
                             .snapshots(),
                         builder: (context, dataSnapshot) {
                           return !dataSnapshot.hasData
                               ? SliverToBoxAdapter(
-                            child: Center(
-                              child: circularProgress(),
-                            ),
-                          )
+                                  child: Center(
+                                    child: circularProgress(),
+                                  ),
+                                )
                               : SliverStaggeredGrid.countBuilder(
-                            crossAxisCount: 1,
-                            staggeredTileBuilder: (c) =>
-                                StaggeredTile.fit(1),
-                            itemBuilder: (context, index) {
-                              ItemModel model = ItemModel.fromJson(
-                                  dataSnapshot
-                                      .data.documents[index].data);
-                              return sourceInfo(model, context);
-                            },
-                            itemCount: dataSnapshot.data.documents
-                                .length,
-                          );
+                                  crossAxisCount: 2,
+                                  staggeredTileBuilder: (c) =>
+                                      StaggeredTile.fit(1),
+                                  itemBuilder: (context, index) {
+                                    ItemModel model = ItemModel.fromJson(
+                                        dataSnapshot
+                                            .data.documents[index].data);
+                                    return sourceInfo(model, context);
+                                  },
+                                  itemCount: dataSnapshot.data.documents.length,
+                                );
                         },
                       ),
                     ],
                   )),
-
-
-
-
-
                 ],
               ),
-
-
             ),
           ),
         ));
@@ -468,194 +491,99 @@ Widget sourceInfo(ItemModel model, BuildContext context,
   return InkWell(
     onTap: () {
       Route route =
-      MaterialPageRoute(builder: (c) => ProductPage(itemModel: model));
+          MaterialPageRoute(builder: (c) => ProductPage(itemModel: model));
       Navigator.pushReplacement(context, route);
     },
     splashColor: Colors.grey,
     child: Padding(
-      padding: EdgeInsets.all(6.0),
+      padding: EdgeInsets.all(5.0),
       child: Container(
-        height: 190.0,
-        width: width,
-        child: Row(
+        width: MediaQuery.of(context).size.width*.4,
+        height: 350,
+        color: Colors.grey.shade200,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Image.network(
+            Container(
+                decoration:
+                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                child: Container(
+                  height: 250,
+                  width: MediaQuery.of(context).size.width*.4,
+                  child: Image.network(
+                    model.thumbnailUrl,
+                   width: 150.0,
+                    height: 150.0,
+                      fit: BoxFit.fill,
+                  ),
+                )),
+            SizedBox(height: 10,),
+            CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
+            SizedBox(height: 10,),
+            CustomText(text: model.shortInfo,alignment: Alignment.bottomLeft , color: Colors.grey,),
+            SizedBox(height: 10,),
+            CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
+          ],
+        ),
+        /*child: Column(
+          children: [
+            Container(decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(50),
+            ),
+
+                child: Image.network(
               model.thumbnailUrl,
               width: 140.0,
               height: 140.0,
-            ),
+            )),
             SizedBox(
               width: 4.0,
             ),
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                    height: 15.0,
+                  Text(
+                    model.title,
+                    style: TextStyle(color: Colors.black, fontSize: 14.0),
                   ),
-                  Container(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            model.title,
-                            style:
-                            TextStyle(color: Colors.black, fontSize: 14.0),
-                          ),
-                        ),
-                      ],
-                    ),
+                  Text(
+                    model.shortInfo,
+                    style: TextStyle(color: Colors.black54, fontSize: 12.0),
                   ),
-                  SizedBox(
-                    height: 5.0,
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Expanded(
-                          child: Text(
-                            model.shortInfo,
-                            style: TextStyle(
-                                color: Colors.black54, fontSize: 12.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.pink,
-                        ),
-                        alignment: Alignment.topLeft,
-                        width: 40.0,
-                        height: 43.0,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                "50%",
-                                style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                              Text(
-                                "OFF",
-                                style: TextStyle(
-                                    fontSize: 12.0,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(top: 0.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "original Price: EGP ",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.grey,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                ),
-                                Text(
-                                  (model.price + model.price).toString(),
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.grey,
-                                    decoration: TextDecoration.lineThrough,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(top: 5.0),
-                            child: Row(
-                              children: [
-                                Text(
-                                  "New Price:",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Text(
-                                  " EGP ",
-                                  style: TextStyle(
-                                      color: Colors.blueGrey, fontSize: 16.0),
-                                ),
-                                Text(
-                                  (model.price).toString(),
-                                  style: TextStyle(
-                                    fontSize: 15.0,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Flexible(
-                    child: Container(),
+                  Text(
+                    model.price.toString(),
+                    style: TextStyle(color: Colors.black54, fontSize: 12.0),
                   ),
                   Align(
                     alignment: Alignment.centerRight,
                     child: removeCartFunction == null
                         ? IconButton(
-                      icon: Icon(
-                        Icons.add_shopping_cart,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        checkItemInCart(model.idItem, context);
-                      },
-                    )
+                            icon: Icon(
+                              Icons.add_shopping_cart,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              checkItemInCart(model.idItem, context);
+                            },
+                          )
                         : IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {
-                        removeCartFunction();
-                        Route route = MaterialPageRoute(
-                            builder: (C) => StoreHome());
-                        Navigator.pushReplacement(context, route);
-                      },
-                    ),
-                  ),
-                  Divider(
-                    height: 5.0,
-                    color: Colors.black,
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.black,
+                            ),
+                            onPressed: () {
+                              removeCartFunction();
+                              Route route = MaterialPageRoute(
+                                  builder: (C) => StoreHome());
+                              Navigator.pushReplacement(context, route);
+                            },
+                          ),
                   ),
                 ],
               ),
             ),
           ],
-        ),
+        ),*/
       ),
     ),
   );
@@ -687,15 +615,15 @@ Widget card({Color primaryColor = Colors.redAccent, String imgPath}) {
 
 void checkItemInCart(String idItemAsId, BuildContext context) {
   EcommerceApp.sharedPreferences
-      .getStringList(EcommerceApp.userCartList)
-      .contains(idItemAsId)
+          .getStringList(EcommerceApp.userCartList)
+          .contains(idItemAsId)
       ? Fluttertoast.showToast(msg: "Item is already in Cart")
       : addItemToCart(idItemAsId, context);
 }
 
 addItemToCart(String idItemAsId, BuildContext context) {
   List tempCartList =
-  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
+      EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
   tempCartList.add(idItemAsId);
   EcommerceApp.firestore
       .collection(EcommerceApp.collectionUser)
@@ -709,7 +637,10 @@ addItemToCart(String idItemAsId, BuildContext context) {
     Provider.of<CartItemCounter>(context, listen: false).displayResult();
   });
 }
-Future startSearching(String query) async
-{
-  docList = Firestore.instance.collection("items").where("shortInfo",isGreaterThanOrEqualTo: query).getDocuments();
+
+Future startSearching(String query) async {
+  docList = Firestore.instance
+      .collection("items")
+      .where("shortInfo", isGreaterThanOrEqualTo: query)
+      .getDocuments();
 }
