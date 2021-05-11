@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'adminOrders.dart';
+
 
 
 class UploadPage extends StatefulWidget
@@ -116,6 +118,8 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
                 child: Text("My Items",style: TextStyle(fontSize: 20,color: Colors.white),),
 
                 onPressed: (){
+                  Route route = MaterialPageRoute(builder: (C) => AdminOrders());
+                  Navigator.pushReplacement(context, route);
 
                 },
               ) ,

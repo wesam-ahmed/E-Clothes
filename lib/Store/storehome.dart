@@ -287,7 +287,7 @@ class _StoreHomeState extends State<StoreHome> {
                   ),*/
                   Expanded(child: CustomScrollView(
                     slivers: [
-                      SliverPersistentHeader(pinned: true, delegate: SearchBoxDelegate()),
+                      SliverPersistentHeader(floating: true, delegate: SearchBoxDelegate()),
                       SliverToBoxAdapter(child:Container(
                         margin: EdgeInsets.only(top: 1,bottom: 10),
                         child:Center(
@@ -415,8 +415,6 @@ class _StoreHomeState extends State<StoreHome> {
                       ),
                       ),
                       StreamBuilder<QuerySnapshot>(
-                        /*stream: Firestore.instance.collection(SectionKey.section).document(SectionKey.category).
-                      collection("items").limit(15).orderBy("publishedDate",descending: true).snapshots(),*/
                         stream: Firestore.instance
                             .collection("items")
                             .where("section",
