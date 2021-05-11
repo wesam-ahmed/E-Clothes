@@ -40,6 +40,7 @@ flutter:
     - family: Signatra
       fonts:
         - asset: assets/fonts/Signatra.ttf
+        - asset: assets/fonts/SourceSansPro-Regular.ttf
 
   assets:
     - images/google.png
