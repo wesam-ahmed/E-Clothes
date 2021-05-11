@@ -38,6 +38,8 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   TextEditingController _priceTextEditingController=TextEditingController();
   TextEditingController _titleTextEditingController=TextEditingController();
   TextEditingController _shortInfoTextEditingController=TextEditingController();
+  TextEditingController _QuantityInfoTextEditingController=TextEditingController();
+
   String productId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading =false;
   @override
@@ -169,7 +171,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   pickPhotoFromGallery()async{
     Navigator.pop(context);
     // ignore: deprecated_member_use
-    File imageFile=  await ImagePicker.pickImage(source: ImageSource.gallery,imageQuality: 40);
+    File imageFile=  await ImagePicker.pickImage(source: ImageSource.gallery,imageQuality: 15);
     setState(() {
       file=imageFile;
     });
@@ -276,6 +278,24 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
                 controller: _priceTextEditingController,
                 decoration:  InputDecoration(
                   hintText: "Price",
+                  hintStyle: TextStyle(color: Colors.blueGrey),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+
+          ),
+          Divider(color: Colors.grey,),
+          ListTile(
+            leading:Icon(Icons.countertops,color: Colors.grey,),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: Colors.black),
+                controller: _QuantityInfoTextEditingController,
+                decoration:  InputDecoration(
+                  hintText: "Quantity",
                   hintStyle: TextStyle(color: Colors.blueGrey),
                   border: InputBorder.none,
                 ),
@@ -417,6 +437,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "idItem":productId,
       "section":DropdownValue_Section.toString(),
       "category":DropdownValue_Category.toString(),
+      "quantity":int.parse(_QuantityInfoTextEditingController.text),
     });
     setState(() {
       file=null;
@@ -426,6 +447,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       _titleTextEditingController.clear();
       _shortInfoTextEditingController.clear();
       _priceTextEditingController.clear();
+      _QuantityInfoTextEditingController.clear();
       DropdownValue_Section=null;
       DropdownValue_Category=null;
 

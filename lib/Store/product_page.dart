@@ -238,7 +238,7 @@ class _ProductPageState extends State<ProductPage> {
       padding: EdgeInsets.all(5.0),
       child: Container(
 
-        height: 230,
+        height: 240,
         width: width,
         child: Column(
           children: [
