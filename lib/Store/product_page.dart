@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
+import 'package:e_shop/Widgets/custom_buttom.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/myDrawer.dart';
@@ -135,94 +137,207 @@ class _ProductPageState extends State<ProductPage> {
 
           ],
         )*/
-                  SingleChildScrollView(
-                child: Container(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 270,
-                        child: Image.network(
-                          widget.itemModel.thumbnailUrl,
-                          fit: BoxFit.fill,
+                  Container(
+                    child: Column(
+                      children: [
+
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 270,
+                          child: Image.network(
+                            widget.itemModel.thumbnailUrl,
+                            fit: BoxFit.fill,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(18),
-                          child: Column(
-                        children: [
-                          CustomText(
-                            text: widget.itemModel.title,
-                            fontSize: 26,
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(children: [
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Container(
+                              padding: EdgeInsets.all(18),
+                                child: Column(
+                              children: [
+                                CustomText(
+                                  text: widget.itemModel.title,
+                                  fontSize: 26,
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Row(children: [
                                   Container(
-                                    padding: EdgeInsets.all(16),
-                                    width: MediaQuery.of(context).size.width*.44,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(color: Colors.grey)
-
-                                    ),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
-                                        CustomText(text: "Size",),
-                                        CustomText(text: "M",),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 5,),
-                                  Container(
-                                    padding: EdgeInsets.all(16),
-                                    width: MediaQuery.of(context).size.width*.44,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: Colors.grey)
-
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        CustomText(text: "Color",),
                                         Container(
-                                          height: 10,
-                                          width: 20,
-                                          padding: EdgeInsets.all(12),
-                                          decoration: BoxDecoration(color: Colors.white,
-                                          border: Border.all(color: Colors.grey),
-                                            borderRadius: BorderRadius.circular(20),
+                                          padding: EdgeInsets.all(16),
+                                          width: MediaQuery.of(context).size.width*.44,
+                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(color: Colors.grey)
+
                                           ),
-                                        )
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: [
+                                              CustomText(text: "Size",),
+                                              CustomText(text: "M",),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(width: 5,),
+                                        Container(
+                                          padding: EdgeInsets.all(16),
+                                          width: MediaQuery.of(context).size.width*.44,
+                                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                                              border: Border.all(color: Colors.grey)
+
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                            children: [
+                                              CustomText(text: "Color",),
+                                              Container(
+                                                height: 10,
+                                                width: 20,
+                                                padding: EdgeInsets.all(12),
+                                                decoration: BoxDecoration(color: Colors.white,
+                                                border: Border.all(color: Colors.grey),
+                                                  borderRadius: BorderRadius.circular(20),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+
                                       ],
                                     ),
-                                  ),
-
-                                ],
-                              ),
-                            )
-                          ],),
-                          SizedBox(height: 15,),
-                          CustomText(text: 'Details',fontSize: 26,),
-                          SizedBox(height: 15,),
-                          CustomText(text: widget.itemModel.longDescription,fontSize: 16,height: 1,),
+                                  )
+                                ],),
+                                SizedBox(height: 15,),
+                                CustomText(text: 'Details',fontSize: 26,),
+                                SizedBox(height: 15,),
+                                CustomText(text: widget.itemModel.longDescription,fontSize: 16,height: 1,),
 
 
-                        ],
-                      )),
-                    ],
-                  ),
+                              ],
+                            )),
+                          ),
+                        ),
+                       /* Padding(
+                          padding: EdgeInsets.all(5.0),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width*.4,
+                            height: 350,
+                            color: Colors.grey.shade200,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Container(
+                                    decoration:
+                                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                                    child: Container(
+                                      height: 250,
+                                      width: MediaQuery.of(context).size.width*.4,
+                                      child: Image.network(
+                                        model.thumbnailUrl,
+                                        width: 150.0,
+                                        height: 150.0,
+                                        fit: BoxFit.fill,
+                                      ),
+
+
+                                    )),
+                                SizedBox(height: 10,),
+                                CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
+                                SizedBox(height: 10,),
+                                CustomText(text: model.shortInfo,alignment: Alignment.bottomLeft , color: Colors.grey,),
+                                SizedBox(height: 10,),
+                                CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
+                              ],
+                            ),
+
+                          ),
+                        ),*/
+             /* Flexible(child: CustomScrollView(slivers: [
+                SliverToBoxAdapter(),
+                StreamBuilder<QuerySnapshot>(
+
+                  stream: Firestore.instance
+                      .collection("items")
+                      .where("price",
+                      isLessThanOrEqualTo: widget.itemModel.price)
+                      .where("category",
+                      isEqualTo: widget.itemModel.category)
+                      .where("section",
+                      isEqualTo: widget.itemModel.section)
+                      .snapshots(),
+                  builder: (context, dataSnapshot) {
+                    return !dataSnapshot.hasData
+                        ? SliverToBoxAdapter(
+                      child: Center(
+                        child: circularProgress(),
+                      ),
+                    )
+                        : SliverStaggeredGrid.countBuilder(
+                      crossAxisCount: 1,
+                      staggeredTileBuilder: (c) =>
+                          StaggeredTile.fit(1),
+                      itemBuilder: (context, index) {
+                        ItemModel model = ItemModel.fromJson(
+                            dataSnapshot
+                                .data.documents[index].data);
+                        return sourceInfo(model, context);
+                      },
+                      itemCount: dataSnapshot.data.documents
+                          .length,
+                    );
+                  },
                 ),
-              )),
-        ));
+
+
+                        Padding(
+                          padding: const EdgeInsets.all(30.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                            children: [
+                            Column(
+                              children: [
+                                CustomText(text: "PRICE",
+                                fontSize: 18,
+                                  color: Colors.grey,
+                                ),
+                                SizedBox(height: 5,),
+                                CustomText(text: '\E\G'+widget.itemModel.price.toString() ,
+                                  color: primaryColor,
+                                )
+                              ],
+                            ),
+                            Container(
+                              width: 180,
+                              height: 100,
+                              padding: EdgeInsets.all(20),
+                              child: CustomButton(onPress: (){
+                                checkItemInCart(widget.itemModel.idItem, context);
+                              },
+                                text: "Add to Cart",
+
+
+
+                              ),
+                            ),
+                          ],),
+                        ),
+                      ],
+                    ),
+                  )*/
+    ]
+    ),
+        )
+    ),
+    )
+    );
   }
 }
 /*Widget sourceInfoCompare(ItemModel model, BuildContext context,
