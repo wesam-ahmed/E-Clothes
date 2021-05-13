@@ -366,7 +366,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
       orientation: GroupedButtonsOrientation.HORIZONTAL,
         labels: <String>[
-          "XS", "S", "M", "L", "XL", "XXL", "XXXL",
+          "XS", "S", "M", "L", "XL", "XXL", "XXXL","One Size"
         ],
         onSelected: (List<String> sizeChecked) => print(sizeChecked.toString())
     ),
@@ -383,7 +383,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
                 child: CheckboxGroup(
                     orientation: GroupedButtonsOrientation.HORIZONTAL,
                     labels: <String> [
-                      "Red", "Blue", "Green", "Orange", "White", "Black", "Yellow", "Grey", "Violet", "Brown",
+                      "Red", "Blue", "Green", "Orange", "White", "Black", "Yellow", "Grey", "Violet", "Brown","Other"
                     ],
                     onSelected: (List<String> colorChecked) => print(colorChecked.toString())
                 ),
@@ -439,6 +439,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "category":DropdownValue_Category.toString(),
       "quantity":int.parse(_QuantityInfoTextEditingController.text),
     });
+    itemsRef.document(productId).collection("size").document(sizeChecked.toString());
     setState(() {
       file=null;
       uploading=false;

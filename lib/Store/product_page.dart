@@ -11,7 +11,6 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
-
   ProductPage({this.itemModel});
 
   @override
@@ -25,6 +24,8 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   int quantityOfItems = 1;
+  var selectedCurrency;
+
 
   @override
   Widget build(BuildContext context) {
@@ -35,107 +36,7 @@ class _ProductPageState extends State<ProductPage> {
           child: Scaffold(
               //appBar: MyAppBar(),
               drawer: MyDrawer(),
-              body:
-                  /*Column(
-          children: [
-            Container(
-              padding: EdgeInsets.all(8.0),
-              width: MediaQuery.of(context).size.width,
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(children: [Center(child: Container(child: Image.network(widget.itemModel.thumbnailUrl),height: 300,)),],),
-                  Container(
-                    padding: EdgeInsets.all(20.0),
-                    child:Center(
-                      child:Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(widget.itemModel.title, style: boldTextStyle,),
-                          SizedBox(height: 5.0,),
-                          Text(widget.itemModel.longDescription,),
-                          SizedBox(height: 5.0,),
-                          Text("EGP"+ widget.itemModel.price.toString(), style: boldTextStyle,),
-                        ],
-                      ) ,
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(top: 5.0),
-                    child: Center(
-                      child: InkWell(
-                        onTap: ()=>checkItemInCart(widget.itemModel.idItem, context),
-                        child: Container(
-                          decoration: new BoxDecoration(borderRadius: BorderRadius.circular(35),
-                              gradient: new LinearGradient(
-                                colors: [Colors.greenAccent,Colors.green],
-                                begin:const FractionalOffset(0.0, 0.0),
-                                end: const FractionalOffset(1.0, 0.0),
-                                stops: [0.0,1.0],
-                                tileMode: TileMode.clamp,
-                              )
-                          ),
-                          width: screenSize.width-40.0,
-                          height: 50.0,
-                          child: Center(
-                            child: Text("Add to Cart",style: TextStyle(color: Colors.white),),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-
-
-                ],
-              ),
-            ),
-            Expanded(child: CustomScrollView(
-              scrollDirection: Axis.horizontal,
-              slivers: [
-                SliverToBoxAdapter(child: Text("Related"),),
-                StreamBuilder<QuerySnapshot>(
-                  stream: Firestore.instance
-                      .collection("items")
-                      .where("price",
-                      isLessThanOrEqualTo: widget.itemModel.price)
-                      .where("category",
-                      isEqualTo: widget.itemModel.category)
-                      .where("section",
-                      isEqualTo: widget.itemModel.section)
-                      .snapshots(),
-                  builder: (context, dataSnapshot) {
-                    return !dataSnapshot.hasData
-                        ? SliverToBoxAdapter(
-                      child: Center(
-                        child: circularProgress(),
-                      ),
-                    )
-                        : SliverStaggeredGrid.countBuilder(
-                      crossAxisCount: 1,
-                      staggeredTileBuilder: (c) =>
-                          StaggeredTile.fit(1),
-                      itemBuilder: (context, index) {
-                        ItemModel model = ItemModel.fromJson(
-                            dataSnapshot
-                                .data.documents[index].data);
-                        return sourceInfoCompare(model, context);
-                      },
-                      itemCount: dataSnapshot.data.documents
-                          .length,
-                    );
-                  },
-                ),
-
-              ],
-
-              ),)
-
-
-          ],
-        )*/
-                  SingleChildScrollView(
+              body: SingleChildScrollView(
                 child: Container(
                   child: Column(
                     children: [
@@ -167,7 +68,6 @@ class _ProductPageState extends State<ProductPage> {
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.all(16),
                                     width: MediaQuery.of(context).size.width*.44,
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
                                       border: Border.all(color: Colors.grey)
@@ -176,14 +76,48 @@ class _ProductPageState extends State<ProductPage> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
-                                        CustomText(text: "Size",),
-                                        CustomText(text: "M",),
+                                        StreamBuilder<QuerySnapshot>(
+                                          stream: Firestore.instance.collection("items").document(widget.itemModel.idItem).collection("size").snapshots(),
+                                          // ignore: missing_return
+                                          builder: (context,snapshot){
+                                            if(!snapshot.hasData){
+                                              Text("Loading");
+                                            }
+                                            else{
+                                              List<DropdownMenuItem> currencyitems=[];
+                                              for(int i=0;i<snapshot.data.documents.length;i++){
+                                                DocumentSnapshot snap=snapshot.data.documents[i];
+                                                currencyitems.add(
+                                                    DropdownMenuItem(child: Text(
+                                                      snap.documentID,
+                                                    ),
+                                                      value: "${snap.documentID}",
+                                                    )
+                                                );
+                                              }
+                                              return DropdownButton(
+                                                items: currencyitems,
+                                                onChanged: (currencyValue){
+                                                  final snackbar =SnackBar(
+                                                      content: Text('the selected value $currencyValue')
+                                                  );
+                                                  Scaffold.of(context).showSnackBar(snackbar);
+                                                  setState(() {
+                                                    selectedCurrency=currencyValue;
+                                                  });
+                                                },
+                                                value:selectedCurrency ,
+                                                isExpanded: false,
+                                                hint: new Text("Size "),
+                                              );
+                                            }
+                                          },
+                                        ),
                                       ],
                                     ),
                                   ),
                                   SizedBox(width: 5,),
                                   Container(
-                                    padding: EdgeInsets.all(16),
                                     width: MediaQuery.of(context).size.width*.44,
                                     decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
                                         border: Border.all(color: Colors.grey)
@@ -192,16 +126,43 @@ class _ProductPageState extends State<ProductPage> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
-                                        CustomText(text: "Color",),
-                                        Container(
-                                          height: 10,
-                                          width: 20,
-                                          padding: EdgeInsets.all(12),
-                                          decoration: BoxDecoration(color: Colors.white,
-                                          border: Border.all(color: Colors.grey),
-                                            borderRadius: BorderRadius.circular(20),
-                                          ),
-                                        )
+                                        StreamBuilder<QuerySnapshot>(
+                                          stream: Firestore.instance.collection("items").document(widget.itemModel.idItem).collection("color").snapshots(),
+                                          // ignore: missing_return
+                                          builder: (context,snapshot){
+                                            if(!snapshot.hasData){
+                                              Text("Loading");
+                                            }
+                                            else{
+                                              List<DropdownMenuItem> currencyitems=[];
+                                              for(int i=0;i<snapshot.data.documents.length;i++){
+                                                DocumentSnapshot snap=snapshot.data.documents[i];
+                                                currencyitems.add(
+                                                    DropdownMenuItem(child: Text(
+                                                      snap.documentID,
+                                                    ),
+                                                      value: "${snap.documentID}",
+                                                    )
+                                                );
+                                              }
+                                              return DropdownButton(
+                                                items: currencyitems,
+                                                onChanged: (currencyValue){
+                                                  final snackbar =SnackBar(
+                                                      content: Text('the selected value $currencyValue')
+                                                  );
+                                                  Scaffold.of(context).showSnackBar(snackbar);
+                                                  setState(() {
+                                                    selectedCurrency=currencyValue;
+                                                  });
+                                                },
+                                                value:selectedCurrency ,
+                                                isExpanded: false,
+                                                hint: new Text("Color "),
+                                              );
+                                            }
+                                          },
+                                        ),
                                       ],
                                     ),
                                   ),
