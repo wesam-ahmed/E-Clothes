@@ -50,16 +50,6 @@ class _StoreHomeState extends State<StoreHome> {
                 ),
                 onPressed: () => _scaffoldKey.currentState.openDrawer(),
               ),
-              /*flexibleSpace: Container(
-                decoration: new BoxDecoration(
-                    gradient: new LinearGradient(
-                      colors: [Colors.white, Colors.grey],
-                      begin: const FractionalOffset(0.0, 0.0),
-                      end: const FractionalOffset(1.0, 0.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp,
-                    )),
-              ),*/
               backgroundColor: Colors.white,
               title: Text(
                 "LAPSNY",
@@ -83,42 +73,11 @@ class _StoreHomeState extends State<StoreHome> {
                         Navigator.pushReplacement(context, route);
                       },
                     ),
-                    /* Positioned(
-                        child: Stack(
-                          children: [
-                            Icon(
-                              Icons.brightness_1,
-                              size: 20,
-                              color: Colors.white,
-                            ),
-                            Positioned(
-                                top: 3,
-                                bottom: 4,
-                                left: 4,
-                                child: Consumer<CartItemCounter>(
-                                  builder: (context, counter, _) {
-                                    return Text(
-                                      (EcommerceApp.sharedPreferences
-                                          .getStringList(
-                                          EcommerceApp.userCartList)
-                                          .length -
-                                          1)
-                                          .toString(),
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w500),
-                                    );
-                                  },
-                                ))
-                          ],
-                        ))*/
                   ],
                 )
               ],
             ),
             drawer: MyDrawer(),
-
             body:
 
             Container(
@@ -290,6 +249,7 @@ class _StoreHomeState extends State<StoreHome> {
                               ),
                             ),
                           ),
+
                           StreamBuilder<QuerySnapshot>(
                             stream: Firestore.instance
                                 .collection("items")
@@ -341,15 +301,31 @@ getSizes(String DocID)async{
   });
   return sizes;
 }
+getColors(String DocID)async{
+  List <String> colors=  [];
+  await Firestore.instance.collection("items").document(DocID).get().then((value){
+    if(value!=null)
+    {
+      value.data['color'].forEach((element) {
+        colors.add(element);
+      });
+    }
+  });
+  return colors;
+}
+
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
   return InkWell(
     onTap: () {
-      getSizes(model.idItem).then((val){
+      getSizes(model.idItem).then((size){
+        getColors(model.idItem).then((color){
         Route route =
-        MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:val));
+        MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
         Navigator.pushReplacement(context, route);
       });
+      });
+
     },
     splashColor: Colors.grey,
     child: Padding(
