@@ -11,7 +11,8 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
-  ProductPage({this.itemModel});
+  List<String>sizes=[];
+  ProductPage({this.itemModel,this.sizes});
 
   @override
   _ProductPageState createState() => _ProductPageState();
@@ -22,43 +23,23 @@ class _ProductPageState extends State<ProductPage> {
     return await Navigator.push(
         context, MaterialPageRoute(builder: (context) => StoreHome()));
   }
-   List <String> ItemSizes=[];
-  List ItemSizess=["1","5"];
   int quantityOfItems = 1;
   String ValueChoose;
 
   @override
   void initState() {
     // TODO: implement initState
-    getSizes(widget.itemModel.idItem).then((val){
-      ItemSizes=val;
-      print("*********************${ItemSizes}");
-    });
     super.initState();
-  }
-  getSizes(String DocID){
-    List <String> sizes=  [];
-     Firestore.instance.collection("items").document(DocID).get().then((value){
-      if(value!=null)
-      {
-        value.data['size'].forEach((element) {
-          sizes.add(element);
-        });
-      }
-    });
-    return sizes;
   }
   @override
   Widget build(BuildContext context) {
-setState(() {
 
-});
     Size screenSize = MediaQuery.of(context).size;
     return WillPopScope(
         onWillPop: _backStore,
         child: SafeArea(
           child: Scaffold(
-              //appBar: MyAppBar(),
+            //appBar: MyAppBar(),
               drawer: MyDrawer(),
               body: SingleChildScrollView(
                 child: Container(
@@ -76,45 +57,46 @@ setState(() {
                         height: 15,
                       ),
                       Container(
-                        padding: EdgeInsets.all(18),
+                          padding: EdgeInsets.all(18),
                           child: Column(
-                        children: [
-                          CustomText(
-                            text: widget.itemModel.title,
-                            fontSize: 26,
-                          ),
-                          SizedBox(
-                            height: 15,
-                          ),
-                          Row(children: [
-                            Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width*.44,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                                      border: Border.all(color: Colors.grey)
+                            children: [
+                              CustomText(
+                                text: widget.itemModel.title,
+                                fontSize: 26,
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Row(children: [
+                                Container(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*.44,
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(color: Colors.grey)
 
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                      DropdownButton(
-                                        value: ValueChoose,
-                                        onChanged: (newValue){
-                                          ValueChoose = newValue;
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            DropdownButton(
+                                              value: ValueChoose,
+                                              onChanged: (newValue) {
+                                                ValueChoose = newValue;
+                                              },
+                                              items: widget.sizes.map((ValueItem) {
+                                                return DropdownMenuItem(
+                                                  value: ValueItem,
+                                                  child: Text(
+                                                      ValueItem.toString()),
+                                                );
+                                              }).toList(),
+                                            )
 
-                                        },
-                                        items: ItemSizes.map((ValueItem){
-                                          return DropdownMenuItem(
-                                            value: ValueItem,
-                                            child: Text(ValueItem.toString()),
-                                          );
-                                        }).toList(),
-                                    ),
 
-                                        /*StreamBuilder<QuerySnapshot>(
+                                            /*StreamBuilder<QuerySnapshot>(
                                           stream: Firestore.instance.collection("items").document(widget.itemModel.idItem).collection("size").snapshots(),
                                           // ignore: missing_return
                                           builder: (context,snapshot){
@@ -151,20 +133,20 @@ setState(() {
                                             }
                                           },
                                         ),*/
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(width: 5,),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width*.44,
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                                        border: Border.all(color: Colors.grey)
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(width: 5,),
+                                      Container(
+                                        width: MediaQuery.of(context).size.width*.44,
+                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+                                            border: Border.all(color: Colors.grey)
 
-                                    ),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        /*                                        StreamBuilder<QuerySnapshot>(
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                          children: [
+                                            /*                                        StreamBuilder<QuerySnapshot>(
                                           stream: Firestore.instance.collection("items").document(widget.itemModel.idItem).collection("color").snapshots(),
                                           // ignore: missing_return
                                           builder: (context,snapshot){
@@ -202,22 +184,22 @@ setState(() {
                                           },
                                         ),
 */
-                                        ],
-                                    ),
+                                          ],
+                                        ),
+                                      ),
+
+                                    ],
                                   ),
-
-                                ],
-                              ),
-                            )
-                          ],),
-                          SizedBox(height: 15,),
-                          CustomText(text: 'Details',fontSize: 26,),
-                          SizedBox(height: 15,),
-                          CustomText(text: widget.itemModel.longDescription,fontSize: 16,height: 1,),
+                                )
+                              ],),
+                              SizedBox(height: 15,),
+                              CustomText(text: 'Details',fontSize: 26,),
+                              SizedBox(height: 15,),
+                              CustomText(text: widget.itemModel.longDescription,fontSize: 16,height: 1,),
 
 
-                        ],
-                      )),
+                            ],
+                          )),
                     ],
                   ),
                 ),
