@@ -22,13 +22,37 @@ class _ProductPageState extends State<ProductPage> {
     return await Navigator.push(
         context, MaterialPageRoute(builder: (context) => StoreHome()));
   }
-
+   List <String> ItemSizes=[];
+  List ItemSizess=["1","5"];
   int quantityOfItems = 1;
-  var selectedCurrency;
-
+  String ValueChoose;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    getSizes(widget.itemModel.idItem).then((val){
+      ItemSizes=val;
+      print("*********************${ItemSizes}");
+    });
+    super.initState();
+  }
+  getSizes(String DocID){
+    List <String> sizes=  [];
+     Firestore.instance.collection("items").document(DocID).get().then((value){
+      if(value!=null)
+      {
+        value.data['size'].forEach((element) {
+          sizes.add(element);
+        });
+      }
+    });
+    return sizes;
+  }
+  @override
   Widget build(BuildContext context) {
+setState(() {
+
+});
     Size screenSize = MediaQuery.of(context).size;
     return WillPopScope(
         onWillPop: _backStore,
@@ -76,7 +100,21 @@ class _ProductPageState extends State<ProductPage> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
-                                        StreamBuilder<QuerySnapshot>(
+                                      DropdownButton(
+                                        value: ValueChoose,
+                                        onChanged: (newValue){
+                                          ValueChoose = newValue;
+
+                                        },
+                                        items: ItemSizes.map((ValueItem){
+                                          return DropdownMenuItem(
+                                            value: ValueItem,
+                                            child: Text(ValueItem.toString()),
+                                          );
+                                        }).toList(),
+                                    ),
+
+                                        /*StreamBuilder<QuerySnapshot>(
                                           stream: Firestore.instance.collection("items").document(widget.itemModel.idItem).collection("size").snapshots(),
                                           // ignore: missing_return
                                           builder: (context,snapshot){
@@ -112,7 +150,7 @@ class _ProductPageState extends State<ProductPage> {
                                               );
                                             }
                                           },
-                                        ),
+                                        ),*/
                                       ],
                                     ),
                                   ),
@@ -126,7 +164,7 @@ class _ProductPageState extends State<ProductPage> {
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: [
-                                        StreamBuilder<QuerySnapshot>(
+                                        /*                                        StreamBuilder<QuerySnapshot>(
                                           stream: Firestore.instance.collection("items").document(widget.itemModel.idItem).collection("color").snapshots(),
                                           // ignore: missing_return
                                           builder: (context,snapshot){
@@ -163,7 +201,8 @@ class _ProductPageState extends State<ProductPage> {
                                             }
                                           },
                                         ),
-                                      ],
+*/
+                                        ],
                                     ),
                                   ),
 
