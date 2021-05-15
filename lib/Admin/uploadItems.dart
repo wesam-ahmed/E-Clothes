@@ -25,8 +25,8 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 {
   String DropdownValue_Section ;
   String DropdownValue_Category ;
-  List<String> colorChecked;
-  List<String> sizeChecked;
+  List <String> colorList1=[];
+  List <String> sizeList1=[];
 
   //var size=[];
   //var itemcolor=[];
@@ -366,9 +366,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
       orientation: GroupedButtonsOrientation.HORIZONTAL,
         labels: <String>[
-          "XS", "S", "M", "L", "XL", "XXL", "XXXL",
+          "XS", "S", "M", "L", "XL", "XXL", "XXXL","One Size"
         ],
-        onSelected: (List<String> sizeChecked) => print(sizeChecked.toString())
+        onSelected: (List<String> sizeChecked) {
+        sizeList1=sizeChecked;
+          print(sizeList1);
+        }
     ),
     )
 
@@ -383,9 +386,13 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
                 child: CheckboxGroup(
                     orientation: GroupedButtonsOrientation.HORIZONTAL,
                     labels: <String> [
-                      "Red", "Blue", "Green", "Orange", "White", "Black", "Yellow", "Grey", "Violet", "Brown",
+                      "Red", "Blue", "Green", "Orange", "White", "Black", "Yellow", "Grey", "Violet", "Brown","Other"
                     ],
-                    onSelected: (List<String> colorChecked) => print(colorChecked.toString())
+                    onSelected: (List<String> colorChecked) {
+                      colorList1= colorChecked;
+                      print(colorList1);
+                    }
+
                 ),
               )
 
@@ -438,6 +445,9 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "section":DropdownValue_Section.toString(),
       "category":DropdownValue_Category.toString(),
       "quantity":int.parse(_QuantityInfoTextEditingController.text),
+      "size":sizeList1,
+      "color":colorList1,
+
     });
     setState(() {
       file=null;
