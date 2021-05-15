@@ -36,7 +36,7 @@ class _ProductPageState extends State<ProductPage> {
     return WillPopScope(
         onWillPop: _backStore,
         child: SafeArea(
-          child: 
+          child:
           Scaffold(
             body: Column(
                   children: [
@@ -204,32 +204,6 @@ class _ProductPageState extends State<ProductPage> {
                             )
 
 
-                              ],
-                            )),
-                          ),
-                        ),
-                       /* Padding(
-                          padding: EdgeInsets.all(5.0),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width*.4,
-                            height: 350,
-                            color: Colors.grey.shade200,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                Container(
-                                    decoration:
-                                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
-                                    child: Container(
-                                      height: 250,
-                                      width: MediaQuery.of(context).size.width*.4,
-                                      child: Image.network(
-                                        model.thumbnailUrl,
-                                        width: 150.0,
-                                        height: 150.0,
-                                        fit: BoxFit.fill,
-                                      ),
-
                           ],),
                       ),
                     )
@@ -239,7 +213,6 @@ class _ProductPageState extends State<ProductPage> {
           )
 
         ));
-
   }
 }
 buildRow(String title) {
