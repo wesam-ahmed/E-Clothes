@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
+import 'package:e_shop/Widgets/custom_buttom.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/sliverhead.dart';
@@ -8,6 +9,7 @@ import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Widgets/searchBox.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shop/Store/storehome.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class ProductPage extends StatefulWidget {
@@ -28,8 +30,6 @@ class _ProductPageState extends State<ProductPage> {
   }
   int quantityOfItems = 1;
   String ValueChoose;
-  List<String> list = ['Title 1', 'Title 2', 'Title 3', 'Title 4', 'Title 5', 'Title 6', 'Title 7', 'Title 8', 'Title 9', 'Title 10', 'Title 11', 'Title 12', 'Title 13', 'Title 14', 'Title 15', 'Title 16', 'Title 17', 'Title 18', 'Title 19', 'Title 20'];
-
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +40,13 @@ class _ProductPageState extends State<ProductPage> {
           Scaffold(
             body: Column(
                   children: [
-                    Expanded(child: CustomScrollView(
-                        slivers:<Widget> [
-                          SliverPersistentHeader(
-                            floating: true,
-                            delegate: SliverAppBarDelegate(
-                              minHeight: 400.0,
-                              maxHeight: 400.0,
-                              child: Image.network(
-                                widget.itemModel.thumbnailUrl,
-                                fit: BoxFit.fill,
-                              ),
-
-                            ),
-
-                          ),
-                        ],
-                      ),),
+                    Container(
+                      height: 230,
+                      child: Image.network(
+                        widget.itemModel.thumbnailUrl,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                     Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(topLeft:Radius.circular(40),topRight: Radius.circular(40))),
@@ -143,50 +133,79 @@ class _ProductPageState extends State<ProductPage> {
                                   CustomText(text: 'Details',fontSize: 26,),
                                   SizedBox(height: 15,),
                                   CustomText(text: widget.itemModel.longDescription,fontSize: 16,height: 1,),
+                                  Padding(
+                                    padding: const EdgeInsets.all(1.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                                      children: [
+                                        Column(
+                                          children: [
+                                            CustomText(text: "PRICE",
+                                              fontSize: 10,
+                                              color: Colors.grey,
+                                            ),
+                                            SizedBox(height: 5,),
+                                            CustomText(text: '\E\G'+widget.itemModel.price.toString() ,
+                                              color: primaryColor,
+                                            )
+                                          ],
+                                        ),
+                                        Container(
+                                          width: 180,
+                                          height: 40,
+                                          child: CustomButton(onPress: (){
+                                            checkItemInCart(widget.itemModel.idItem, context);
+                                          },
+                                            text: "Add to Cart",
+
+
+
+                                          ),
+                                        ),
+                                      ],),
+                                  ),
                                 ],
                               )),
 
                         ],
                       ),
                     ),
-
                     Expanded(
-                      child: CustomScrollView(
-                        scrollDirection: Axis.horizontal,
-                        slivers: [
-                        SliverToBoxAdapter(child: Text("compare"),),
-                        StreamBuilder<QuerySnapshot>(
-                          stream: Firestore.instance.collection("items").where("price",
-                              isLessThanOrEqualTo: widget.itemModel.price)
-                              .where("category",
-                              isEqualTo: widget.itemModel.category)
-                              .where("section",
-                              isEqualTo: widget.itemModel.section)
-                              .snapshots(),
-                          builder: (context, dataSnapshot) {
-                            return !dataSnapshot.hasData
-                                ? SliverToBoxAdapter(
-                              child: Center(
-                                child: circularProgress(),
-                              ),
-                            )
-                                : SliverStaggeredGrid.countBuilder(
-                              crossAxisCount: 1,
-                              staggeredTileBuilder: (c) =>
-                                  StaggeredTile.fit(1),
-                              itemBuilder: (context, index) {
-                                ItemModel model = ItemModel.fromJson(
-                                    dataSnapshot
-                                        .data.documents[index].data);
-                                return sourceInfo(model, context);
-                              },
-                              itemCount: dataSnapshot.data.documents
-                                  .length,
-                            );
-                          },
-                        )
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CustomScrollView(
+                          scrollDirection: Axis.horizontal,
+                          slivers: [
+                          SliverToBoxAdapter(),
+                            StreamBuilder<QuerySnapshot>(
+                              stream: Firestore.instance.collection("items").where("price", isLessThanOrEqualTo: widget.itemModel.price)
+                                  .where("category", isEqualTo: widget.itemModel.category).where("section", isEqualTo: widget.itemModel.section).snapshots(),
+                              builder: (context, dataSnapshot) {
+                                return !dataSnapshot.hasData
+                                    ? SliverToBoxAdapter(
+                                  child: Center(
+                                    child: circularProgress(),
+                                  ),
+                                )
+                                    : SliverStaggeredGrid.countBuilder(
+                                  crossAxisCount: 1,
+                                  staggeredTileBuilder: (c) =>
+                                      StaggeredTile.fit(1),
+                                  itemBuilder: (context, index) {
 
-                      ],),
+                                    ItemModel model = ItemModel.fromJson(
+                                        dataSnapshot.data.documents[index].data);
+                                    return sourceInfo(model, context);
+                                  },
+                                  itemCount: dataSnapshot.data.documents.length,
+                                );
+                              },
+                            )
+
+
+                          ],),
+                      ),
                     )
 
                   ],
@@ -230,18 +249,14 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                   width: 100,
                   child: Image.network(
                     model.thumbnailUrl,
-                    width: 150.0,
-                    height: 150.0,
                     fit: BoxFit.fill,
                   ),
-
-
                 )),
-            SizedBox(height: 10,),
+            SizedBox(height: 5,),
             CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
-            SizedBox(height: 10,),
+            SizedBox(height: 5,),
             CustomText(text: model.shortInfo,alignment: Alignment.bottomLeft , color: Colors.grey,),
-            SizedBox(height: 10,),
+            SizedBox(height: 5,),
             CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
           ],
         ),
