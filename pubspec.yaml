@@ -40,6 +40,7 @@ flutter:
     - family: Signatra
       fonts:
         - asset: assets/fonts/Signatra.ttf
+        - asset: assets/fonts/SourceSansPro-Regular.ttf
 
   assets:
     - images/google.png
@@ -48,6 +49,14 @@ flutter:
     - images/login.png
     - images/admin.png
     - images/cash.png
+    - images/tshirt.png
+    - images/Jacket.png
+    - images/jeans.png
+    - images/trousers2.png
+    - images/hooded-jacket.png
+    - images/sneakers.png
+    - images/shorts.png
+    - images/bags.png
 
 
 

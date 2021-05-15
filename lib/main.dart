@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Authentication/login.dart';
 import 'package:e_shop/Counters/ItemQuantity.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,8 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async
 {
   WidgetsFlutterBinding.ensureInitialized();
- // await Firebase.initializeApp();
-  EcommerceApp.auth=FirebaseAuth.instance;
+  // await Firebase.initializeApp();
+  EcommerceApp.auth = FirebaseAuth.instance;
   EcommerceApp.sharedPreferences = await SharedPreferences.getInstance();
   EcommerceApp.firestore = Firestore.instance;
   runApp(MyApp());
@@ -30,21 +31,22 @@ Future<void> main() async
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-   return MultiProvider(
-     providers: [
-       ChangeNotifierProvider(create: (c)=> CartItemCounter()),
-       ChangeNotifierProvider(create: (c)=> ItemQuantity()),
-       ChangeNotifierProvider(create: (c)=> AddressChanger()),
-       ChangeNotifierProvider(create: (c)=> TotalAmount()),
-     ],
-     child: MaterialApp(
-      title: 'e-Shop',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.green,),
-      home: SplashScreen()
-    ),
-   );
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (c) => CartItemCounter()),
+        ChangeNotifierProvider(create: (c) => ItemQuantity()),
+        ChangeNotifierProvider(create: (c) => AddressChanger()),
+        ChangeNotifierProvider(create: (c) => TotalAmount()),
+      ],
+      child: MaterialApp(
+          title: 'e-Shop',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily:"SourceSansPro-Regular" ,
+            primaryColor: Colors.green,),
+          home: SplashScreen()
+      ),
+    );
   }
 }
 
@@ -55,45 +57,41 @@ class SplashScreen extends StatefulWidget {
 }
 
 
-class _SplashScreenState extends State<SplashScreen>
-{
+class _SplashScreenState extends State<SplashScreen> {
   @override
   // ignore: must_call_super
   void initState() {
     // TODO: implement initState
     displaySplash();
   }
-  displaySplash(){
-    Timer(Duration(seconds: 2), ()async{
-      if(await EcommerceApp.auth.currentUser() !=null){
-        Route route=MaterialPageRoute(builder: (_) => Section());
+
+  displaySplash() {
+    Timer(Duration(seconds: 2), () async {
+      if (await EcommerceApp.auth.currentUser() != null) {
+        Route route = MaterialPageRoute(builder: (_) => Section());
         Navigator.pushReplacement(context, route);
-      }else{
-        Route route=MaterialPageRoute(builder: (_) => Login());
+      } else {
+        Route route = MaterialPageRoute(builder: (_) => Login());
         Navigator.pushReplacement(context, route);
       }
-
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Material(
       child: Container(
         decoration: new BoxDecoration(
-          gradient: new LinearGradient(colors:[Colors.white,Colors.grey],
-          begin:const FractionalOffset(0.0, 0.0),
-            end: const FractionalOffset(1.0, 0.0),
-            stops: [0.0,1.0],
-            tileMode: TileMode.clamp,
-          ),
+            color: primaryColor
         ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("images/welcome.png"),
-              SizedBox(height: 20.0,),
-              Text("welcome to e-Shop",style: TextStyle(color: Colors.black54),)
+
+              Text("LAPSNY", style: TextStyle(color: Colors.white,
+                  fontSize: 60,
+                  fontWeight: FontWeight.bold),)
             ],
           ),
         ),

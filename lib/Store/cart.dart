@@ -21,7 +21,7 @@ class _CartPageState extends State<CartPage>
 {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Future<bool> _backStore()async{
-     return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
   }
 
   double totalAmount;
@@ -39,110 +39,109 @@ class _CartPageState extends State<CartPage>
         onWillPop: _backStore,
         child: Scaffold(
           key: _scaffoldKey,
-      floatingActionButton: FloatingActionButton.extended(
-          onPressed: ()
-              {
-                if(EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).length ==1)
-                {
-                  Fluttertoast.showToast(msg: "your Cart is empty.");
-                }
-                else
-                  {
-                    Route route = MaterialPageRoute(builder: (C) => Address(totalAmount: totalAmount));
-                        Navigator.pushReplacement(context, route);
-                  }
-              },
-        label: Text("Check Out"),
-        backgroundColor: Colors.black,
-        icon: Icon(Icons.navigate_next),
-      ),
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.menu,color: Colors.black,),
-          onPressed: () {
-            _scaffoldKey.currentState.openDrawer();
-          }
-        ),
-        flexibleSpace: Container(
-          decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                colors: [Colors.white,Colors.grey],
-                begin:const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0,1.0],
-                tileMode: TileMode.clamp,
-              )
-          ),
-        ),
-        title: Text("e-Shop",style: TextStyle(fontSize: 55.0,color: Colors.black,fontFamily: "Signatra"),),
-        centerTitle: true,
-
-      ),
-      drawer: MyDrawer(),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Consumer2<TotalAmount, CartItemCounter>(builder: (context, amountProvider, cartProvider, c)
+          floatingActionButton: FloatingActionButton.extended(
+            onPressed: ()
             {
-              return Padding(
-                  padding: EdgeInsets.all(8),
-                child: Center(
-                  child: cartProvider.count ==0
-                      ? Container()
-                      : Text(
-                    "Total Price: € ${amountProvider.totalAmount.toString()}",
-                    style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                ),
-              );
-            },),
-          ),
-          StreamBuilder<QuerySnapshot>(
-            stream: EcommerceApp.firestore
-                .collection("items").where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString())
-            .where("idItem", whereIn: EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList)).snapshots(),
-            builder: (context, snapshot)
+              if(EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList).length ==1)
               {
-                return !snapshot.hasData
-                    ? SliverToBoxAdapter(child:  Center(child: circularProgress(),),)
-                    : snapshot.data.documents.length == 0
-                    ? beginBuildingCart()
-                    : SliverList(
+                Fluttertoast.showToast(msg: "your Cart is empty.");
+              }
+              else
+              {
+                Route route = MaterialPageRoute(builder: (C) => Address(totalAmount: totalAmount));
+                Navigator.pushReplacement(context, route);
+              }
+            },
+            label: Text("Check Out"),
+            backgroundColor: Colors.black,
+            icon: Icon(Icons.navigate_next),
+          ),
+          appBar: AppBar(
+            leading: IconButton(
+                icon: Icon(Icons.menu,color: Colors.black,),
+                onPressed: () {
+                  _scaffoldKey.currentState.openDrawer();
+                }
+            ),
+            flexibleSpace: Container(
+              decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [Colors.white,Colors.grey],
+                    begin:const FractionalOffset(0.0, 0.0),
+                    end: const FractionalOffset(1.0, 0.0),
+                    stops: [0.0,1.0],
+                    tileMode: TileMode.clamp,
+                  )
+              ),
+            ),
+            title: Text("e-Shop",style: TextStyle(fontSize: 55.0,color: Colors.black,fontFamily: "Signatra"),),
+            centerTitle: true,
+
+          ),
+          drawer: MyDrawer(),
+          body: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: Consumer2<TotalAmount, CartItemCounter>(builder: (context, amountProvider, cartProvider, c)
+                {
+                  return Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Center(
+                      child: cartProvider.count ==0
+                          ? Container()
+                          : Text(
+                        "Total Price: € ${amountProvider.totalAmount.toString()}",
+                        style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  );
+                },),
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: EcommerceApp.firestore
+                    .collection("items").where("idItem", whereIn: EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList)).snapshots(),
+                builder: (context, snapshot)
+                {
+                  return !snapshot.hasData
+                      ? SliverToBoxAdapter(child:  Center(child: circularProgress(),),)
+                      : snapshot.data.documents.length == 0
+                      ? beginBuildingCart()
+                      : SliverList(
                     delegate: SliverChildBuilderDelegate(
-                        (context, index)
+                          (context, index)
+                      {
+                        ItemModel model = ItemModel.fromJson(snapshot.data.documents[index].data);
+                        if(index == 0)
                         {
-                          ItemModel model = ItemModel.fromJson(snapshot.data.documents[index].data);
-                          if(index == 0)
-                            {
-                              totalAmount = 0;
-                              totalAmount = model.price + totalAmount;
-                            }
-                          else
-                            {
-                              totalAmount = model.price + totalAmount;
-                            }
-                          if(snapshot.data.documents.length - 1 == index)
-                          {
-                            WidgetsBinding.instance.addPostFrameCallback((t) {
-                              Provider.of<TotalAmount>(context, listen: false).display(totalAmount);
-                            });
-                          }
-                          return sourceInfo(model, context, removeCartFunction: () => removeItemFromUserCart(model.idItem));
-                        },
+                          totalAmount = 0;
+                          totalAmount = model.price + totalAmount;
+                        }
+                        else
+                        {
+                          totalAmount = model.price + totalAmount;
+                        }
+                        if(snapshot.data.documents.length - 1 == index)
+                        {
+                          WidgetsBinding.instance.addPostFrameCallback((t) {
+                            Provider.of<TotalAmount>(context, listen: false).display(totalAmount);
+                          });
+                        }
+                        return sourceInfo(model, context, removeCartFunction: () => removeItemFromUserCart(model.idItem));
+                      },
                       childCount: snapshot.hasData ?  snapshot.data.documents.length : 0,
                     ),
-                );
-              },
+                  );
+                },
+              ),
+            ],
           ),
-        ],
-      ),
-    ));
+        ));
   }
   beginBuildingCart()
   {
     return SliverToBoxAdapter(
       child: Card(
-      color: Theme.of(context).primaryColor.withOpacity(0.5),
+        color: Theme.of(context).primaryColor.withOpacity(0.5),
         child: Container(
           height: 100,
           child: Column(

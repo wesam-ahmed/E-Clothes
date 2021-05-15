@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'adminOrders.dart';
+
 
 
 class UploadPage extends StatefulWidget
@@ -23,8 +25,8 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 {
   String DropdownValue_Section ;
   String DropdownValue_Category ;
-  List<String> colorChecked;
-  List<String> sizeChecked;
+  List <String> colorList1=[];
+  List <String> sizeList1=[];
 
   //var size=[];
   //var itemcolor=[];
@@ -36,6 +38,8 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   TextEditingController _priceTextEditingController=TextEditingController();
   TextEditingController _titleTextEditingController=TextEditingController();
   TextEditingController _shortInfoTextEditingController=TextEditingController();
+  TextEditingController _QuantityInfoTextEditingController=TextEditingController();
+
   String productId = DateTime.now().millisecondsSinceEpoch.toString();
   bool uploading =false;
   @override
@@ -104,7 +108,25 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
                 onPressed: ()=>takeImage(context),
               ) ,
-            )
+
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20),
+              child:TextButton(
+                style: TextButton.styleFrom(primary: Colors.white,
+                  backgroundColor: Colors.black87,
+                  onSurface: Colors.grey,
+                ),
+                child: Text("My Items",style: TextStyle(fontSize: 20,color: Colors.white),),
+
+                onPressed: (){
+                  Route route = MaterialPageRoute(builder: (C) => AdminOrders());
+                  Navigator.pushReplacement(context, route);
+
+                },
+              ) ,
+
+            ),
 
           ],
         ),
@@ -149,7 +171,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   pickPhotoFromGallery()async{
     Navigator.pop(context);
     // ignore: deprecated_member_use
-    File imageFile=  await ImagePicker.pickImage(source: ImageSource.gallery,imageQuality: 40);
+    File imageFile=  await ImagePicker.pickImage(source: ImageSource.gallery,imageQuality: 15);
     setState(() {
       file=imageFile;
     });
@@ -265,6 +287,24 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
           ),
           Divider(color: Colors.grey,),
           ListTile(
+            leading:Icon(Icons.countertops,color: Colors.grey,),
+            title: Container(
+              width: 250.0,
+              child: TextField(
+                keyboardType: TextInputType.number,
+                style: TextStyle(color: Colors.black),
+                controller: _QuantityInfoTextEditingController,
+                decoration:  InputDecoration(
+                  hintText: "Quantity",
+                  hintStyle: TextStyle(color: Colors.blueGrey),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+
+          ),
+          Divider(color: Colors.grey,),
+          ListTile(
             leading:Icon(Icons.arrow_drop_down_circle,color: Colors.grey,),
             title: Container(
                 width: 250.0,
@@ -326,9 +366,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
       orientation: GroupedButtonsOrientation.HORIZONTAL,
         labels: <String>[
-          "XS", "S", "M", "L", "XL", "XXL", "XXXL",
+          "XS", "S", "M", "L", "XL", "XXL", "XXXL","One Size"
         ],
-        onSelected: (List<String> sizeChecked) => print(sizeChecked.toString())
+        onSelected: (List<String> sizeChecked) {
+        sizeList1=sizeChecked;
+          print(sizeList1);
+        }
     ),
     )
 
@@ -343,9 +386,13 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
                 child: CheckboxGroup(
                     orientation: GroupedButtonsOrientation.HORIZONTAL,
                     labels: <String> [
-                      "Red", "Blue", "Green", "Orange", "White", "Black", "Yellow", "Grey", "Violet", "Brown",
+                      "Red", "Blue", "Green", "Orange", "White", "Black", "Yellow", "Grey", "Violet", "Brown","Other"
                     ],
-                    onSelected: (List<String> colorChecked) => print(colorChecked.toString())
+                    onSelected: (List<String> colorChecked) {
+                      colorList1= colorChecked;
+                      print(colorList1);
+                    }
+
                 ),
               )
 
@@ -394,9 +441,13 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "status":"available",
       "title":_titleTextEditingController.text.trim(),
       "seller":EcommerceApp.collectionAdminId,
-      "idItem":DateTime.now().millisecondsSinceEpoch.toString(),
+      "idItem":productId,
       "section":DropdownValue_Section.toString(),
       "category":DropdownValue_Category.toString(),
+      "quantity":int.parse(_QuantityInfoTextEditingController.text),
+      "size":sizeList1,
+      "color":colorList1,
+
     });
     setState(() {
       file=null;
@@ -406,6 +457,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       _titleTextEditingController.clear();
       _shortInfoTextEditingController.clear();
       _priceTextEditingController.clear();
+      _QuantityInfoTextEditingController.clear();
       DropdownValue_Section=null;
       DropdownValue_Category=null;
 
