@@ -331,9 +331,9 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     child: Padding(
       padding: EdgeInsets.all(5.0),
       child: Container(
+        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
         width: MediaQuery.of(context).size.width*.4,
         height: 350,
-        color: Colors.grey.shade200,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
