@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Authentication/login.dart';
 import 'package:e_shop/Counters/ItemQuantity.dart';
+import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -68,7 +69,8 @@ class _SplashScreenState extends State<SplashScreen> {
   displaySplash() {
     Timer(Duration(seconds: 2), () async {
       if (await EcommerceApp.auth.currentUser() != null) {
-        Route route = MaterialPageRoute(builder: (_) => Section());
+        Route route = MaterialPageRoute(builder: (_) =>  Section()
+        );
         Navigator.pushReplacement(context, route);
       } else {
         Route route = MaterialPageRoute(builder: (_) => Login());
