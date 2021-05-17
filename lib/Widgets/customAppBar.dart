@@ -1,6 +1,7 @@
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,24 +19,16 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget
        color: Colors.white,
      ),
      flexibleSpace: Container(
-       decoration: new BoxDecoration(
-           gradient: new LinearGradient(
-             colors: [Colors.white,Colors.grey],
-             begin:const FractionalOffset(0.0, 0.0),
-             end: const FractionalOffset(1.0, 0.0),
-             stops: [0.0,1.0],
-             tileMode: TileMode.clamp,
-           )
-       ),
+       color: Colors.white,
      ),
      centerTitle: true,
-     title: Text("e-Shop",style: TextStyle(fontSize: 55.0,color: Colors.black,fontFamily: "Signatra"),),
+     title: Text("e-Shop",style: TextStyle(fontSize: 20.0,color: primaryColor,),),
      bottom: bottom,
      actions: [
        Stack(
          children: [
            IconButton(
-             icon: Icon(Icons.shopping_cart,color: Colors.black,),
+             icon: Icon(Icons.shopping_cart,color: primaryColor,),
              onPressed: (){
                Route route = MaterialPageRoute(builder: (C) => CartPage());
                Navigator.pushReplacement(context, route);
@@ -44,7 +37,7 @@ class MyAppBar extends StatelessWidget with PreferredSizeWidget
                child: Stack(
                  children: [
                    Icon(
-                     Icons.brightness_1,size: 20,color: Colors.grey,
+                     Icons.brightness_1,size: 20,color: Colors.red,
                    ),
                    Positioned(
                        top: 3,

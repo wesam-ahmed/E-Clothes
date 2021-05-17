@@ -317,7 +317,7 @@ class _ProductPageState extends State<ProductPage> {
               ],
             ),
           ),
-          SizedBox(height: 270, child: FeaturedWidget()),
+          SizedBox(height: 275, child: FeaturedWidget()),
 
           Padding(
             padding: EdgeInsets.symmetric(
@@ -344,7 +344,7 @@ class _ProductPageState extends State<ProductPage> {
                   ),
                   Container(
                     width: 180,
-                    height: 40,
+                    height: 50,
                     child: CustomButton(onPress: (){
                       checkItemInCart(widget.itemModel.idItem, context);
                     },

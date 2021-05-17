@@ -2,7 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Models/address.dart';
 import 'package:e_shop/Orders/placeOrderPayment.dart';
+import 'package:e_shop/Store/cart.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
+import 'package:e_shop/Widgets/custom_buttom.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/wideButton.dart';
 import 'package:e_shop/Counters/changeAddresss.dart';
@@ -27,53 +30,115 @@ class _AddressState extends State<Address>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: MyAppBar(),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                "Select Address",
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 20,),
-              ),
+        appBar: AppBar(
+
+          backgroundColor: Colors.white,
+          title: Text(
+            "LAPSNY",
+            style: TextStyle(
+              fontSize: 20.0,
+              color: primaryColor,
             ),
-            Consumer<AddressChanger>(builder: (context, address, c){
-              return Flexible(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: EcommerceApp.firestore
-                      .collection(EcommerceApp.collectionUser)
-                      .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-                      .collection(EcommerceApp.subCollectionAddress).snapshots(),
-                  builder: (context, snapshot)
-                    {
-                      return !snapshot.hasData
-                          ? Center(child: circularProgress(),)
-                          : snapshot.data.documents.length ==0
-                          ? noAddressCard()
-                          : ListView.builder(
-                        itemCount: snapshot.data.documents.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index)
-                    {
-                      return AddressCard(
-                        currentIndex: address.count,
-                          value: index,
-                        addressId: snapshot.data.documents[index].documentID,
-                        totalAmount: widget.totalAmount,
-                        model: AddressModel.fromJson(snapshot.data.documents[index].data),
-                      );
-                    },
-                      );
-                    }
-                ),
-              );
-            }
-            ),
-            ]
+          ),
+          centerTitle: true,
+
         ),
-        floatingActionButton: FloatingActionButton.extended(
+
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Select Address",
+                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 20,),
+                  ),
+                ),
+              ),
+              Consumer<AddressChanger>(builder: (context, address, c){
+                return Flexible(
+
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: EcommerceApp.firestore
+                        .collection(EcommerceApp.collectionUser)
+                        .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+                        .collection(EcommerceApp.subCollectionAddress).snapshots(),
+                    builder: (context, snapshot)
+                      {
+                        return !snapshot.hasData
+                            ? Center(child: circularProgress(),)
+                            : snapshot.data.documents.length ==0
+                            ? noAddressCard()
+                            : ListView.builder(
+                          itemCount: snapshot.data.documents.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index)
+                      {
+                        return AddressCard(
+                          currentIndex: address.count,
+                            value: index,
+                          addressId: snapshot.data.documents[index].documentID,
+                          totalAmount: widget.totalAmount,
+                          model: AddressModel.fromJson(snapshot.data.documents[index].data),
+                        );
+                      },
+                        );
+                      }
+                  ),
+                );
+              }
+              ),
+              SizedBox(height: 360,),
+              Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                    children: [
+                      Container( decoration: BoxDecoration(border: Border.all(color:Colors.green)),
+                        width: 180,
+                        height: 50,
+                        child: CustomButton(
+
+                          onPress: (){
+                            Route route = MaterialPageRoute(builder: (C) => CartPage());
+                            Navigator.pushReplacement(context, route);
+
+                          },
+                          text: "Back",
+                          color: Colors.white,
+                          textColor: primaryColor,
+
+
+
+                        ),
+                      ),
+                      Container(
+                        width: 180,
+                        height: 50,
+                        child: CustomButton(onPress: (){
+                          Route route = MaterialPageRoute(builder: (C) => AddAddress());
+                          Navigator.pushReplacement(context, route);
+                        },
+                          text: "Add New Address",
+
+
+
+                        ),
+                      ),
+                    ],),
+                ),
+              ),
+              ]
+          ),
+        ),
+        /*floatingActionButton: FloatingActionButton.extended(
           label: Text("Add New Address"),
           backgroundColor: Colors.black ,
           icon: Icon(Icons.add_location),
@@ -81,7 +146,7 @@ class _AddressState extends State<Address>
             Route route = MaterialPageRoute(builder: (C) => AddAddress());
             Navigator.pushReplacement(context, route);
           },
-        ),
+        ),*/
       ),
     );
   }
@@ -121,87 +186,113 @@ class _AddressCardState extends State<AddressCard> {
   Widget build(BuildContext context) {
       double screenWidth = MediaQuery.of(context).size.width;
       return InkWell(
+
         onTap: (){
           Provider.of<AddressChanger>(context, listen:  false).displayResult(widget.value);
         },
-        child: Card(
-          color: Colors.grey.withOpacity(0.4),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  Radio(
-                    groupValue: widget.currentIndex,
-                    value: widget.value,
-                    activeColor: Colors.black,
-                    onChanged: (val){
-                      Provider.of<AddressChanger>(context, listen: false).displayResult(val);
-                    },
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        width: screenWidth * 0.8,
-                        child: Table(
-                          children: [
-                            TableRow(
-                              children: [
-                                KeyText(msg: "Name",),
-                                Text(widget.model.name),
-                              ]
-                            ),
-                            TableRow(
+        child: Container(
+          decoration: BoxDecoration(border: Border.all(color:Colors.grey.shade300)),
+          child: Card(
+            color: Colors.white,
+
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Radio(
+                      groupValue: widget.currentIndex,
+                      value: widget.value,
+                      activeColor: primaryColor,
+                      onChanged: (val){
+                        Provider.of<AddressChanger>(context, listen: false).displayResult(val);
+                      },
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10),
+                          width: screenWidth * 0.8,
+                          child: Table(
+                            children: [
+                              TableRow(
                                 children: [
-                                  KeyText(msg: "Phone Number",),
-                                  Text(widget.model.phoneNumber),
+                                  KeyText(msg: "Name",),
+                                  Text(widget.model.name),
                                 ]
-                            ),
-                            TableRow(
-                                children: [
-                                  KeyText(msg: "Flat Number",),
-                                  Text(widget.model.flatNumber),
-                                ]
-                            ),
-                            TableRow(
-                                children: [
-                                  KeyText(msg: "City",),
-                                  Text(widget.model.city),
-                                ]
-                            ),
-                            TableRow(
-                                children: [
-                                  KeyText(msg: "State",),
-                                  Text(widget.model.state),
-                                ]
-                            ),
-                            TableRow(
-                                children: [
-                                  KeyText(msg: "Postal Code",),
-                                  Text(widget.model.pincode),
-                                ]
-                            ),
-                          ],
+                              ),
+                              TableRow(
+                                  children: [
+                                    KeyText(msg: "Phone Number",),
+                                    Text(widget.model.phoneNumber),
+                                  ]
+                              ),
+                              TableRow(
+                                  children: [
+                                    KeyText(msg: "Flat Number",),
+                                    Text(widget.model.flatNumber),
+                                  ]
+                              ),
+                              TableRow(
+                                  children: [
+                                    KeyText(msg: "City",),
+                                    Text(widget.model.city),
+                                  ]
+                              ),
+                              TableRow(
+                                  children: [
+                                    KeyText(msg: "State",),
+                                    Text(widget.model.state),
+                                  ]
+                              ),
+                              TableRow(
+                                  children: [
+                                    KeyText(msg: "Postal Code",),
+                                    Text(widget.model.pincode),
+                                  ]
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              widget.value == Provider.of<AddressChanger>(context).count
-              ? WideButton(
-                message: "Proceed",
-                onPressed: (){
-                  Route route = MaterialPageRoute(builder: (C) => PaymentPage(
-                    addressId: widget.addressId,
-                    totalAmount: widget.totalAmount,
-                  ));
-                  Navigator.push(context, route);
-                },
-              )
-                  : Container(),
-            ],
+                      ],
+                    )
+                  ],
+                ),
+                widget.value == Provider.of<AddressChanger>(context).count
+                ? Padding(
+                  padding: const EdgeInsets.only(bottom: 10
+                  ),
+                  child: Container(
+                    width: 250,
+                    height: 50,
+                    decoration: BoxDecoration(border: Border.all(color:Colors.green)),
+                    child: CustomButton(
+                      text:"Proceed" ,
+                      color: Colors.white,
+                      textColor: primaryColor,
+                      onPress: (){
+                        Route route = MaterialPageRoute(builder: (C) => PaymentPage(
+                          addressId: widget.addressId,
+                          totalAmount: widget.totalAmount,
+                        ));
+                        Navigator.push(context, route);
+                      },
+
+                    ),
+                  ),
+                )/*WideButton(
+                  message: "Proceed",
+                  onPressed: (){
+                    Route route = MaterialPageRoute(builder: (C) => PaymentPage(
+                      addressId: widget.addressId,
+                      totalAmount: widget.totalAmount,
+                    ));
+                    Navigator.push(context, route);
+                  },
+                )*/
+                    : Container(),
+              ],
+            ),
           ),
         ),
       );
