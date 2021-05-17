@@ -7,28 +7,30 @@ class CustomButton extends StatelessWidget {
   final String text;
 
   final Color color;
+  final Color textColor;
+
 
   final Function onPress;
 
   CustomButton({
     @required this.onPress,
     this.text = 'Write text ',
-    this.color = primaryColor,
+    this.color = primaryColor, this.textColor=Colors.white,
   });
 
   @override
   Widget build(BuildContext context) {
     return FlatButton(
-      shape: new RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(10.0),
+      shape:  RoundedRectangleBorder(
+        borderRadius:  BorderRadius.circular(10.0),
       ),
       padding: EdgeInsets.all(10),
       onPressed: onPress,
-      color: primaryColor,
+      color: color,
       child: CustomText(
         alignment: Alignment.center,
         text: text,
-        color: Colors.white,
+        color: textColor,
       ),
     );
   }

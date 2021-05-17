@@ -1,6 +1,9 @@
 
 import 'package:e_shop/Models/item.dart';
+import 'package:e_shop/Store/product_page.dart';
 import 'package:e_shop/Store/storehome.dart';
+import 'package:e_shop/Widgets/constance.dart';
+import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -57,30 +60,21 @@ class _SearchProductState extends State<SearchProduct>{
           .size
           .width,
       height: 80,
-      decoration: new BoxDecoration(
-          gradient: new LinearGradient(
-            colors: [Colors.white, Colors.grey],
-            begin: const FractionalOffset(0.0, 0.0),
-            end: const FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          )
-      ),
+
       child: Container(
         width: MediaQuery
             .of(context)
             .size
             .width,
         height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(6),
-
-        ),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
+            color: Colors.grey.shade200,
+          ),
         child: Row(
           children: [
-            Padding(padding: EdgeInsets.only(left: 8),
-              child: Icon(Icons.search, color: Colors.blueGrey,),
+            Padding(
+                padding: EdgeInsets.only(left: 8.0),
+                child: Icon(Icons.search,color: Colors.black,)
             ),
             Flexible(child: Padding(
               padding: EdgeInsets.only(left: 8),
@@ -107,5 +101,57 @@ class _SearchProductState extends State<SearchProduct>{
 Widget buildResultCard(data) {
   return Card(
 
+  );
+
+}
+Widget sourceInfo(ItemModel model, BuildContext context,
+    {Color background, removeCartFunction}) {
+  return InkWell(
+    onTap: () {
+      getSizes(model.idItem).then((size){
+        getColors(model.idItem).then((color){
+          Route route =
+          MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
+          Navigator.pushReplacement(context, route);
+        });
+      });
+
+    },
+    splashColor: Colors.grey,
+    child: Padding(
+      padding: EdgeInsets.all(5.0),
+      child: Container(
+        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
+        width: MediaQuery.of(context).size.width*.4,
+        height: 350,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+                decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                child: Container(
+                  height: 250,
+                  width: MediaQuery.of(context).size.width*.4,
+                  child: Image.network(
+                    model.thumbnailUrl,
+                    width: 150.0,
+                    height: 150.0,
+                    fit: BoxFit.fill,
+                  ),
+
+
+                )),
+            SizedBox(height: 10,),
+            CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
+            SizedBox(height: 10,),
+            CustomText(text: model.shortInfo,alignment: Alignment.bottomLeft , color: Colors.grey,),
+            SizedBox(height: 10,),
+            CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
+          ],
+        ),
+
+      ),
+    ),
   );
 }
