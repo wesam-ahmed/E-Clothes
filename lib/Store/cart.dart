@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Widgets/constance.dart';
-import 'package:e_shop/Widgets/custom_buttom.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Models/item.dart';
@@ -58,7 +58,7 @@ class _CartPageState extends State<CartPage>
             ),
             backgroundColor: Colors.white,
             title: Text(
-              "LAPSNY",
+              EcommerceApp.appName,
               style: TextStyle(
                 fontSize: 20.0,
                 color: primaryColor,
@@ -265,15 +265,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
               return Container(
                 width: 30,
                 height: 80,
-                child: AlertDialog(
-                  content: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 10,
-                      )
-                  )
-                ),
+                child: circularProgress()
               );
             },
           );
