@@ -92,7 +92,7 @@ class _AddressState extends State<Address>
                 );
               }
               ),
-              SizedBox(height: 360,),
+              SizedBox(height: 340,),
               Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: Container(
@@ -153,8 +153,16 @@ class _AddressState extends State<Address>
 
   noAddressCard() {
     return Card(
-      color: Colors.black.withOpacity(0.5),
-      child: Container(
+        child: Column(children: [
+          Container(width: 300,
+              height: 300,
+              child: Image.asset('images/address.png',)),
+          SizedBox(height: 20,),
+          Text("No Shipment address has been saved.",style: TextStyle(fontSize: 17,fontWeight: FontWeight.bold ,color: Colors.grey),),
+          Text("Please add your shipment Address so that we can deliver product.",style: TextStyle(fontSize: 11,fontWeight: FontWeight.bold ,color: Colors.grey),)
+
+        ],)
+      /*child: Container(
         height: 100,
         alignment: Alignment.center,
         child: Column(
@@ -165,7 +173,7 @@ class _AddressState extends State<Address>
             Text("Please add your shipment Address so that we can deliver product.")
           ],
         ),
-      ),
+      ),*/
     );
   }
 }
