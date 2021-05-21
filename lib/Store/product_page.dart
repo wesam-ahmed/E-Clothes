@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Store/shopOwner.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
@@ -8,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:full_screen_image/full_screen_image.dart';
+
 
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
@@ -399,8 +403,15 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ),
           Spacer(),
-          Icon(
-            Icons.share,
+          IconButton(
+            onPressed: (){
+              Route route =
+              MaterialPageRoute(builder: (c) => shopOwner());
+              Navigator.pushReplacement(context, route);
+
+            },
+
+            icon: const Icon(Icons.arrow_forward_ios_outlined),
             color: Colors.black54,
           ),
         ],
@@ -478,12 +489,15 @@ class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
       child: Stack(
         children: <Widget>[
           Hero(
+
             tag: itemModel.shortInfo,
-            child: Image.network(
-              itemModel.thumbnailUrl,
-              width: MediaQuery.of(context).size.width,
-              height: expandedHeight,
-              fit: BoxFit.fill,
+            child: FullScreenWidget(
+              child: Image.network(
+                itemModel.thumbnailUrl,
+                width: MediaQuery.of(context).size.width,
+                height: expandedHeight,
+                fit: BoxFit.fill,
+              ),
             ),
           ),
           Positioned(
