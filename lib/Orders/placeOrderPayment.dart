@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
+import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,7 +12,9 @@ import 'package:provider/provider.dart';
 class PaymentPage extends StatefulWidget {
   final String addressId;
   final double totalAmount;
-  PaymentPage({Key key, this.addressId, this.totalAmount}) : super(key: key);
+  final ListOfOrder listOfOrder;
+
+  PaymentPage({Key key, this.addressId, this.totalAmount,this.listOfOrder}) : super(key: key);
   @override
   _PaymentPageState createState() => _PaymentPageState();
 }
@@ -63,7 +66,9 @@ class _PaymentPageState extends State<PaymentPage> {
       EcommerceApp.addressID:widget.addressId,
       EcommerceApp.totalAmount:widget.totalAmount,
       "orderBy":EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID),
-      EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
+      EcommerceApp.productID:FieldValue.arrayUnion(ListOfOrder.idlist),
+
+      //EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
       EcommerceApp.paymentDetails:"Cash on Delivery",
       EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
       EcommerceApp.isSuccess:true,
@@ -72,8 +77,9 @@ class _PaymentPageState extends State<PaymentPage> {
     EcommerceApp.addressID:widget.addressId,
     EcommerceApp.totalAmount:widget.totalAmount,
     "orderBy":EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID),
-    EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
-    EcommerceApp.paymentDetails:"Cash on Delivery",
+    EcommerceApp.productID:FieldValue.arrayUnion(ListOfOrder.idlist),
+       // EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
+        EcommerceApp.paymentDetails:"Cash on Delivery",
     EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
     EcommerceApp.isSuccess:true,
     }).whenComplete(() => {

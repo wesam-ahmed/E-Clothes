@@ -10,17 +10,34 @@ import '../Widgets/loadingWidget.dart';
 
 class AdminShiftOrders extends StatefulWidget {
   @override
-  _MyOrdersState createState() => _MyOrdersState();
+  _AdminShiftOrdersState createState() => _AdminShiftOrdersState();
+}
+List IDs=[];
+getData(){
+  IDs.clear();
+  EcommerceApp.firestore
+      .collection("orders").getDocuments().then((value) {
+    value.documents.forEach((element) {
+      element["productIDs"].forEach((val){
+        var map={"doc":element.documentID,"itemID":val["id"]};
+        IDs.add(map);
+        print(val["id"]);
+      });
+    });
+  });
+  print(IDs);
 }
 
-class _MyOrdersState extends State<AdminShiftOrders> {
+class _AdminShiftOrdersState extends State<AdminShiftOrders> {
   Future<bool> _backAdmin()async{
     return await Navigator.push(context, MaterialPageRoute(builder: (context) => UploadPage()));
   }
+
   String dropdownValue_Section ;
   String dropdownValue_Category ;
   @override
   Widget build(BuildContext context) {
+    getData();
     return WillPopScope(
       onWillPop: _backAdmin,
       child: SafeArea(
@@ -52,66 +69,30 @@ class _MyOrdersState extends State<AdminShiftOrders> {
         body: Container(
           child: Column(
             children: [
-              /* Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  DropdownButton<String>(
-                    hint: dropdownValue_Section == null
-                        ? Text('Men')
-                        : Text(dropdownValue_Section),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        dropdownValue_Section = newValue;
-                      });
-                    },
-                    items: <String>['Men', 'Woman', 'Kids', 'Used']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    })
-                        .toList(),
-                  ),
-                  DropdownButton<String>(
-                    hint: dropdownValue_Category == null
-                        ? Text('Category')
-                        : Text(dropdownValue_Category),
-                    onChanged: (String newValue) {
-                      setState(() {
-                        dropdownValue_Category = newValue;
-                      });
-                    },
-                    items: <String>['Shoes', 'Shirts', 'T-Shirt', 'Pants','Jackets']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
-                    })
-                        .toList(),
-                  ),
-                ],
-              ),*/
               Expanded(
-                child:StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection("orders").snapshots(),
+                child:StreamBuilder(
+                stream: EcommerceApp.firestore.collection("orders").snapshots(),
 
                 builder: (c,snapshot){
+
                   return snapshot.hasData
                       ?ListView.builder(
-                    itemCount: snapshot.data.documents.length,
+                    itemCount: IDs.length,
                     itemBuilder: (c,index){
-                      return FutureBuilder<QuerySnapshot>(
+                      return FutureBuilder(
                         future:Firestore.instance.
                         collection("items").where("idItem",
-                            whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
+                            isEqualTo: IDs[index]["itemID"]).where("seller",isEqualTo: EcommerceApp.collectionAdminId.toString()).getDocuments(),
+
 
                         builder: (c,snap){
+                          print("*************${IDs[index]["itemID"]}****${IDs[index]["doc"]}");
+
                           return snap.hasData ?
                           AdminOrderCard(
                             itemCount: snap.data.documents.length,
                             data: snap.data.documents,
-                            orderId: snapshot.data.documents[index].documentID,
+                            orderId: IDs[index]["doc"],
                             orderBy: snapshot.data.documents[index].data["orderBy"],
                             addressID: snapshot.data.documents[index].data["addressID"],
                             category: dropdownValue_Category,

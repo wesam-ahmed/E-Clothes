@@ -98,8 +98,13 @@ class _StoreHomeState extends State<StoreHome> {
                                 child: Column(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    CustomText(
-                                      text: "Categorise",
+                                    InkWell(
+                                      onTap: (){
+                                        print(ListOfOrder.idlist);
+                                      },
+                                      child: CustomText(
+                                        text: "Categorise",
+                                      ),
                                     ),
                                     SizedBox(height: 10),
                                     SingleChildScrollView(
@@ -390,31 +395,6 @@ Widget card({Color primaryColor = Colors.redAccent, String imgPath}) {
   );
 }
 
-void checkItemInCart(String idItemAsId, BuildContext context) {
-  EcommerceApp.sharedPreferences
-      .getStringList(EcommerceApp.userCartList)
-      .contains(idItemAsId)
-      ? Fluttertoast.showToast(msg: "Item is already in Cart")
-      : addItemToCart(idItemAsId, context);
-}
-
-addItemToCart(String idItemAsId, BuildContext context) {
-  List tempCartList =
-  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
-  tempCartList.add(idItemAsId);
-  EcommerceApp.firestore
-      .collection(EcommerceApp.collectionUser)
-      .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-      .updateData({
-    EcommerceApp.userCartList: tempCartList,
-  }).then((v) {
-    Fluttertoast.showToast(msg: "Item Added to Cart Successfully");
-    EcommerceApp.sharedPreferences
-        .setStringList(EcommerceApp.userCartList, tempCartList);
-    Provider.of<CartItemCounter>(context, listen: false).displayResult();
-  });
-
-}
 
 
 

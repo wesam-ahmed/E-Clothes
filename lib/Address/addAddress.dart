@@ -1,4 +1,5 @@
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Store/cart.dart';
 
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/constance.dart';
@@ -37,7 +38,7 @@ class AddAddress extends StatelessWidget {
 
           backgroundColor: Colors.white,
           title: Text(
-            "EcommerceApp.appNameSNY",
+            EcommerceApp.appName,
             style: TextStyle(
               fontSize: 20.0,
               color: primaryColor,
@@ -46,40 +47,7 @@ class AddAddress extends StatelessWidget {
           centerTitle: true,
 
         ),
-      /*  floatingActionButton: FloatingActionButton.extended(
-            onPressed: ()
-                {
-                  if(formKey.currentState.validate())
-                    {
-                      final model = AddressModel(
-                        name: cName.text.trim(),
-                        state: cState.text.trim(),
-                        pincode: cPinCode.text.trim(),
-                        city: cCity.text.trim(),
-                        flatNumber: cFlatHomeNumber.text.trim(),
-                        phoneNumber: cPhoneNumber.text.trim(),
-                      ).toJson();
 
-                      EcommerceApp.firestore.collection(EcommerceApp.collectionUser)
-                      .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-                      .collection(EcommerceApp.subCollectionAddress)
-                      .document(DateTime.now().millisecondsSinceEpoch.toString())
-                      .setData(model)
-                      .then((value){
-                        final snack = SnackBar(content: Text("New Address added susccessfully."));
-                        // ignore: deprecated_member_use
-                        scaffoldKey.currentState.showSnackBar(snack);
-                        FocusScope.of(context).requestFocus(FocusNode());
-                        formKey.currentState.reset();
-                      });
-                      Route route = MaterialPageRoute(builder: (C) => StoreHome());
-                      Navigator.pushReplacement(context, route);
-                    }
-                },
-                label: Text("Done"),
-        backgroundColor: Colors.black,
-        icon: Icon(Icons.check),
-        ),*/
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -100,7 +68,7 @@ class AddAddress extends StatelessWidget {
                 child: Column(
                   children: [
                     CustomTextFormField(
-                      text: "Name",
+                      text: "Street Name",
                       controller: cName,
                     ),
                     SizedBox(height: 40,),
@@ -189,7 +157,7 @@ class AddAddress extends StatelessWidget {
                           FocusScope.of(context).requestFocus(FocusNode());
                           formKey.currentState.reset();
                         });
-                        Route route = MaterialPageRoute(builder: (C) => StoreHome());
+                        Route route = MaterialPageRoute(builder: (C) => CartPage());
                         Navigator.pushReplacement(context, route);
                       }
                       },

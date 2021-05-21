@@ -11,13 +11,30 @@ class MyOrders extends StatefulWidget {
   @override
   _MyOrdersState createState() => _MyOrdersState();
 }
-
+ List IDs=[];
+getData(){
+  IDs.clear();
+  EcommerceApp.firestore
+      .collection(EcommerceApp.collectionUser)
+      .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+      .collection(EcommerceApp.collectionOrders).getDocuments().then((value) {
+        value.documents.forEach((element) {
+          element["productIDs"].forEach((val){
+            var map={"doc":element.documentID,"itemID":val["id"]};
+            IDs.add(map);
+            print(val["id"]);
+          });
+        });
+  });
+print(IDs);
+}
 class _MyOrdersState extends State<MyOrders> {
   Future<bool> _backStore()async{
     return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
   }
   @override
   Widget build(BuildContext context) {
+    getData();
     return WillPopScope(
       onWillPop: _backStore,
       child: SafeArea(
@@ -46,7 +63,7 @@ class _MyOrdersState extends State<MyOrders> {
           ),
         ],
       ),
-        body: StreamBuilder<QuerySnapshot>(
+        body: StreamBuilder(
           stream: EcommerceApp.firestore
               .collection(EcommerceApp.collectionUser)
               .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
@@ -55,18 +72,17 @@ class _MyOrdersState extends State<MyOrders> {
           builder: (c,snapshot){
             return snapshot.hasData
                 ?ListView.builder(
-              itemCount: snapshot.data.documents.length,
+              itemCount: IDs.length,
               itemBuilder: (c,index){
-                return FutureBuilder<QuerySnapshot>(
+                return FutureBuilder(
                   future:Firestore.instance.collection("items")
-                      .where("idItem",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
-
-
+                      .where("idItem",isEqualTo:IDs[index]["itemID"]).getDocuments(),
                   builder: (c,snap){
+                    print("*************${IDs[index]["itemID"]}****${IDs[index]["doc"]}");
                     return snap.hasData ? OrderCard(
                       itemCount: snap.data.documents.length,
                       data: snap.data.documents,
-                      orderId: snapshot.data.documents[index].documentID,
+                      orderId: IDs[index]["doc"],
                     )
                         :Center(child: circularProgress(),);
                   },

@@ -59,6 +59,11 @@ class ItemModel {
     return data;
   }
 }
+class ListOfOrder{
+  static List <Map<String,dynamic>> idlist =[];
+  static List <Map<String,dynamic>> idlistOfMyOrders =[];
+
+}
 
 class PublishedDate {
   String date;

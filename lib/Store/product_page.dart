@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Counters/cartitemcounter.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
@@ -8,13 +12,16 @@ import 'package:flutter/material.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
+  final ListOfOrder listOfOrder;
   List<String>sizes=[];
   List<String>colors=[];
 
-  ProductPage({this.itemModel,this.sizes,this.colors});
+  ProductPage({this.itemModel,this.sizes,this.colors,this.listOfOrder});
 
   @override
   _ProductPageState createState() => _ProductPageState();
@@ -342,11 +349,14 @@ class _ProductPageState extends State<ProductPage> {
                     width: 180,
                     height: 50,
                     child: CustomButton(onPress: (){
-                      checkItemInCart(widget.itemModel.idItem, context);
+                      List <Map<String,dynamic>> idlist =[{
+                        'id':widget.itemModel.idItem,
+                        'size':'ss',
+                        'color':'blue'
+                      }];
+                      checkItemInCart(idlist, context);
                     },
                       text: "Add to Cart",
-
-
 
                     ),
                   ),
@@ -457,6 +467,39 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     ),
   );
 }
+void checkItemInCart(List idItemAsId, BuildContext context) {
+  idItemAsId.forEach((element) {
+  EcommerceApp.sharedPreferences
+      .getStringList(EcommerceApp.userCartList)
+      .contains(element["id"])
+      ? Fluttertoast.showToast(msg: "Item is already in Cart")
+      : addItemToCart(idItemAsId, context);
+  });
+}
+
+addItemToCart(List idItemAsId, BuildContext context) {
+
+  List tempCartList =
+  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
+  idItemAsId.forEach((element) {
+  tempCartList.add(element["id"]);
+  ListOfOrder.idlist.add(element);
+  });
+  //tempCartList =FieldValue.arrayUnion(idItemAsId);
+  EcommerceApp.firestore
+      .collection(EcommerceApp.collectionUser)
+      .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+      .updateData({
+    EcommerceApp.userCartList: FieldValue.arrayUnion(idItemAsId),
+  }).then((v) {
+    Fluttertoast.showToast(msg: "Item Added to Cart Successfully");
+    EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,tempCartList );
+
+    Provider.of<CartItemCounter>(context, listen: false).displayResult();
+  });
+
+}
+
 //da el box bta3 el sora
 class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;

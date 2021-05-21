@@ -193,6 +193,8 @@ class _CartPageState extends State<CartPage>
   {
     List tempCartList = EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
     tempCartList.remove(idItemAsId);
+    ListOfOrder.idlist.removeWhere((element) => element["id"]==idItemAsId);
+
     EcommerceApp.firestore.collection(EcommerceApp.collectionUser).document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
         .updateData({
       EcommerceApp.userCartList:tempCartList,
