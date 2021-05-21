@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Models/sellerdata.dart';
 import 'package:e_shop/Store/shopOwner.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/custom_button.dart';
@@ -55,213 +56,7 @@ class _ProductPageState extends State<ProductPage> {
         ),
       ),
     );
-     /* WillPopScope(
-        onWillPop: _backStore,
-        child: SafeArea(
-          child:
-          Scaffold(
-            body: Column(
-                  children: [
-                    Expanded(
-                      child: CustomScrollView(
-                        slivers: [
-                          SliverPersistentHeader(
-                            floating: true,
-                              delegate: SliverAppBarDelegate(
-                                minHeight: 200,maxHeight: 200,
-                               child:Image.network(
-                            widget.itemModel.thumbnailUrl,
-                            fit: BoxFit.fill,
-                          ), )),
-                          SliverToBoxAdapter(
-                            child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.only(topLeft:Radius.circular(40),topRight: Radius.circular(40))),
-                            child: Column(
-                              children: [
-                                Container(
-                                    padding: EdgeInsets.all(18),
-                                    child: Column(
-                                      children: [
-                                        CustomText(
-                                          text: widget.itemModel.title,
-                                          fontSize: 26,
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                        Row(children: [
-                                          Container(
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Container(
-                                                  width: MediaQuery.of(context).size.width*.44,
-                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                                                      border: Border.all(color: Colors.grey)
 
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      DropdownButton(
-                                                        hint: Text("Size"),
-                                                        value: ValueChoose,
-                                                        onChanged: (newValue) {
-                                                          ValueChoose = newValue;
-                                                        },
-                                                        items: widget.sizes.map((ValueItem) {
-                                                          return DropdownMenuItem(
-                                                            value: ValueItem,
-                                                            child: Text(
-                                                                ValueItem.toString()),
-                                                          );
-                                                        }).toList(),
-                                                      )
-
-                                                    ],
-                                                  ),
-                                                ),
-                                                SizedBox(width: 5,),
-                                                Container(
-                                                  width: MediaQuery.of(context).size.width*.44,
-                                                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                                                      border: Border.all(color: Colors.grey)
-
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                    children: [
-                                                      DropdownButton(
-                                                        hint: Text("Color"),
-                                                        value: ValueChoose,
-                                                        onChanged: (newValue) {
-                                                          ValueChoose = newValue;
-                                                        },
-                                                        items: widget.colors.map((ValueItem) {
-                                                          return DropdownMenuItem(
-                                                            value: ValueItem,
-                                                            child: Text(
-                                                                ValueItem.toString()),
-                                                          );
-                                                        }).toList(),
-                                                      )
-
-                                                    ],
-                                                  ),
-                                                ),
-
-
-                                              ],
-                                            ),
-                                          )
-                                        ],),
-                                        SizedBox(height: 15,),
-                                        CustomText(text: 'Details',fontSize: 26,),
-                                        SizedBox(height: 15,),
-                                        CustomText(text: widget.itemModel.longDescription,fontSize: 16,height: 1,),
-                                      ],
-                                    )),
-
-                              ],
-                            ),
-                          ),
-                              )
-                        ],
-                      ),
-
-                    ),
-                    SizedBox(height: 200,
-                      child: StreamBuilder<QuerySnapshot>(
-                        stream: Firestore.instance
-                            .collection("items")
-                            .where("section",
-                            isEqualTo: SectionKey.section.toString())
-                            .where("category",
-                            isEqualTo: SectionKey.category.toString())
-                            .snapshots(),
-                        builder: (context, dataSnapshot) {
-                          if(dataSnapshot.hasData)
-                          {
-                            return ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context,index)
-                              {
-                                ItemModel model = ItemModel.fromJson(
-                                    dataSnapshot
-                                        .data.documents[index].data);
-                                return sourceInfo(model, context);
-                              }
-                              ,itemCount: dataSnapshot.data.documents.length,
-                            );
-                          }
-                          else
-                          {
-                            return Center(
-                              child: circularProgress(),
-                            );
-                          }
-                          /*return !dataSnapshot.hasData
-                      ? SliverToBoxAdapter(
-                  child: Center(
-                      child: circularProgress(),
-                  ),
-                )
-                      : SliverStaggeredGrid.countBuilder(
-                  crossAxisCount: 2,
-                  staggeredTileBuilder: (c) =>
-                        StaggeredTile.fit(1),
-                  itemBuilder: (context, index) {
-                      ItemModel model = ItemModel.fromJson(
-                          dataSnapshot
-                              .data.documents[index].data);
-                      return sourceInfo(model, context);
-                  },
-                  itemCount: dataSnapshot.data.documents.length,
-                );*/
-                        },
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                        children: [
-                          Column(
-                            children: [
-                              CustomText(text: "PRICE",
-                                fontSize: 10,
-                                color: Colors.grey,
-                              ),
-                              SizedBox(height: 5,),
-                              CustomText(text: '\E\G'+widget.itemModel.price.toString() ,
-                                color: primaryColor,
-                              )
-                            ],
-                          ),
-                          Container(
-                            width: 180,
-                            height: 40,
-                            child: CustomButton(onPress: (){
-                              checkItemInCart(widget.itemModel.idItem, context);
-                            },
-                              text: "Add to Cart",
-
-
-
-                            ),
-                          ),
-                        ],),
-                    ),
-
-
-                  ],
-                ),
-          )
-
-        ));*/
   }
   Widget _buildSliverHead() {
     return SliverPersistentHeader(
@@ -370,8 +165,8 @@ class _ProductPageState extends State<ProductPage> {
         children: <Widget>[
           ClipRRect(
             borderRadius: BorderRadius.circular(50),
-            child: Image.asset(
-              'images/google.png',
+            child: Image.network(
+              widget.itemModel.sellerthumbnailUrl,
               width: 50,
               height: 50,
               fit: BoxFit.cover,
@@ -385,18 +180,11 @@ class _ProductPageState extends State<ProductPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "widget.bean.name",
+                  widget.itemModel.sellername,
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  "Writer,Wonderlust",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 14,
                   ),
                 ),
               ],
@@ -405,8 +193,9 @@ class _ProductPageState extends State<ProductPage> {
           Spacer(),
           IconButton(
             onPressed: (){
+
               Route route =
-              MaterialPageRoute(builder: (c) => shopOwner());
+              MaterialPageRoute(builder: (c) => shopOwner(itemModel: widget.itemModel,));
               Navigator.pushReplacement(context, route);
 
             },

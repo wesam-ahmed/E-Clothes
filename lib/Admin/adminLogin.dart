@@ -282,6 +282,11 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
           ));
           EcommerceApp.collectionAdmin = result.data["name"];
           EcommerceApp.collectionAdminId = result.data["id"];
+          EcommerceApp.collectionAdminName = result.data["name"];
+          EcommerceApp.collectionAdminAddress = result.data["address"];
+          EcommerceApp.collectionAdminphoto = result.data["thumbnailUrl"];
+
+
           setState(() {
             _adminIDTextEditingController.text = "";
             _passwordTextEditingController.text = "";

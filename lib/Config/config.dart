@@ -34,6 +34,11 @@ class EcommerceApp
    static String collectionAdminItems = "items";
    static String adminItemList = 'adminList';
    static String collectionAdminId = "id";
+   static String collectionAdminName = "name";
+   static String collectionAdminAddress = "address";
+   static String collectionAdminphoto = "thumbnailUrl";
+
+
 
 
 }
