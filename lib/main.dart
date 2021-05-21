@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (c) => TotalAmount()),
       ],
       child: MaterialApp(
-          title: 'e-Shop',
+          title: EcommerceApp.appName,
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily:"SourceSansPro-Regular" ,
@@ -91,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
 
-              Text("LAPSNY", style: TextStyle(color: Colors.white,
+              Text(EcommerceApp.appName, style: TextStyle(color: Colors.white,
                   fontSize: 60,
                   fontWeight: FontWeight.bold),)
             ],

@@ -6,7 +6,7 @@ import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
-import 'package:e_shop/Widgets/custom_buttom.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +27,7 @@ class AdminSignInPage extends StatelessWidget {
           ),
         ),
         title: Text(
-          "Lebsy",
+          EcommerceApp.appName,
           style: TextStyle(
               fontSize: 55.0, color: Colors.white, fontFamily: "Signatra"),
         ),

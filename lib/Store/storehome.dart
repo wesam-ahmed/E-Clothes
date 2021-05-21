@@ -52,7 +52,7 @@ class _StoreHomeState extends State<StoreHome> {
               ),
               backgroundColor: Colors.white,
               title: Text(
-                "LAPSNY",
+                EcommerceApp.appName,
                 style: TextStyle(
                   fontSize: 20.0,
                   color: primaryColor,

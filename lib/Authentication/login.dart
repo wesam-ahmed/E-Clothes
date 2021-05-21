@@ -6,7 +6,7 @@ import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:e_shop/DialogBox/loadingDialog.dart';
-import 'package:e_shop/Widgets/custom_buttom.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/custom_button_social.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';

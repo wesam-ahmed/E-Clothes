@@ -5,14 +5,13 @@ import 'package:e_shop/Orders/placeOrderPayment.dart';
 import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
-import 'package:e_shop/Widgets/custom_buttom.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/wideButton.dart';
 import 'package:e_shop/Counters/changeAddresss.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'addAddress.dart';
 
 class Address extends StatefulWidget
@@ -34,7 +33,7 @@ class _AddressState extends State<Address>
 
           backgroundColor: Colors.white,
           title: Text(
-            "LAPSNY",
+            EcommerceApp.appName,
             style: TextStyle(
               fontSize: 20.0,
               color: primaryColor,

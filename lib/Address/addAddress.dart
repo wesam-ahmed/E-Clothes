@@ -4,7 +4,7 @@ import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/constance.dart';
 
 import 'package:e_shop/Models/address.dart';
-import 'package:e_shop/Widgets/custom_buttom.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 
 import 'package:e_shop/Widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -37,7 +37,7 @@ class AddAddress extends StatelessWidget {
 
           backgroundColor: Colors.white,
           title: Text(
-            "LAPSNY",
+            "EcommerceApp.appNameSNY",
             style: TextStyle(
               fontSize: 20.0,
               color: primaryColor,

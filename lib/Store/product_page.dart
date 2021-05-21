@@ -1,19 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Store/shopOwner.dart';
 import 'package:e_shop/Widgets/constance.dart';
-import 'package:e_shop/Widgets/customAppBar.dart';
-import 'package:e_shop/Widgets/custom_buttom.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
-import 'package:e_shop/Widgets/sliverhead.dart';
 import 'package:e_shop/Models/item.dart';
-import 'package:e_shop/Widgets/searchBox.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:full_screen_image/full_screen_image.dart';
+
 
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
