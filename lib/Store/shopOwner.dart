@@ -1,16 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Models/item.dart';
+import 'package:e_shop/Models/sellerdata.dart';
 import 'package:e_shop/Store/product_page.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
+import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/myDrawer.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class shopOwner extends StatefulWidget {
-  const shopOwner({Key key}) : super(key: key);
+ final ItemModel itemModel;
+
+  const shopOwner({Key key,this.itemModel }) : super(key: key);
 
   @override
   _shopOwnerState createState() => _shopOwnerState();
@@ -24,6 +29,7 @@ class _shopOwnerState extends State<shopOwner> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
+      onWillPop: _backStore,
       child: Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -65,10 +71,15 @@ class _shopOwnerState extends State<shopOwner> {
                         child: Container(
                           height: 100,
                           width: 100,
-                          child: CircleAvatar(
-                            backgroundImage: EcommerceApp.sharedPreferences.getString(EcommerceApp.userAvatarUrl)==null ?
-                            AssetImage('images/google.png')
-                                :NetworkImage(EcommerceApp.sharedPreferences.getString(EcommerceApp.userAvatarUrl),),
+                          child: CircleAvatar
+                            (radius: 50,
+                              child: ClipOval(
+                              child: Image.network(
+                                widget.itemModel.sellerthumbnailUrl,
+                                fit: BoxFit.fill,
+                                height: 100,
+                                width: 100,
+                              ),)
 
                           ),
 
@@ -115,6 +126,204 @@ class _shopOwnerState extends State<shopOwner> {
               ),
 
             ),
+            Expanded(
+                child: CustomScrollView(
+
+                  slivers: [
+                    
+                    SliverToBoxAdapter(
+                      child: Container(
+                        margin: EdgeInsets.only(top: 1, bottom: 10),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              CustomText(
+                                text: "Categorise",
+                              ),
+                              SizedBox(height: 10),
+                              SingleChildScrollView(
+                                padding: EdgeInsets.only(top: 5, bottom: 10),
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    FloatingActionButton.extended(
+                                      heroTag: "Shoes",
+                                      onPressed: () {
+                                        SectionKey.category = "Shoes";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                        Navigator.pushReplacement(
+                                            context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/Jacket.png"),
+                                      label: Text(
+                                        "Jacket",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Shirts",
+                                      onPressed: () {
+                                        SectionKey.category = "Shirts";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                        Navigator.pushReplacement(
+                                            context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/tshirt.png"),
+                                      label: Text(
+                                        "T-shirt",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Pants",
+                                      onPressed: () {
+                                        SectionKey.category = "Pants";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                        Navigator.pushReplacement(
+                                            context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/jeans.png"),
+                                      label: Text(
+                                        "trousers",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Jackets",
+                                      onPressed: () {
+                                        SectionKey.category = "Jackets";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                        Navigator.pushReplacement(
+                                            context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset(
+                                          "images/hooded-jacket.png"),
+                                      label: Text(
+                                        "Hoodies",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Sneakers",
+                                      onPressed: () {
+                                        SectionKey.category = "Sneakers";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                        Navigator.pushReplacement(
+                                            context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon:
+                                      Image.asset("images/sneakers.png"),
+                                      label: Text(
+                                        "shoes",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Shorts",
+                                      onPressed: () {
+                                        SectionKey.category = "Shorts";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                        Navigator.pushReplacement(
+                                            context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/shorts.png"),
+                                      label: Text(
+                                        "shorts",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FloatingActionButton.extended(
+                                      heroTag: "Bags",
+                                      onPressed: () {
+                                        SectionKey.category = "Bags";
+                                        Route route = MaterialPageRoute(
+                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                        Navigator.pushReplacement(
+                                            context, route);
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/bags.png"),
+                                      label: Text(
+                                        "accessories",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    StreamBuilder<QuerySnapshot>(
+                      stream: Firestore.instance
+                          .collection("items")
+                          .where("section",
+                          isEqualTo: SectionKey.section.toString())
+                          .where("category",
+                          isEqualTo: SectionKey.category.toString())
+                          .where("sellerid",
+                          isEqualTo: widget.itemModel.sellerid)
+                          .snapshots(),
+                      builder: (context, dataSnapshot) {
+                        return !dataSnapshot.hasData
+                            ? SliverToBoxAdapter(
+                          child: Center(
+                            child: circularProgress(),
+                          ),
+                        )
+                            : SliverStaggeredGrid.countBuilder(
+                          crossAxisCount: 2,
+                          staggeredTileBuilder: (c) =>
+                              StaggeredTile.fit(1),
+                          itemBuilder: (context, index) {
+                            ItemModel model = ItemModel.fromJson(
+                                dataSnapshot
+                                    .data.documents[index].data);
+                            return sourceInfo(model, context);
+                          },
+                          itemCount: dataSnapshot.data.documents.length,
+                        );
+                      },
+                    ),
+                  ],
+                )),
+
 
 
 

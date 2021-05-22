@@ -12,6 +12,11 @@ class ItemModel {
   String category;
   int price;
   int quantity;
+  String sellerid;
+  String sellername;
+  String selleraddress;
+  String sellerthumbnailUrl;
+
 
   ItemModel(
       {this.title,
@@ -25,6 +30,10 @@ class ItemModel {
         this.section,
         this.price,
         this.quantity,
+        this.sellerid,
+        this.sellername,
+        this.selleraddress,
+        this.sellerthumbnailUrl,
         });
 
   ItemModel.fromJson(Map<String, dynamic> json) {
@@ -39,6 +48,10 @@ class ItemModel {
     category=json['category'];
     section=json['section'];
     quantity=json['quantity'];
+    sellerid = json['sellerid'];
+    sellername = json['sellername'];
+    selleraddress=json['selleraddress'];
+    sellerthumbnailUrl = json['sellerthumbnailUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -56,6 +69,10 @@ class ItemModel {
     data['category']=this.category;
     data['section']=this.section;
     data['quantity']=this.quantity;
+    data['sellerid'] = this.sellerid;
+    data['sellername'] = this.sellername;
+    data['selleraddress'] =this.selleraddress;
+    data['sellerthumbnailUrl'] = this.sellerthumbnailUrl;
     return data;
   }
 }
