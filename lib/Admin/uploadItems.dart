@@ -440,14 +440,16 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "thumbnailUrl":downloadUrl,
       "status":"available",
       "title":_titleTextEditingController.text.trim(),
-      "seller":EcommerceApp.collectionAdminId,
       "idItem":productId,
       "section":DropdownValue_Section.toString(),
       "category":DropdownValue_Category.toString(),
       "quantity":int.parse(_QuantityInfoTextEditingController.text),
       "size":sizeList1,
       "color":colorList1,
-
+      "sellerid":EcommerceApp.collectionAdminId,
+      "sellername":EcommerceApp.collectionAdminName,
+      "selleraddress":EcommerceApp.collectionAdminAddress,
+      "sellerthumbnailUrl":EcommerceApp.collectionAdminphoto,
     });
     setState(() {
       file=null;

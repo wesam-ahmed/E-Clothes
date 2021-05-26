@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class EcommerceApp
 {
-   static const String appName = 'e-Shop';
+   static const String appName = 'E-CLOTHES';
 
    static SharedPreferences sharedPreferences;
    static FirebaseUser user;
@@ -34,6 +34,11 @@ class EcommerceApp
    static String collectionAdminItems = "items";
    static String adminItemList = 'adminList';
    static String collectionAdminId = "id";
+   static String collectionAdminName = "name";
+   static String collectionAdminAddress = "address";
+   static String collectionAdminphoto = "thumbnailUrl";
+
+
 
 
 }

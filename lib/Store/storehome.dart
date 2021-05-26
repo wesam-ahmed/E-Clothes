@@ -52,7 +52,7 @@ class _StoreHomeState extends State<StoreHome> {
               ),
               backgroundColor: Colors.white,
               title: Text(
-                "LAPSNY",
+                EcommerceApp.appName,
                 style: TextStyle(
                   fontSize: 20.0,
                   color: primaryColor,
@@ -79,7 +79,6 @@ class _StoreHomeState extends State<StoreHome> {
             ),
             drawer: MyDrawer(),
             body:
-
             Container(
               padding: EdgeInsets.only(top: 10, left: 10, right: 10),
               child: Column(
