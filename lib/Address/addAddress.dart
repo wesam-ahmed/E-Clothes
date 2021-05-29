@@ -37,7 +37,7 @@ class AddAddress extends StatelessWidget {
 
           backgroundColor: Colors.white,
           title: Text(
-            "EcommerceApp.appNameSNY",
+            "E-CLOTHES",
             style: TextStyle(
               fontSize: 20.0,
               color: primaryColor,
