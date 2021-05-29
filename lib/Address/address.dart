@@ -28,7 +28,7 @@ class _AddressState extends State<Address>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: Scaffold(backgroundColor: Colors.white,
         appBar: AppBar(
 
           backgroundColor: Colors.white,
@@ -43,99 +43,109 @@ class _AddressState extends State<Address>
 
         ),
 
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "Select Address",
-                    style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 20,),
+        body: Column(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  //klma
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Select Address",
+                        style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold, fontSize: 20,),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Consumer<AddressChanger>(builder: (context, address, c){
-                return Flexible(
+                  //add
+                  Consumer<AddressChanger>(builder: (context, address, c){
+                    return Flexible(
 
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: EcommerceApp.firestore
-                        .collection(EcommerceApp.collectionUser)
-                        .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-                        .collection(EcommerceApp.subCollectionAddress).snapshots(),
-                    builder: (context, snapshot)
-                      {
-                        return !snapshot.hasData
-                            ? Center(child: circularProgress(),)
-                            : snapshot.data.documents.length ==0
-                            ? noAddressCard()
-                            : ListView.builder(
-                          itemCount: snapshot.data.documents.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index)
-                      {
-                        return AddressCard(
-                          currentIndex: address.count,
-                            value: index,
-                          addressId: snapshot.data.documents[index].documentID,
-                          totalAmount: widget.totalAmount,
-                          model: AddressModel.fromJson(snapshot.data.documents[index].data),
-                        );
-                      },
-                        );
-                      }
-                  ),
-                );
-              }
-              ),
-              SizedBox(height: 340,),
-              Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: Container(
-                  margin: EdgeInsets.all(5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                    children: [
-                      Container( decoration: BoxDecoration(border: Border.all(color:Colors.green)),
-                        width: 180,
-                        height: 50,
-                        child: CustomButton(
-
-                          onPress: (){
-                            Route route = MaterialPageRoute(builder: (C) => CartPage());
-                            Navigator.pushReplacement(context, route);
-
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: EcommerceApp.firestore
+                            .collection(EcommerceApp.collectionUser)
+                            .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+                            .collection(EcommerceApp.subCollectionAddress).snapshots(),
+                        builder: (context, snapshot)
+                          {
+                            return !snapshot.hasData
+                                ? Center(child: circularProgress(),)
+                                : snapshot.data.documents.length ==0
+                                ? noAddressCard()
+                                : ListView.builder(
+                              itemCount: snapshot.data.documents.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index)
+                          {
+                            return AddressCard(
+                              currentIndex: address.count,
+                                value: index,
+                              addressId: snapshot.data.documents[index].documentID,
+                              totalAmount: widget.totalAmount,
+                              model: AddressModel.fromJson(snapshot.data.documents[index].data),
+                            );
                           },
-                          text: "Back",
-                          color: Colors.white,
-                          textColor: primaryColor,
-
-
-
-                        ),
+                            );
+                          }
                       ),
-                      Container(
-                        width: 180,
-                        height: 50,
-                        child: CustomButton(onPress: (){
-                          Route route = MaterialPageRoute(builder: (C) => AddAddress());
-                          Navigator.pushReplacement(context, route);
-                        },
-                          text: "Add New Address",
+                    );
+                  }
+                  ),
+                  //SizedBox(height: 340,),
+                  //pta3 al zorar
 
-
-
-                        ),
-                      ),
-                    ],),
-                ),
+                  ]
               ),
-              ]
-          ),
+            ),
+            Padding(
+
+              padding: const EdgeInsets.all(1.0),
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: Row(
+
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                  children: [
+                    Container( decoration: BoxDecoration(border: Border.all(color:Colors.green)),
+                      width: 180,
+                      height: 50,
+                      child: CustomButton(
+
+                        onPress: (){
+                          Route route = MaterialPageRoute(builder: (C) => CartPage());
+                          Navigator.pushReplacement(context, route);
+
+                        },
+                        text: "Back",
+                        color: Colors.white,
+                        textColor: primaryColor,
+
+
+
+                      ),
+                    ),
+                    Container(
+                      width: 180,
+                      height: 50,
+                      child: CustomButton(onPress: (){
+                        Route route = MaterialPageRoute(builder: (C) => AddAddress());
+                        Navigator.pushReplacement(context, route);
+                      },
+                        text: "Add New Address",
+
+
+
+                      ),
+                    ),
+                  ],),
+              ),
+            ),
+          ],
         ),
         /*floatingActionButton: FloatingActionButton.extended(
           label: Text("Add New Address"),

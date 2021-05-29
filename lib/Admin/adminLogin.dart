@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Admin/adminRegistar.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Authentication/authenication.dart';
 import 'package:e_shop/Authentication/login.dart';
@@ -14,7 +15,7 @@ class AdminSignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+     /* appBar: AppBar(
         flexibleSpace: Container(
           decoration: new BoxDecoration(
               gradient: new LinearGradient(
@@ -32,7 +33,7 @@ class AdminSignInPage extends StatelessWidget {
               fontSize: 55.0, color: Colors.white, fontFamily: "Signatra"),
         ),
         centerTitle: true,
-      ),
+      ),*/
       body: AdminSignInScreen(),
     );
   }
@@ -62,7 +63,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(
-          top: 50,
+          top: 70,
           right: 20,
           left: 20,
         ),
@@ -76,6 +77,16 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
                   CustomText(
                     text: "Admin",
                     fontSize: 30,
+                  ),
+                  CustomButton(
+                    onPress: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => adminRegister()),
+                      );
+                    },
+                    text: "Sign Up",
+                    color: primaryColor,
                   ),
 
                 ],
