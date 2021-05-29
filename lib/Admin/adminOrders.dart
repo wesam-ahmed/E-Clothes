@@ -40,7 +40,7 @@ class _AdminOrdersState extends State<AdminOrders>{
             StreamBuilder<QuerySnapshot>(
               stream: Firestore.instance
                   .collection("items")
-                  .where("seller",
+                  .where("sellerid",
                   isEqualTo: EcommerceApp.collectionAdminId.toString())
                   .snapshots(),
               builder: (context, dataSnapshot) {

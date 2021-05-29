@@ -1,3 +1,4 @@
+import 'package:e_shop/Config/config.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 import 'register.dart';
@@ -27,7 +28,7 @@ class _AuthenticScreenState extends State<AuthenticScreen> {
               )
             ),
           ),
-          title: Text("e-Shop",
+          title: Text(EcommerceApp.appName,
             style: TextStyle(fontSize: 55.0,color: Colors.black,fontFamily: "Signatra"),),
           centerTitle: true,
           bottom: TabBar(
