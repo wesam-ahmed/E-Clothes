@@ -19,14 +19,6 @@ class AdminProducts extends StatefulWidget {
 }
 class _AdminProductsState extends State<AdminProducts> {
 
-
-
-  /*_AdminProductsState(ItemModel itemModel){
-
-
-  }*/
-
-
   Future<bool> _backStore()async{
     return await Navigator.push(context, MaterialPageRoute(builder: (context) => AdminOrders()));
   }

@@ -25,16 +25,13 @@ class adminRegister extends StatefulWidget {
 }
 
 class _RegisterState extends State<adminRegister> {
-  final TextEditingController _nameTextEditingController =
-  TextEditingController();
-  final TextEditingController _emailTextEditingController =
-  TextEditingController();
-  final TextEditingController _passwordTextEditingController =
-  TextEditingController();
-  final TextEditingController _cpasswordTextEditingController =
-  TextEditingController();
+  final TextEditingController _nameTextEditingController = TextEditingController();
+  final TextEditingController _emailTextEditingController = TextEditingController();
+  final TextEditingController _passwordTextEditingController = TextEditingController();
+  final TextEditingController _cpasswordTextEditingController = TextEditingController();
+  final TextEditingController _addressTextEditingController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  String userImageUrl = "";
+  String adminImageUrl = "";
   File _imageFile;
 
   @override
@@ -108,7 +105,7 @@ class _RegisterState extends State<adminRegister> {
                 height: 15,
               ),
               CustomTextField(
-                controller: _emailTextEditingController,
+                controller: _addressTextEditingController,
                 data: Icons.location_on_sharp,
                 hintText: "Address",
                 isObsecure: false,
@@ -223,7 +220,8 @@ class _RegisterState extends State<adminRegister> {
   }
 
   Future<void> uploadAndSaveImage() async {
-    /* if(_imageFile==null)
+
+    if(_imageFile==null)
     {
       showDialog(
         context: context,
@@ -233,8 +231,7 @@ class _RegisterState extends State<adminRegister> {
           }
       );
     }
-    else*/
-
+    else
     _passwordTextEditingController.text == _cpasswordTextEditingController.text
         ? _emailTextEditingController.text.isNotEmpty &&
         _passwordTextEditingController.text.isNotEmpty &&
@@ -260,9 +257,8 @@ class _RegisterState extends State<adminRegister> {
       showDialog(
           context: context,
           builder: (c) {
-            return LoadingAlertDialog(message: "Registering, Please wait.....");
+            return LoadingAlertDialog(message: "Please upload Image");
           });
-      _registerUser();
     } else {
       showDialog(
           context: context,
@@ -271,13 +267,13 @@ class _RegisterState extends State<adminRegister> {
           });
       String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
       StorageReference storageReference =
-      FirebaseStorage.instance.ref().child(imageFileName);
+      FirebaseStorage.instance.ref().child("admins").child(imageFileName);
       StorageUploadTask storageUploadTask =
       storageReference.putFile(_imageFile);
       StorageTaskSnapshot storageTaskSnapshot =
       await storageUploadTask.onComplete;
       await storageTaskSnapshot.ref.getDownloadURL().then((urlImage) {
-        userImageUrl = urlImage;
+        adminImageUrl = urlImage;
         _registerUser();
       });
     }
@@ -315,21 +311,18 @@ class _RegisterState extends State<adminRegister> {
   }
 
   Future saveUserInfoToFirestore(FirebaseUser fUser) async {
-    Firestore.instance.collection("users").document(fUser.uid).setData({
-      "uid": fUser.uid,
-      "email": fUser.email,
+    Firestore.instance.collection("admins").document(fUser.uid).setData({
+      "uid":fUser.uid.trim(),
+      "address": _addressTextEditingController.text.trim(),
+      "id": fUser.email,
       "name": _nameTextEditingController.text.trim(),
-      "url": userImageUrl,
-      EcommerceApp.userCartList: ["garbageValue"],
+      "thumbnailUrl": adminImageUrl,
     });
-    await EcommerceApp.sharedPreferences.setString("uid", fUser.uid);
-    await EcommerceApp.sharedPreferences
-        .setString(EcommerceApp.userEmail, fUser.email);
-    await EcommerceApp.sharedPreferences
-        .setString(EcommerceApp.userName, _nameTextEditingController.text);
-    await EcommerceApp.sharedPreferences
-        .setString(EcommerceApp.userAvatarUrl, userImageUrl);
-    await EcommerceApp.sharedPreferences
-        .setStringList(EcommerceApp.userCartList, ["garbageValue"]);
+    await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminId, fUser.email);
+    await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminName, _nameTextEditingController.text);
+    await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminphoto, adminImageUrl);
+    await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminAddress, _addressTextEditingController.text);
+
+
   }
 }

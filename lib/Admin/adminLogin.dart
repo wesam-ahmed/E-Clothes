@@ -4,36 +4,19 @@ import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Authentication/authenication.dart';
 import 'package:e_shop/Authentication/login.dart';
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/DialogBox/loadingDialog.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
 import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class AdminSignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     /* appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-            colors: [Colors.white,Colors.grey],
-            begin: const FractionalOffset(0.0, 0.0),
-            end: const FractionalOffset(1.0, 0.0),
-            stops: [0.0, 1.0],
-            tileMode: TileMode.clamp,
-          )
-          ),
-        ),
-        title: Text(
-          EcommerceApp.appName,
-          style: TextStyle(
-              fontSize: 55.0, color: Colors.white, fontFamily: "Signatra"),
-        ),
-        centerTitle: true,
-      ),*/
       body: AdminSignInScreen(),
     );
   }
@@ -166,116 +149,9 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
       ),
     );
 
-
-
-
-
-
-   /* return SingleChildScrollView(
-      child: Container(
-        decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-          colors: [Colors.white, Colors.grey],
-          begin: const FractionalOffset(0.0, 0.0),
-          end: const FractionalOffset(1.0, 0.0),
-          stops: [0.0, 1.0],
-          tileMode: TileMode.clamp,
-        )),
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Image.asset(
-                "images/admin.png",
-                height: 240,
-                width: 240,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8),
-              child: Text(
-                "Admin",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  CustomTextField(
-                    controller: _adminIDTextEditingController,
-                    data: Icons.person,
-                    hintText: "ID",
-                    isObsecure: false,
-                  ),
-                  CustomTextField(
-                    controller: _passwordTextEditingController,
-                    data: Icons.lock,
-                    hintText: "Password",
-                    isObsecure: true,
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            RaisedButton(
-              onPressed: () {
-                _adminIDTextEditingController.text.isNotEmpty &&
-                        _passwordTextEditingController.text.isNotEmpty
-                    ? loginAdmin()
-                    : showDialog(
-                        context: context,
-                        builder: (C) {
-                          return ErrorAlertDialog(
-                            message: "please write email and password.",
-                          );
-                        });
-              },
-              color: Colors.white,
-              child: Text(
-                "Login",
-                style: TextStyle(
-                    color: Colors.black, fontFamily: "Signatra", fontSize: 30),
-              ),
-            ),
-            SizedBox(height: 50),
-            Container(
-              height: 4,
-              width: _screenWidth * 0.8,
-              color: Colors.black,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextButton.icon(
-              onPressed: () => Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => Login())),
-              icon: (Icon(
-                Icons.nature_people,
-                color: Colors.black,
-              )),
-              label: Text(
-                "i'm not Admin",
-                style:
-                    TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-              ),
-            ),
-            SizedBox(
-              height: 120,
-            ),
-          ],
-        ),
-      ),
-    );*/
   }
 
-  loginAdmin() {
+  /*loginAdmin() {
     Firestore.instance.collection("admins").getDocuments().then((snapshot) {
       snapshot.documents.forEach((result) {
         if (result.data["id"] != _adminIDTextEditingController.text.trim()) {
@@ -306,6 +182,53 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
           Navigator.pushReplacement(context, route);
         }
       });
+    });
+  }*/
+  FirebaseAuth _auth = FirebaseAuth.instance;
+
+  void loginAdmin() async {
+    showDialog(
+        context: context,
+        builder: (C) {
+          return LoadingAlertDialog(
+            message: "Authenticating, please wait...",
+          );
+        });
+    FirebaseUser firebaseUser;
+    await _auth.signInWithEmailAndPassword(
+      email: _adminIDTextEditingController.text.trim(),
+      password: _passwordTextEditingController.text.trim(),
+    )
+        .then((authUser) {
+      firebaseUser = authUser.user;
+    }).catchError((error) {
+      Navigator.pop(context);
+      showDialog(
+          context: context,
+          builder: (C) {
+            return ErrorAlertDialog(
+              message: error.message.toString(),
+            );
+          });
+    });
+    if (firebaseUser != null) {
+      readData(firebaseUser).then((s) {
+        Navigator.pop(context);
+        Route route = MaterialPageRoute(builder: (C) => UploadPage());
+        Navigator.pushReplacement(context, route);
+      });
+    }
+  }
+
+  Future readData(FirebaseUser fUser) async {
+    Firestore.instance.collection("admins").document(fUser.uid).get()
+        .then((dataSnapshot) async {
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminName, dataSnapshot.data["name"]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminId, dataSnapshot.data["id"]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminphoto, dataSnapshot.data["thumbnailUrl"]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminAddress, dataSnapshot.data["address"]);
+
+
     });
   }
 }
