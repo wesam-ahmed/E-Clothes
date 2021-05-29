@@ -104,7 +104,7 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                       return FutureBuilder<QuerySnapshot>(
                         future:Firestore.instance.
                         collection("items").where("idItem",
-                            whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
+                            whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).where("sellerid", isEqualTo: EcommerceApp.collectionAdminId ).getDocuments(),
 
                         builder: (c,snap){
                           return snap.hasData ?

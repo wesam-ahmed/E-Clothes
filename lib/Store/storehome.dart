@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:e_shop/Config/config.dart';
 import '../Widgets/loadingWidget.dart';
@@ -319,9 +320,8 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     onTap: () {
       getSizes(model.idItem).then((size){
         getColors(model.idItem).then((color){
-        Route route =
-        MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
-        Navigator.pushReplacement(context, route);
+        //Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
+        Navigator.push(context,PageTransition(type: PageTransitionType.leftToRightWithFade, child: ProductPage(itemModel: model,sizes:size,colors: color,)));
       });
       });
 

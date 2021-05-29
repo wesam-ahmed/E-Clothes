@@ -42,7 +42,7 @@ class AdminOrderDetails extends StatelessWidget {
                   children: [
                     AdminStatusBanner(status: dataMap[EcommerceApp.isSuccess],),
                     SizedBox(height: 10,),
-                    Padding(padding: EdgeInsets.all(4),
+                    /*Padding(padding: EdgeInsets.all(4),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -50,7 +50,7 @@ class AdminOrderDetails extends StatelessWidget {
                           style:  TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                         ),
                       ),
-                    ),
+                    ),*/
                     Padding(padding: EdgeInsets.all(4)
                       ,child: Text(
                           "OrderId: "+getOrderId
