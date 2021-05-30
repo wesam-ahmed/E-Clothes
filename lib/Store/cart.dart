@@ -83,13 +83,13 @@ class _CartPageState extends State<CartPage>
                       {
                         return !snapshot.hasData
                             ? SliverToBoxAdapter(child:  Center(child: circularProgress(),),)
-                            : snapshot.data.documents.length == 0
+                            : snapshot.data.docs.length == 0
                             ? beginBuildingCart()
                             : SliverList(
                           delegate: SliverChildBuilderDelegate(
                                 (context, index)
                             {
-                              ItemModel model = ItemModel.fromJson(snapshot.data.documents[index].data);
+                              ItemModel model = ItemModel.fromJson(snapshot.data.docs[index].data());
                               if(index == 0)
                               {
                                 totalAmount = 0;
@@ -99,7 +99,7 @@ class _CartPageState extends State<CartPage>
                               {
                                 totalAmount = model.price + totalAmount;
                               }
-                              if(snapshot.data.documents.length - 1 == index)
+                              if(snapshot.data.docs.length - 1 == index)
                               {
                                 WidgetsBinding.instance.addPostFrameCallback((t) {
                                   Provider.of<TotalAmount>(context, listen: false).display(totalAmount);
@@ -107,7 +107,7 @@ class _CartPageState extends State<CartPage>
                               }
                               return sourceInfo(model, context, removeCartFunction: () => removeItemFromUserCart(model.idItem));
                             },
-                            childCount: snapshot.hasData ?  snapshot.data.documents.length : 0,
+                            childCount: snapshot.hasData ?  snapshot.data.docs.length : 0,
                           ),
                         );
                       },
@@ -193,8 +193,8 @@ class _CartPageState extends State<CartPage>
   {
     List tempCartList = EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
     tempCartList.remove(idItemAsId);
-    EcommerceApp.firestore.collection(EcommerceApp.collectionUser).document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-        .updateData({
+    EcommerceApp.firestore.collection(EcommerceApp.collectionUser).doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+        .update({
       EcommerceApp.userCartList:tempCartList,
     }).then((v){
       Fluttertoast.showToast(msg: "Item Removed Successfully");

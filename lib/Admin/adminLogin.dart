@@ -151,39 +151,6 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
 
   }
 
-  /*loginAdmin() {
-    Firestore.instance.collection("admins").getDocuments().then((snapshot) {
-      snapshot.documents.forEach((result) {
-        if (result.data["id"] != _adminIDTextEditingController.text.trim()) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("your ID is not correct. "),
-          ));
-        } else if (result.data["password"] !=
-            _passwordTextEditingController.text.trim()) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("your Password is not correct. "),
-          ));
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text("Welcome Dear Admin, " + result.data["name"]),
-          ));
-          EcommerceApp.collectionAdmin = result.data["name"];
-          EcommerceApp.collectionAdminId = result.data["id"];
-          EcommerceApp.collectionAdminName = result.data["name"];
-          EcommerceApp.collectionAdminAddress = result.data["address"];
-          EcommerceApp.collectionAdminphoto = result.data["thumbnailUrl"];
-
-
-          setState(() {
-            _adminIDTextEditingController.text = "";
-            _passwordTextEditingController.text = "";
-          });
-          Route route = MaterialPageRoute(builder: (C) => UploadPage());
-          Navigator.pushReplacement(context, route);
-        }
-      });
-    });
-  }*/
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   void loginAdmin() async {
@@ -194,7 +161,7 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
             message: "Authenticating, please wait...",
           );
         });
-    FirebaseUser firebaseUser;
+    User firebaseUser;
     await _auth.signInWithEmailAndPassword(
       email: _adminIDTextEditingController.text.trim(),
       password: _passwordTextEditingController.text.trim(),
@@ -220,13 +187,13 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
     }
   }
 
-  Future readData(FirebaseUser fUser) async {
-    Firestore.instance.collection("admins").document(fUser.uid).get()
+  Future readData(User fUser) async {
+    FirebaseFirestore.instance.collection("admins").doc(fUser.uid).get()
         .then((dataSnapshot) async {
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminName, dataSnapshot.data["name"]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminId, dataSnapshot.data["id"]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminphoto, dataSnapshot.data["thumbnailUrl"]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminAddress, dataSnapshot.data["address"]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminName, dataSnapshot.data()["name"]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminId, dataSnapshot.data()["id"]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminphoto, dataSnapshot.data()["thumbnailUrl"]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminAddress, dataSnapshot.data()["address"]);
 
 
     });

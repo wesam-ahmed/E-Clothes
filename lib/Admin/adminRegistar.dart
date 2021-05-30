@@ -266,12 +266,12 @@ class _RegisterState extends State<adminRegister> {
             return LoadingAlertDialog(message: "Registering, Please wait.....");
           });
       String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
-      StorageReference storageReference =
+      Reference storageReference =
       FirebaseStorage.instance.ref().child("admins").child(imageFileName);
-      StorageUploadTask storageUploadTask =
+      UploadTask storageUploadTask =
       storageReference.putFile(_imageFile);
-      StorageTaskSnapshot storageTaskSnapshot =
-      await storageUploadTask.onComplete;
+      TaskSnapshot storageTaskSnapshot =
+      await storageUploadTask.whenComplete(() => null);
       await storageTaskSnapshot.ref.getDownloadURL().then((urlImage) {
         adminImageUrl = urlImage;
         _registerUser();
@@ -282,7 +282,7 @@ class _RegisterState extends State<adminRegister> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _registerUser() async {
-    FirebaseUser firebaseUser;
+    User firebaseUser;
 
     await _auth
         .createUserWithEmailAndPassword(
@@ -310,8 +310,8 @@ class _RegisterState extends State<adminRegister> {
     }
   }
 
-  Future saveUserInfoToFirestore(FirebaseUser fUser) async {
-    Firestore.instance.collection("admins").document(fUser.uid).setData({
+  Future saveUserInfoToFirestore(User fUser) async {
+    FirebaseFirestore.instance.collection("admins").doc(fUser.uid).set({
       "uid":fUser.uid.trim(),
       "address": _addressTextEditingController.text.trim(),
       "id": fUser.email,

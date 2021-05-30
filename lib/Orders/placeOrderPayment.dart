@@ -85,9 +85,9 @@ class _PaymentPageState extends State<PaymentPage> {
     EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,["garbageValue"]);
     List tempList=EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
 
-       Firestore.instance.collection("users")
-           .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-        .updateData({
+    FirebaseFirestore.instance.collection("users")
+           .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+        .update({
       EcommerceApp.userCartList: tempList,
        }).then((value)
     {
@@ -101,15 +101,15 @@ class _PaymentPageState extends State<PaymentPage> {
   }
   Future writeOrderDetalisForUser(Map<String,dynamic>data)async{
     await EcommerceApp.firestore.collection(EcommerceApp.collectionUser).
-    document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)).
+    doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)).
     collection(EcommerceApp.collectionOrders)
-        .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)+data['orderTime']).
-    setData(data);
+        .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)+data['orderTime']).
+    set(data);
   }
   Future writeOrderDetalisForAdmin(Map<String,dynamic>data)async{
     await EcommerceApp.firestore.
     collection(EcommerceApp.collectionOrders)
-        .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)+data['orderTime']).
-    setData(data);
+        .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)+data['orderTime']).
+    set(data);
   }
 }

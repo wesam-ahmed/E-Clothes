@@ -178,10 +178,10 @@ class AddAddress extends StatelessWidget {
                         ).toJson();
 
                         EcommerceApp.firestore.collection(EcommerceApp.collectionUser)
-                            .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+                            .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
                             .collection(EcommerceApp.subCollectionAddress)
-                            .document(DateTime.now().millisecondsSinceEpoch.toString())
-                            .setData(model)
+                            .doc(DateTime.now().millisecondsSinceEpoch.toString())
+                            .set(model)
                             .then((value){
                           final snack = SnackBar(content: Text("New Address added susccessfully."));
                           // ignore: deprecated_member_use

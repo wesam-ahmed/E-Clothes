@@ -291,7 +291,7 @@ class _shopOwnerState extends State<shopOwner> {
                     ),
 
                     StreamBuilder<QuerySnapshot>(
-                      stream: Firestore.instance
+                      stream: FirebaseFirestore.instance
                           .collection("items")
                           .where("section",
                           isEqualTo: SectionKey.section.toString())
@@ -314,10 +314,10 @@ class _shopOwnerState extends State<shopOwner> {
                           itemBuilder: (context, index) {
                             ItemModel model = ItemModel.fromJson(
                                 dataSnapshot
-                                    .data.documents[index].data);
+                                    .data.docs[index].data());
                             return sourceInfo(model, context);
                           },
-                          itemCount: dataSnapshot.data.documents.length,
+                          itemCount: dataSnapshot.data.docs.length,
                         );
                       },
                     ),

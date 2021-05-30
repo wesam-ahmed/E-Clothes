@@ -14,7 +14,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 class AdminOrders extends StatefulWidget{
   @override
   _AdminOrdersState createState() => _AdminOrdersState();
-  }
+}
 class _AdminOrdersState extends State<AdminOrders>{
   Future<bool> _backStore() async {
     return await Navigator.push(
@@ -28,20 +28,20 @@ class _AdminOrdersState extends State<AdminOrders>{
       child: Scaffold(
         body: CustomScrollView(
           slivers: [
-           // SliverPersistentHeader(floating: true, delegate: SearchBoxDelegate()),
+            // SliverPersistentHeader(floating: true, delegate: SearchBoxDelegate()),
             SliverToBoxAdapter(
               child:Column(children:
-                [
-                  SizedBox(height: 20,),
-                  Text("My Products",style: TextStyle(fontSize: 30,fontStyle: FontStyle.italic),),
-                  Divider(height: 10,)
-                ],),
+              [
+                SizedBox(height: 20,),
+                Text("My Products",style: TextStyle(fontSize: 30,fontStyle: FontStyle.italic),),
+                Divider(height: 10,)
+              ],),
             ),
             StreamBuilder<QuerySnapshot>(
-              stream: Firestore.instance
+              stream: FirebaseFirestore.instance
                   .collection("items")
                   .where("sellerid",
-                  isEqualTo: EcommerceApp.collectionAdminId.toString())
+                  isEqualTo: EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminId).toString())
                   .snapshots(),
               builder: (context, dataSnapshot) {
                 return !dataSnapshot.hasData
@@ -57,11 +57,10 @@ class _AdminOrdersState extends State<AdminOrders>{
                   itemBuilder: (context, index) {
                     ItemModel model = ItemModel.fromJson(
                         dataSnapshot
-                            .data.documents[index].data);
+                            .data.docs[index].data());
                     return sourceInfoProducts(model, context);
                   },
-                  itemCount: dataSnapshot.data.documents
-                      .length,
+                  itemCount: dataSnapshot.data.docs.length,
                 );
               },
             ),
@@ -110,6 +109,5 @@ Widget sourceInfoProducts(ItemModel model, BuildContext context,
     ),
   );
 }
-
 
 

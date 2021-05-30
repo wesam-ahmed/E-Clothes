@@ -169,8 +169,8 @@ class _LoginState extends State<Login> {
    FacebookLoginResult result= await _facebookLogin.logIn(['email']);
     final accessToken=result.accessToken.token;
     if(result.status==FacebookLoginStatus.loggedIn){
-       final faceCredential=FacebookAuthProvider.getCredential(accessToken:accessToken);
-       FirebaseUser user = (await _auth.signInWithCredential(faceCredential)).user;
+       final faceCredential=FacebookAuthProvider.credential(accessToken);
+       User user = (await _auth.signInWithCredential(faceCredential)).user;
        readData(user).then((s) {
          saveUserGoogleandFacebookToFirestore(user);
          Route route = MaterialPageRoute(builder: (C) => Section());
@@ -182,10 +182,10 @@ class _LoginState extends State<Login> {
   void SignInG() async {
     GoogleSignInAccount account = await _googleSignIn.signIn();
     GoogleSignInAuthentication authentication = await account.authentication;
-    AuthCredential credential = GoogleAuthProvider.getCredential(
+    AuthCredential credential = GoogleAuthProvider.credential(
         idToken: authentication.idToken,
         accessToken: authentication.accessToken);
-    FirebaseUser user= (await _auth.signInWithCredential(credential)).user;
+    User user= (await _auth.signInWithCredential(credential)).user;
 
 
     readData(user).then((s) {
@@ -196,12 +196,12 @@ class _LoginState extends State<Login> {
     });
 
   }
-  Future saveUserGoogleandFacebookToFirestore(FirebaseUser fUser) async {
-    Firestore.instance.collection("users").document(fUser.uid).setData({
+  Future saveUserGoogleandFacebookToFirestore(User fUser) async {
+    FirebaseFirestore.instance.collection("users").doc(fUser.uid).set({
       "uid": fUser.uid,
       "email": fUser.email,
       "name": fUser.displayName,
-      "url": fUser.photoUrl,
+      "url": fUser.photoURL,
       EcommerceApp.userCartList: ["garbageValue"],
     });
     await EcommerceApp.sharedPreferences.setString("uid", fUser.uid);
@@ -210,7 +210,7 @@ class _LoginState extends State<Login> {
     await EcommerceApp.sharedPreferences
         .setString(EcommerceApp.userName, fUser.displayName);
     await EcommerceApp.sharedPreferences
-        .setString(EcommerceApp.userAvatarUrl, fUser.photoUrl);
+        .setString(EcommerceApp.userAvatarUrl, fUser.photoURL);
     await EcommerceApp.sharedPreferences
         .setStringList(EcommerceApp.userCartList, ["garbageValue"]);
   }
@@ -223,7 +223,7 @@ class _LoginState extends State<Login> {
             message: "Authenticating, please wait...",
           );
         });
-    FirebaseUser firebaseUser;
+    User firebaseUser;
     await _auth.signInWithEmailAndPassword(
       email: _emailTextEditingController.text.trim(),
       password: _passwordTextEditingController.text.trim(),
@@ -249,14 +249,14 @@ class _LoginState extends State<Login> {
     }
   }
 
-  Future readData(FirebaseUser fUser) async {
-    Firestore.instance.collection("users").document(fUser.uid).get()
+  Future readData(User fUser) async {
+    FirebaseFirestore.instance.collection("users").doc(fUser.uid).get()
         .then((dataSnapshot) async {
-      await EcommerceApp.sharedPreferences.setString("uid", dataSnapshot.data[EcommerceApp.userUID]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, dataSnapshot.data[EcommerceApp.userEmail]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userName, dataSnapshot.data[EcommerceApp.userName]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl, dataSnapshot.data[EcommerceApp.userAvatarUrl]);
-      List<String> carList = dataSnapshot.data[EcommerceApp.userCartList].cast<String>();
+      await EcommerceApp.sharedPreferences.setString("uid", dataSnapshot.data()[EcommerceApp.userUID]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, dataSnapshot.data()[EcommerceApp.userEmail]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userName, dataSnapshot.data()[EcommerceApp.userName]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl, dataSnapshot.data()[EcommerceApp.userAvatarUrl]);
+      List<String> carList = dataSnapshot.data()[EcommerceApp.userCartList].cast<String>();
       await EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList, carList);
     });
   }

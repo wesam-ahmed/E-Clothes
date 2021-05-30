@@ -93,27 +93,27 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                 ],
               ),*/
               Expanded(
-                child:StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance.collection("orders").snapshots(),
+                child:StreamBuilder(
+                stream: FirebaseFirestore.instance.collection("orders").snapshots(),
 
                 builder: (c,snapshot){
                   return snapshot.hasData
                       ?ListView.builder(
-                    itemCount: snapshot.data.documents.length,
+                    itemCount: snapshot.data.docs.length,
                     itemBuilder: (c,index){
                       return FutureBuilder<QuerySnapshot>(
-                        future:Firestore.instance.
+                        future:FirebaseFirestore.instance.
                         collection("items").where("idItem",
-                            whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).where("sellerid", isEqualTo: EcommerceApp.collectionAdminId ).getDocuments(),
+                            whereIn: snapshot.data.docs[index].data()[EcommerceApp.productID]).where("sellerid", isEqualTo: EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminId).toString() ).get(),
 
                         builder: (c,snap){
                           return snap.hasData ?
                           AdminOrderCard(
-                            itemCount: snap.data.documents.length,
-                            data: snap.data.documents,
-                            orderId: snapshot.data.documents[index].documentID,
-                            orderBy: snapshot.data.documents[index].data["orderBy"],
-                            addressID: snapshot.data.documents[index].data["addressID"],
+                            itemCount: snap.data.docs.length,
+                            data: snap.data.docs,
+                            orderId: snapshot.data.docs[index].id,
+                            orderBy: snapshot.data.docs[index].data()["orderBy"],
+                            addressID: snapshot.data.docs[index].data()["addressID"],
                             category: dropdownValue_Category,
                             section:dropdownValue_Section ,
                           )

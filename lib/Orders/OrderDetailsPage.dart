@@ -26,15 +26,15 @@ OrderDetails({Key key,this.orderID}):super(key: key);
           child: FutureBuilder<DocumentSnapshot>(
               future:EcommerceApp.firestore
                   .collection(EcommerceApp.collectionUser)
-                  .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+                  .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
                   .collection(EcommerceApp.collectionOrders)
-                  .document(orderID).get(),
+                  .doc(orderID).get(),
 
             builder: (c,snapshot){
                 Map dataMap;
                 if(snapshot.hasData)
                 {
-                  dataMap =snapshot.data.data;
+                  dataMap =snapshot.data.data();
                 }
                 return snapshot.hasData
                     ?Container(
@@ -65,12 +65,12 @@ OrderDetails({Key key,this.orderID}):super(key: key);
                           ),
                           Divider(height: 2,),
                           FutureBuilder<QuerySnapshot>(
-                            future: EcommerceApp.firestore.collection("items").where("idItemAsId",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
+                            future: EcommerceApp.firestore.collection("items").where("idItemAsId",whereIn: dataMap[EcommerceApp.productID]).get(),
                             builder: (c,dataSnapshot){
                               return dataSnapshot.hasData ?
                                   OrderCard(
-                                    itemCount: dataSnapshot.data.documents.length,
-                                    data: dataSnapshot.data.documents,
+                                    itemCount: dataSnapshot.data.docs.length,
+                                    data: dataSnapshot.data.docs,
                                   )
                                   :Center(child: circularProgress(),);
                             },
@@ -79,12 +79,12 @@ OrderDetails({Key key,this.orderID}):super(key: key);
                           FutureBuilder<DocumentSnapshot>(
                            future:EcommerceApp.firestore
                            .collection(EcommerceApp.collectionUser)
-                           .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+                           .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
                            .collection(EcommerceApp.subCollectionAddress)
-                           .document(dataMap[EcommerceApp.addressID]).get(),
+                           .doc(dataMap[EcommerceApp.addressID]).get(),
                             builder: (c,snap) {
                            return snap.hasData
-                             ?ShippingDetails(model: AddressModel.fromJson(snap.data.data),)
+                             ?ShippingDetails(model: AddressModel.fromJson(snap.data.data()),)
                                :Center(child: circularProgress(),);
                             },
                              )
@@ -277,10 +277,10 @@ class ShippingDetails extends StatelessWidget {
   confirmeduserOrderReceived(BuildContext context ,String mOrderId) {
     EcommerceApp.firestore
         .collection(EcommerceApp.collectionUser)
-        .document(EcommerceApp.sharedPreferences
+        .doc(EcommerceApp.sharedPreferences
         .getString(EcommerceApp.userUID))
         .collection(EcommerceApp.collectionOrders)
-        .document(mOrderId)
+        .doc(mOrderId)
         .delete();
 
     getOrderId ="";
