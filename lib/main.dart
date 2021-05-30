@@ -22,10 +22,10 @@ import 'package:firebase_core/firebase_core.dart';
 Future<void> main() async
 {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
   EcommerceApp.auth = FirebaseAuth.instance;
   EcommerceApp.sharedPreferences = await SharedPreferences.getInstance();
-  EcommerceApp.firestore = Firestore.instance;
+  EcommerceApp.firestore = FirebaseFirestore.instance;
   runApp(MyApp());
 }
 
@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   displaySplash() {
     Timer(Duration(seconds: 2), () async {
-      if (await EcommerceApp.auth.currentUser() != null) {
+      if (await EcommerceApp.auth.currentUser != null) {
         Route route = MaterialPageRoute(builder: (_) =>  Section()
         );
         Navigator.pushReplacement(context, route);

@@ -47,7 +47,7 @@ class AdminOrderCard extends StatelessWidget
         child: ListView.builder(itemCount: itemCount,
           physics: NeverScrollableScrollPhysics(),
           itemBuilder: (c,index){
-            ItemModel model=ItemModel.fromJson(data[index].data);
+            ItemModel model=ItemModel.fromJson(data[index].data());
             return sourceOrderInfo(model, context);
           },
         ),
