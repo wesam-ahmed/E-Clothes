@@ -53,7 +53,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
         flexibleSpace: Container(
           decoration: new BoxDecoration(
               gradient: new LinearGradient(
-                colors: [Colors.white,Colors.grey],
+                colors: [Colors.green,Colors.green],
                 begin:const FractionalOffset(0.0, 0.0),
                 end: const FractionalOffset(1.0, 0.0),
                 stops: [0.0,1.0],
@@ -85,7 +85,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
     return Container(
       decoration: new BoxDecoration(
           gradient: new LinearGradient(
-            colors: [Colors.white,Colors.grey],
+            colors: [Colors.lightGreen,Colors.green],
             begin:const FractionalOffset(0.0, 0.0),
             end: const FractionalOffset(1.0, 0.0),
             stops: [0.0,1.0],
@@ -96,7 +96,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.shop_two,color: Colors.black, size:200),
+            Icon(Icons.shop_two,color: Colors.white, size:200),
             Padding(
               padding: EdgeInsets.only(top: 20),
               child:TextButton(
@@ -115,9 +115,9 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
               child:TextButton(
                 style: TextButton.styleFrom(primary: Colors.white,
                   backgroundColor: Colors.black87,
-                  onSurface: Colors.grey,
+                  onSurface: Colors.green,
                 ),
-                child: Text("My Items",style: TextStyle(fontSize: 20,color: Colors.white),),
+                child: Text("My Products",style: TextStyle(fontSize: 20,color: Colors.white),),
 
                 onPressed: (){
                   Route route = MaterialPageRoute(builder: (C) => AdminOrders());
@@ -424,15 +424,15 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
     saveIteminfo(imageDownloadUrl);
   }
   Future<String> uploadItemImage(mFileImage)async{
-    final StorageReference storageReference=FirebaseStorage.instance.ref().child(DropdownValue_Section).child(DropdownValue_Category);
-    StorageUploadTask uploadTask=storageReference.child("product_$productId.jpg").putFile(mFileImage);
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+    final Reference storageReference=FirebaseStorage.instance.ref().child(DropdownValue_Section).child(DropdownValue_Category);
+    UploadTask uploadTask=storageReference.child("product_$productId.jpg").putFile(mFileImage);
+    TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
     String downloadUrl =await taskSnapshot.ref.getDownloadURL();
     return downloadUrl;
   }
   saveIteminfo(String downloadUrl){
-    final itemsRef=Firestore.instance.collection("items");
-    itemsRef.document(productId).setData({
+    final itemsRef=FirebaseFirestore.instance.collection("items");
+    itemsRef.doc(productId).set({
       "shortInfo":_shortInfoTextEditingController.text.trim(),
       "longDescription":_descriptionTextEditingController.text.trim(),
       "price":int.parse(_priceTextEditingController.text),
@@ -446,10 +446,10 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "quantity":int.parse(_QuantityInfoTextEditingController.text),
       "size":sizeList1,
       "color":colorList1,
-      "sellerid":EcommerceApp.collectionAdminId,
-      "sellername":EcommerceApp.collectionAdminName,
-      "selleraddress":EcommerceApp.collectionAdminAddress,
-      "sellerthumbnailUrl":EcommerceApp.collectionAdminphoto,
+      "sellerid":EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminId),
+      "sellername":EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminName),
+      "selleraddress":EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminAddress),
+      "sellerthumbnailUrl":EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminphoto),
     });
     setState(() {
       file=null;

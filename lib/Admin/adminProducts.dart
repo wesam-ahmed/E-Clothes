@@ -19,14 +19,6 @@ class AdminProducts extends StatefulWidget {
 }
 class _AdminProductsState extends State<AdminProducts> {
 
-
-
-  /*_AdminProductsState(ItemModel itemModel){
-
-
-  }*/
-
-
   Future<bool> _backStore()async{
     return await Navigator.push(context, MaterialPageRoute(builder: (context) => AdminOrders()));
   }
@@ -256,8 +248,8 @@ class _AdminProductsState extends State<AdminProducts> {
 
   }
   saveIteminfo(){
-    final itemsRef=Firestore.instance.collection("items");
-    itemsRef.document(widget.itemModel.idItem).updateData({
+    final itemsRef=FirebaseFirestore.instance.collection("items");
+    itemsRef.doc(widget.itemModel.idItem) .update({
       "shortInfo":_shortInfoTextEditingController.text.trim(),
       "longDescription":_descriptionTextEditingController.text.trim(),
       "price":int.parse(_priceTextEditingController.text),
@@ -276,8 +268,8 @@ class _AdminProductsState extends State<AdminProducts> {
     });
   }
   DeleteItem(){
-    final itemsRef=Firestore.instance.collection("items");
-    itemsRef.document(widget.itemModel.idItem).delete();
+    final itemsRef=FirebaseFirestore.instance.collection("items");
+    itemsRef.doc(widget.itemModel.idItem).delete();
   }
 
 

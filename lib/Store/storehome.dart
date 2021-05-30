@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:e_shop/Config/config.dart';
 import '../Widgets/loadingWidget.dart';
@@ -250,7 +251,7 @@ class _StoreHomeState extends State<StoreHome> {
                           ),
 
                           StreamBuilder<QuerySnapshot>(
-                            stream: Firestore.instance
+                            stream: FirebaseFirestore.instance
                                 .collection("items")
                                 .where("section",
                                 isEqualTo: SectionKey.section.toString())
@@ -271,10 +272,10 @@ class _StoreHomeState extends State<StoreHome> {
                                 itemBuilder: (context, index) {
                                   ItemModel model = ItemModel.fromJson(
                                       dataSnapshot
-                                          .data.documents[index].data);
+                                          .data.docs[index].data());
                                   return sourceInfo(model, context);
                                 },
-                                itemCount: dataSnapshot.data.documents.length,
+                                itemCount: dataSnapshot.data.docs.length,
                               );
                             },
                           ),
@@ -290,10 +291,10 @@ class _StoreHomeState extends State<StoreHome> {
 }
 getSizes(String DocID)async{
   List <String> sizes=  [];
-  await Firestore.instance.collection("items").document(DocID).get().then((value){
+  await FirebaseFirestore.instance.collection("items").doc(DocID).get().then((value){
     if(value!=null)
     {
-      value.data['size'].forEach((element) {
+      value.data()['size'].forEach((element) {
         sizes.add(element);
       });
     }
@@ -302,10 +303,10 @@ getSizes(String DocID)async{
 }
 getColors(String DocID)async{
   List <String> colors=  [];
-  await Firestore.instance.collection("items").document(DocID).get().then((value){
+  await FirebaseFirestore.instance.collection("items").doc(DocID).get().then((value){
     if(value!=null)
     {
-      value.data['color'].forEach((element) {
+      value.data()['color'].forEach((element) {
         colors.add(element);
       });
     }
@@ -319,9 +320,8 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     onTap: () {
       getSizes(model.idItem).then((size){
         getColors(model.idItem).then((color){
-        Route route =
-        MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
-        Navigator.pushReplacement(context, route);
+        //Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
+        Navigator.push(context,PageTransition(type: PageTransitionType.leftToRightWithFade, child: ProductPage(itemModel: model,sizes:size,colors: color,)));
       });
       });
 
@@ -403,8 +403,8 @@ addItemToCart(String idItemAsId, BuildContext context) {
   tempCartList.add(idItemAsId);
   EcommerceApp.firestore
       .collection(EcommerceApp.collectionUser)
-      .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-      .updateData({
+      .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+      .update({
     EcommerceApp.userCartList: tempCartList,
   }).then((v) {
     Fluttertoast.showToast(msg: "Item Added to Cart Successfully");
@@ -418,8 +418,8 @@ addItemToCart(String idItemAsId, BuildContext context) {
 
 
 Future startSearching(String query) async {
-  docList = Firestore.instance
+  docList = FirebaseFirestore.instance
       .collection("items")
       .where("shortInfo", isGreaterThanOrEqualTo: query)
-      .getDocuments();
+      .get();
 }

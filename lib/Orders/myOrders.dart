@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Store/storehome.dart';
@@ -19,64 +20,53 @@ class _MyOrdersState extends State<MyOrders> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _backStore,
-      child: SafeArea(
-      child: Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-          decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                colors: [Colors.white,Colors.grey],
-                begin:const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0,1.0],
-                tileMode: TileMode.clamp,
-              )
-          ),
-        ),
-        centerTitle: true,
-        title: Text("My Orders",style: TextStyle(color: Colors.white),),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.arrow_drop_down_circle,color: Colors.white,),
-            onPressed: (){
-              SystemNavigator.pop();
-            },
-          ),
-        ],
-      ),
-        body: StreamBuilder<QuerySnapshot>(
-          stream: EcommerceApp.firestore
-              .collection(EcommerceApp.collectionUser)
-              .document(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-              .collection(EcommerceApp.collectionOrders).snapshots(),
-
-          builder: (c,snapshot){
-            return snapshot.hasData
-                ?ListView.builder(
-              itemCount: snapshot.data.documents.length,
-              itemBuilder: (c,index){
-                return FutureBuilder<QuerySnapshot>(
-                  future:Firestore.instance.collection("items")
-                      .where("idItem",whereIn: snapshot.data.documents[index].data[EcommerceApp.productID]).getDocuments(),
-
-
-                  builder: (c,snap){
-                    return snap.hasData ? OrderCard(
-                      itemCount: snap.data.documents.length,
-                      data: snap.data.documents,
-                      orderId: snapshot.data.documents[index].documentID,
-                    )
-                        :Center(child: circularProgress(),);
+        onWillPop: _backStore,
+        child: SafeArea(
+          child: Scaffold(
+            appBar: AppBar(
+              iconTheme: IconThemeData(color: Colors.green),
+              centerTitle: true,
+              title: Text("My Orders",style: TextStyle(color: Colors.white),),
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.arrow_drop_down_circle,color: Colors.white,),
+                  onPressed: (){
+                    SystemNavigator.pop();
                   },
-                );
+                ),
+              ],
+            ),
+            body: StreamBuilder(
+              stream: EcommerceApp.firestore
+                  .collection(EcommerceApp.collectionUser)
+                  .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+                  .collection(EcommerceApp.collectionOrders).snapshots(),
+
+              builder: (c,snapshot){
+                return snapshot.hasData
+                    ?ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (c,index){
+                    return FutureBuilder<QuerySnapshot>(
+                      future:FirebaseFirestore.instance.collection("items")
+                          .where("idItem",whereIn: snapshot.data.docs[index].data()[EcommerceApp.productID]).get(),
+
+
+                      builder: (c,snap){
+                        return snap.hasData ? OrderCard(
+                          itemCount: snap.data.docs.length,
+                          data: snap.data.docs,
+                          orderId: snapshot.data.docs[index].id,
+                        )
+                            :Center(child: circularProgress(),);
+                      },
+                    );
+                  },
+                )
+                    : Center(child: circularProgress(),);
               },
-            )
-                : Center(child: circularProgress(),);
-          },
-        ),
-      ),
-    ));
+            ),
+          ),
+        ));
   }
 }

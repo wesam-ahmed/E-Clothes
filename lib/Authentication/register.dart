@@ -260,12 +260,12 @@ class _RegisterState extends State<Register> {
             return LoadingAlertDialog(message: "Registering, Please wait.....");
           });
       String imageFileName = DateTime.now().microsecondsSinceEpoch.toString();
-      StorageReference storageReference =
+      Reference storageReference =
           FirebaseStorage.instance.ref().child(imageFileName);
-      StorageUploadTask storageUploadTask =
+      UploadTask storageUploadTask =
           storageReference.putFile(_imageFile);
-      StorageTaskSnapshot storageTaskSnapshot =
-          await storageUploadTask.onComplete;
+      TaskSnapshot storageTaskSnapshot =
+          await storageUploadTask.whenComplete(() => null);
       await storageTaskSnapshot.ref.getDownloadURL().then((urlImage) {
         userImageUrl = urlImage;
         _registerUser();
@@ -276,7 +276,7 @@ class _RegisterState extends State<Register> {
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   void _registerUser() async {
-    FirebaseUser firebaseUser;
+    User firebaseUser;
 
     await _auth
         .createUserWithEmailAndPassword(
@@ -304,8 +304,8 @@ class _RegisterState extends State<Register> {
     }
   }
 
-  Future saveUserInfoToFirestore(FirebaseUser fUser) async {
-    Firestore.instance.collection("users").document(fUser.uid).setData({
+  Future saveUserInfoToFirestore(User fUser) async {
+    FirebaseFirestore.instance.collection("users").doc(fUser.uid).set({
       "uid": fUser.uid,
       "email": fUser.email,
       "name": _nameTextEditingController.text.trim(),

@@ -28,13 +28,13 @@ class AdminOrderDetails extends StatelessWidget {
       child: Scaffold(
         body: SingleChildScrollView(
           child: FutureBuilder<DocumentSnapshot>(
-            future:EcommerceApp.firestore.collection(EcommerceApp.collectionOrders).document(getOrderId).get()
+            future:EcommerceApp.firestore.collection(EcommerceApp.collectionOrders).doc(getOrderId).get()
             ,builder: (c,snapshot)
           {
               Map dataMap;
               if(snapshot.hasData)
               {
-                dataMap =snapshot.data.data;
+                dataMap =snapshot.data.data();
               }
               return snapshot.hasData ?
               Container(
@@ -42,7 +42,7 @@ class AdminOrderDetails extends StatelessWidget {
                   children: [
                     AdminStatusBanner(status: dataMap[EcommerceApp.isSuccess],),
                     SizedBox(height: 10,),
-                    Padding(padding: EdgeInsets.all(4),
+                    /*Padding(padding: EdgeInsets.all(4),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -50,7 +50,7 @@ class AdminOrderDetails extends StatelessWidget {
                           style:  TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                         ),
                       ),
-                    ),
+                    ),*/
                     Padding(padding: EdgeInsets.all(4)
                       ,child: Text(
                           "OrderId: "+getOrderId
@@ -66,12 +66,12 @@ class AdminOrderDetails extends StatelessWidget {
                     FutureBuilder<QuerySnapshot>(
                       future: EcommerceApp.firestore
                       .collection("items").where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString()).
-                      where("idItem",whereIn: dataMap[EcommerceApp.productID]).getDocuments(),
+                      where("idItem",whereIn: dataMap[EcommerceApp.productID]).get(),
                       builder: (c,dataSnapshot){
                         return dataSnapshot.hasData ?
                         OrderCard(
-                          itemCount: dataSnapshot.data.documents.length,
-                          data: dataSnapshot.data.documents,
+                          itemCount: dataSnapshot.data.docs.length,
+                          data: dataSnapshot.data.docs,
                         )
                             :Center(child: circularProgress(),);
                       },
@@ -80,12 +80,12 @@ class AdminOrderDetails extends StatelessWidget {
                     FutureBuilder<DocumentSnapshot>(
                       future:EcommerceApp.firestore
                           .collection(EcommerceApp.collectionUser)
-                          .document(orderBy)
+                          .doc(orderBy)
                           .collection(EcommerceApp.subCollectionAddress)
-                          .document(addressID).get(),
+                          .doc(addressID).get(),
                       builder: (c,snap) {
                         return snap.hasData
-                            ?AdminShippingDetails(model: AddressModel.fromJson(snap.data.data),)
+                            ?AdminShippingDetails(model: AddressModel.fromJson(snap.data.data()),)
                             :Center(child: circularProgress(),);
                       },
                     )
@@ -273,10 +273,10 @@ class AdminShippingDetails extends StatelessWidget {
   {
     EcommerceApp.firestore
         .collection(EcommerceApp.collectionUser)
-        .document(EcommerceApp.sharedPreferences
+        .doc(EcommerceApp.sharedPreferences
         .getString(EcommerceApp.userUID))
         .collection(EcommerceApp.collectionOrders)
-        .document(mOrderId)
+        .doc(mOrderId)
         .delete();
 
     getOrderId ="";

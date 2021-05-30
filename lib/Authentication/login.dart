@@ -159,74 +159,6 @@ class _LoginState extends State<Login> {
       ),
     );
 
-    /* return SingleChildScrollView(
-      child: Container(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Container(
-              alignment: Alignment.bottomCenter,
-              child: Image.asset(
-                "images/login.png",
-                height: 240,
-                width: 240,
-              ),
-            ),
-            Padding(
-            padding: EdgeInsets.all(8),
-              child: Text(
-                "Login to your account",
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  CustomTextField(
-                    controller: _emailTextEditingController,
-                    data: Icons.email,
-                    hintText: "Email",
-                    isObsecure: false,
-                  ),
-                  CustomTextField(
-                    controller: _passwordTextEditingController,
-                    data: Icons.lock,
-                    hintText: "Password",
-                    isObsecure: true,
-                  ),
-                ],
-              ),
-            ),
-            RaisedButton(
-              onPressed: (){
-                _emailTextEditingController.text.isNotEmpty
-                    && _passwordTextEditingController.text.isNotEmpty
-                    ? loginUser()
-                    : showDialog(
-                  context: context,
-                  builder: (C)
-                    {
-                      return ErrorAlertDialog(message: "please write email and password.",);
-                    }
-                );
-              },
-              color: Colors.white,
-              child: Text("Login",style:TextStyle(color: Colors.black,fontFamily: "Signatra" ,fontSize: 30),),
-            ),
-            SizedBox(height: 50),
-            Container(height: 4,
-              width: _screenWidth*0.8,
-              color: Colors.black,),
-            SizedBox(height: 10,),
-            TextButton.icon(onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (context)=> AdminSignInPage())),
-              icon: (Icon(Icons.nature_people, color: Colors.black,)),
-              label: Text("i'm Admin", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
-            ),
-          ],
-        ),
-      ),
-    );*/
   }
 
   FirebaseAuth _auth = FirebaseAuth.instance;
@@ -237,8 +169,8 @@ class _LoginState extends State<Login> {
    FacebookLoginResult result= await _facebookLogin.logIn(['email']);
     final accessToken=result.accessToken.token;
     if(result.status==FacebookLoginStatus.loggedIn){
-       final faceCredential=FacebookAuthProvider.getCredential(accessToken:accessToken);
-       FirebaseUser user = (await _auth.signInWithCredential(faceCredential)).user;
+       final faceCredential=FacebookAuthProvider.credential(accessToken);
+       User user = (await _auth.signInWithCredential(faceCredential)).user;
        readData(user).then((s) {
          saveUserGoogleandFacebookToFirestore(user);
          Route route = MaterialPageRoute(builder: (C) => Section());
@@ -250,10 +182,10 @@ class _LoginState extends State<Login> {
   void SignInG() async {
     GoogleSignInAccount account = await _googleSignIn.signIn();
     GoogleSignInAuthentication authentication = await account.authentication;
-    AuthCredential credential = GoogleAuthProvider.getCredential(
+    AuthCredential credential = GoogleAuthProvider.credential(
         idToken: authentication.idToken,
         accessToken: authentication.accessToken);
-    FirebaseUser user= (await _auth.signInWithCredential(credential)).user;
+    User user= (await _auth.signInWithCredential(credential)).user;
 
 
     readData(user).then((s) {
@@ -264,12 +196,12 @@ class _LoginState extends State<Login> {
     });
 
   }
-  Future saveUserGoogleandFacebookToFirestore(FirebaseUser fUser) async {
-    Firestore.instance.collection("users").document(fUser.uid).setData({
+  Future saveUserGoogleandFacebookToFirestore(User fUser) async {
+    FirebaseFirestore.instance.collection("users").doc(fUser.uid).set({
       "uid": fUser.uid,
       "email": fUser.email,
       "name": fUser.displayName,
-      "url": fUser.photoUrl,
+      "url": fUser.photoURL,
       EcommerceApp.userCartList: ["garbageValue"],
     });
     await EcommerceApp.sharedPreferences.setString("uid", fUser.uid);
@@ -278,7 +210,7 @@ class _LoginState extends State<Login> {
     await EcommerceApp.sharedPreferences
         .setString(EcommerceApp.userName, fUser.displayName);
     await EcommerceApp.sharedPreferences
-        .setString(EcommerceApp.userAvatarUrl, fUser.photoUrl);
+        .setString(EcommerceApp.userAvatarUrl, fUser.photoURL);
     await EcommerceApp.sharedPreferences
         .setStringList(EcommerceApp.userCartList, ["garbageValue"]);
   }
@@ -291,7 +223,7 @@ class _LoginState extends State<Login> {
             message: "Authenticating, please wait...",
           );
         });
-    FirebaseUser firebaseUser;
+    User firebaseUser;
     await _auth.signInWithEmailAndPassword(
       email: _emailTextEditingController.text.trim(),
       password: _passwordTextEditingController.text.trim(),
@@ -317,14 +249,14 @@ class _LoginState extends State<Login> {
     }
   }
 
-  Future readData(FirebaseUser fUser) async {
-    Firestore.instance.collection("users").document(fUser.uid).get()
+  Future readData(User fUser) async {
+    FirebaseFirestore.instance.collection("users").doc(fUser.uid).get()
         .then((dataSnapshot) async {
-      await EcommerceApp.sharedPreferences.setString("uid", dataSnapshot.data[EcommerceApp.userUID]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, dataSnapshot.data[EcommerceApp.userEmail]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userName, dataSnapshot.data[EcommerceApp.userName]);
-      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl, dataSnapshot.data[EcommerceApp.userAvatarUrl]);
-      List<String> carList = dataSnapshot.data[EcommerceApp.userCartList].cast<String>();
+      await EcommerceApp.sharedPreferences.setString("uid", dataSnapshot.data()[EcommerceApp.userUID]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userEmail, dataSnapshot.data()[EcommerceApp.userEmail]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userName, dataSnapshot.data()[EcommerceApp.userName]);
+      await EcommerceApp.sharedPreferences.setString(EcommerceApp.userAvatarUrl, dataSnapshot.data()[EcommerceApp.userAvatarUrl]);
+      List<String> carList = dataSnapshot.data()[EcommerceApp.userCartList].cast<String>();
       await EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList, carList);
     });
   }
