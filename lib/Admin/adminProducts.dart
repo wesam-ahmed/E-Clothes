@@ -1,14 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Widgets/customAppBar.dart';
-import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/myDrawer.dart';
 import 'package:e_shop/Models/item.dart';
-import 'package:e_shop/Widgets/searchBox.dart';
 import 'package:flutter/material.dart';
-import 'package:e_shop/Store/storehome.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:grouped_buttons/grouped_buttons.dart';
-
 import 'adminOrders.dart';
 
 class AdminProducts extends StatefulWidget {
@@ -33,7 +27,7 @@ class _AdminProductsState extends State<AdminProducts> {
 
   @override
   Widget build(BuildContext context)
-  {Size screenSize =MediaQuery.of(context).size;
+  {
   return WillPopScope(
       onWillPop: _backStore,
       child:SafeArea(

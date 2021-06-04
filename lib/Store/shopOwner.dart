@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Models/item.dart';
-import 'package:e_shop/Models/sellerdata.dart';
 import 'package:e_shop/Store/product_page.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/constance.dart';
@@ -12,16 +11,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class shopOwner extends StatefulWidget {
+class ShopOwner extends StatefulWidget {
  final ItemModel itemModel;
 
-  const shopOwner({Key key,this.itemModel }) : super(key: key);
+  const ShopOwner({Key key,this.itemModel }) : super(key: key);
 
   @override
-  _shopOwnerState createState() => _shopOwnerState();
+  _ShopOwnerState createState() => _ShopOwnerState();
 }
 
-class _shopOwnerState extends State<shopOwner> {
+class _ShopOwnerState extends State<ShopOwner> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Future<bool> _backStore()async{
     return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
@@ -43,7 +42,7 @@ class _shopOwnerState extends State<shopOwner> {
           ),
           backgroundColor: Colors.white,
           title: Text(
-            "LAPSNY",
+            EcommerceApp.appName,
             style: TextStyle(
               fontSize: 20.0,
               color: primaryColor,
@@ -154,7 +153,7 @@ class _shopOwnerState extends State<shopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Shoes";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -173,7 +172,7 @@ class _shopOwnerState extends State<shopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Shirts";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -192,7 +191,7 @@ class _shopOwnerState extends State<shopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Pants";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -211,7 +210,7 @@ class _shopOwnerState extends State<shopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Jackets";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -231,7 +230,7 @@ class _shopOwnerState extends State<shopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Sneakers";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -251,7 +250,7 @@ class _shopOwnerState extends State<shopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Shorts";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -270,7 +269,7 @@ class _shopOwnerState extends State<shopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Bags";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => shopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
                                         Navigator.pushReplacement(
                                             context, route);
                                       },

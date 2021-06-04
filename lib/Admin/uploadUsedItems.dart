@@ -2,7 +2,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminShiftOrders.dart';
-import 'package:e_shop/Admin/uploadUsedItems.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/main.dart';
@@ -16,19 +15,19 @@ import 'adminOrders.dart';
 
 
 
-class UploadPage extends StatefulWidget
+class UploadUsedPage extends StatefulWidget
 {
   @override
-  _UploadPageState createState() => _UploadPageState();
+  _UploadUsedPageState createState() => _UploadUsedPageState();
 }
 
-class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMixin<UploadPage>
+class _UploadUsedPageState extends State<UploadUsedPage> with AutomaticKeepAliveClientMixin<UploadUsedPage>
 {
   String DropdownValue_Section ;
   String DropdownValue_Category ;
   List <String> colorList1=[];
   List <String> sizeList1=[];
-  bool isUsed=false;
+  bool isUsed=true;
 
   //var size=[];
   //var itemcolor=[];
@@ -106,43 +105,9 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
                   backgroundColor: Colors.black87,
                   onSurface: Colors.grey,
                 ),
-                child: Text("Add New Items",style: TextStyle(fontSize: 20,color: Colors.white),),
-
-                onPressed: ()=>takeImage(context),
-              ) ,
-
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child:TextButton(
-                style: TextButton.styleFrom(primary: Colors.white,
-                  backgroundColor: Colors.black87,
-                  onSurface: Colors.grey,
-                ),
                 child: Text("Add Used Items",style: TextStyle(fontSize: 20,color: Colors.white),),
 
-                onPressed: (){
-                  Route route = MaterialPageRoute(builder: (C) => UploadUsedPage());
-                  Navigator.pushReplacement(context, route);
-                },
-              ) ,
-
-            ),
-
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child:TextButton(
-                style: TextButton.styleFrom(primary: Colors.white,
-                  backgroundColor: Colors.black87,
-                  onSurface: Colors.green,
-                ),
-                child: Text("My Products",style: TextStyle(fontSize: 20,color: Colors.white),),
-
-                onPressed: (){
-                  Route route = MaterialPageRoute(builder: (C) => AdminOrders());
-                  Navigator.pushReplacement(context, route);
-
-                },
+                onPressed: ()=>takeImage(context),
               ) ,
 
             ),

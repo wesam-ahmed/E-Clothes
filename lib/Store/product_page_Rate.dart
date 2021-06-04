@@ -13,18 +13,17 @@ import 'package:full_screen_image/full_screen_image.dart';
 
 
 // ignore: must_be_immutable
-class ProductPage extends StatefulWidget {
+class ProductPageRate extends StatefulWidget {
   final ItemModel itemModel;
-  List<String>sizes=[];
-  List<String>colors=[];
 
-  ProductPage({this.itemModel,this.sizes,this.colors});
+
+  ProductPageRate({this.itemModel});
 
   @override
-  _ProductPageState createState() => _ProductPageState();
+  _ProductPageRateState createState() => _ProductPageRateState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class _ProductPageRateState extends State<ProductPageRate> {
 
   final double expanded_height = 400;
   final double rounded_container_height = 50;
@@ -111,8 +110,6 @@ class _ProductPageState extends State<ProductPage> {
               ],
             ),
           ),
-          SizedBox(height: 275, child: FeaturedWidget()),
-
           Padding(
             padding: EdgeInsets.symmetric(
               vertical: 15,
@@ -136,18 +133,7 @@ class _ProductPageState extends State<ProductPage> {
                       )
                     ],
                   ),
-                  Container(
-                    width: 180,
-                    height: 50,
-                    child: CustomButton(onPress: (){
-                      checkItemInCart(widget.itemModel.idItem, context);
-                    },
-                      text: "Add to Cart",
 
-
-
-                    ),
-                  ),
                 ],),
             ),
 
@@ -209,53 +195,6 @@ class _ProductPageState extends State<ProductPage> {
 
 }
 
-Widget sourceInfo(ItemModel model, BuildContext context,
-    {Color background, removeCartFunction}) {
-  return InkWell(
-    onTap: () {
-      getSizes(model.idItem).then((size){
-        getColors(model.idItem).then((color){
-          Route route =
-          MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
-          Navigator.pushReplacement(context, route);
-        });
-      });
-
-    },
-    splashColor: Colors.grey,
-    child: Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
-        width: 150,
-        height: 50,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-                decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(50)),
-                child: Container(
-                  height: 180,
-                  width: 100,
-                  child: Image.network(
-                    model.thumbnailUrl,
-                    fit: BoxFit.fill,
-                  ),
-                )),
-            SizedBox(height: 5,),
-            CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
-            SizedBox(height: 5,),
-            CustomText(text: model.shortInfo,alignment: Alignment.bottomLeft , color: Colors.grey,),
-            SizedBox(height: 5,),
-            CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
-          ],
-        ),
-
-      ),
-    ),
-  );
-}
 //da el box bta3 el sora
 class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -342,45 +281,7 @@ class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
     return true;
   }
 }
-class FeaturedWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection("items")
-          .where("section",
-          isEqualTo: SectionKey.section.toString())
-          .where("category",
-          isEqualTo: SectionKey.category.toString())
-          .snapshots(),
-      builder: (context, dataSnapshot) {
-        if(dataSnapshot.hasData)
-        {
-          return ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (context,index)
-            {
-              ItemModel model = ItemModel.fromJson(
-                  dataSnapshot
-                      .data.docs[index].data());
-              return sourceInfo(model, context);
-            }
-            ,itemCount: dataSnapshot.data.docs.length,
-          );
-        }
-        else
-        {
-          return Center(
-            child: circularProgress(),
-          );
-        }
-
-      },
-    );
-
-  }
-}
 
 
 
