@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_shop/Models/sellerdata.dart';
 import 'package:e_shop/Store/shopOwner.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/custom_button.dart';
@@ -10,10 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 
 
+// ignore: must_be_immutable
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
   List<String>sizes=[];
@@ -195,7 +194,7 @@ class _ProductPageState extends State<ProductPage> {
             onPressed: (){
 
               Route route =
-              MaterialPageRoute(builder: (c) => shopOwner(itemModel: widget.itemModel,));
+              MaterialPageRoute(builder: (c) => ShopOwner(itemModel: widget.itemModel,));
               Navigator.pushReplacement(context, route);
 
             },
