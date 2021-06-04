@@ -2,6 +2,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Models/item.dart';
+import 'package:e_shop/Store/product_page_Rate.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
@@ -45,7 +47,7 @@ OrderDetails({Key key,this.orderID}):super(key: key);
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
-                              "EG"+dataMap[EcommerceApp.totalAmount].toString(),
+                              dataMap[EcommerceApp.totalAmount].toString()+" EGP",
                               style:  TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
                             ),
                           ),
@@ -63,18 +65,17 @@ OrderDetails({Key key,this.orderID}):super(key: key);
                             ),
                           ),
                           Divider(height: 2,),
-                          FutureBuilder<QuerySnapshot>(
-                            future: EcommerceApp.firestore.collection("items").where("idItemAsId",whereIn: dataMap[EcommerceApp.productID]).get(),
+                         FutureBuilder(
+                            future: EcommerceApp.firestore.collection("items"). where("idItem" ,whereIn: dataMap[EcommerceApp.productID]).get(),
                             builder: (c,dataSnapshot){
                               return dataSnapshot.hasData ?
-                                  OrderCard(
-                                    itemCount: dataSnapshot.data.docs.length,
-                                    data: dataSnapshot.data.docs,
-                                  )
+                              OrderCard(
+                                itemCount: dataSnapshot.data.docs.length,
+                                data: dataSnapshot.data.docs,
+                              )
                                   :Center(child: circularProgress(),);
                             },
-                          ),
-                          Divider(height: 2,),
+                          ),                          Divider(height: 2,),
                           FutureBuilder<DocumentSnapshot>(
                            future:EcommerceApp.firestore
                            .collection(EcommerceApp.collectionUser)

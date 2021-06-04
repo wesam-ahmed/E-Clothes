@@ -102,4 +102,5 @@ class PublishedDate {
 class SectionKey{
   static String section;
   static String category="Shirts";
+  static bool isUsed =false;
 }

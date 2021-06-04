@@ -14,13 +14,8 @@ OrderCard({Key key,this.itemCount,this.data,this.orderId}):super(key:key);
   Widget build(BuildContext context) {
     return  InkWell(
       onTap: (){
-       Route route;
-       if(counter==0){
-         counter=counter+1;
-         route=MaterialPageRoute(builder: (c)=>OrderDetails(orderID: orderId,));
 
-       }
-       Navigator.push(context, MaterialPageRoute(builder: (c)=>OrderDetails(orderID: orderId,)));
+       //Navigator.push(context, MaterialPageRoute(builder: (c)=>OrderDetails(orderID: orderId,)));
       },
       child: Container(
         decoration: new BoxDecoration(

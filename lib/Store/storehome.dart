@@ -257,7 +257,8 @@ class _StoreHomeState extends State<StoreHome> {
                                 .where("section",
                                 isEqualTo: SectionKey.section.toString())
                                 .where("category",
-                                isEqualTo: SectionKey.category.toString())
+                                isEqualTo: SectionKey.category.toString()).
+                              where("isUsed",isEqualTo: SectionKey.isUsed)
                                 .snapshots(),
                             builder: (context, dataSnapshot) {
                               return !dataSnapshot.hasData
