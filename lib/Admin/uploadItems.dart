@@ -450,6 +450,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       "sellername":EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminName),
       "selleraddress":EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminAddress),
       "sellerthumbnailUrl":EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminphoto),
+      "buyers":1
     });
     setState(() {
       file=null;
