@@ -89,6 +89,11 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ),
           ),
+          Container(margin: EdgeInsets.only(right: 20),
+              child: CustomText(text:"\u{2B50}"+widget.itemModel.finalrate.toStringAsFixed(1),alignment: Alignment.bottomRight ,color: primaryColor,)),
+          Container(margin: EdgeInsets.only(right: 10),
+              child: CustomText(text:widget.itemModel.rater.toString()+" ratings",alignment: Alignment.bottomRight ,color: Colors.grey.shade300,)),
+
           Padding(
             padding: EdgeInsets.only(
               left: 15,
@@ -111,7 +116,7 @@ class _ProductPageState extends State<ProductPage> {
               ],
             ),
           ),
-          SizedBox(height: 275, child: FeaturedWidget()),
+          SizedBox(height: 260, child: FeaturedWidget()),
 
           Padding(
             padding: EdgeInsets.symmetric(
@@ -220,15 +225,19 @@ Widget sourceInfo(ItemModel model, BuildContext context,
           Navigator.pushReplacement(context, route);
         });
       });
-
     },
     splashColor: Colors.grey,
     child: Padding(
       padding: EdgeInsets.all(10.0),
       child: Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
+         decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300),
+      borderRadius: BorderRadius.all(Radius.circular(10)),
+      boxShadow: [BoxShadow(
+          color: Colors.grey.shade200,
+          offset: Offset(0.0, 5.0), //(x,y)
+          blurRadius: 10.0,
+        ),],),
         width: 150,
-        height: 50,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -238,20 +247,35 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                 child: Container(
                   height: 180,
                   width: 100,
-                  child: Image.network(
-                    model.thumbnailUrl,
-                    fit: BoxFit.fill,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(9.0),
+                    child: Image.network(
+                      model.thumbnailUrl,
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 )),
             SizedBox(height: 5,),
-            CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
+            CustomText(text: model.title,alignment: Alignment.bottomLeft),
             SizedBox(height: 5,),
-            CustomText(text: model.shortInfo,alignment: Alignment.bottomLeft , color: Colors.grey,),
-            SizedBox(height: 5,),
-            CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,),
+                Container(
+                  alignment: Alignment.topRight,
+                  child: InkWell(
+                    onTap: () {checkItemInCart(model.idItem, context);},
+                    child: Icon(
+                      Icons.add_shopping_cart_outlined,
+                      color: primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
-
       ),
     ),
   );
@@ -277,7 +301,6 @@ class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
       child: Stack(
         children: <Widget>[
           Hero(
-
             tag: itemModel.shortInfo,
             child: FullScreenWidget(
               child: Image.network(
