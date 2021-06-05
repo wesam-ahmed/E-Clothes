@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 import 'adminOrders.dart';
 
@@ -417,13 +418,13 @@ class _UploadUsedPageState extends State<UploadUsedPage> with AutomaticKeepAlive
   saveIteminfo(String downloadUrl){
     final itemsRef=FirebaseFirestore.instance.collection("items");
     itemsRef.doc(productId).set({
-      "shortInfo":_shortInfoTextEditingController.text.trim(),
-      "longDescription":_descriptionTextEditingController.text.trim(),
+      "shortInfo":toBeginningOfSentenceCase(_shortInfoTextEditingController.text).trim(),
+      "longDescription":toBeginningOfSentenceCase(_descriptionTextEditingController.text).trim(),
       "price":int.parse(_priceTextEditingController.text),
       "publishedDate": DateTime.now(),
       "thumbnailUrl":downloadUrl,
       "status":"available",
-      "title":_titleTextEditingController.text.trim(),
+      "title":toBeginningOfSentenceCase(_titleTextEditingController.text).trim(),
       "idItem":productId,
       "section":DropdownValue_Section.toString(),
       "category":DropdownValue_Category.toString(),
@@ -436,6 +437,9 @@ class _UploadUsedPageState extends State<UploadUsedPage> with AutomaticKeepAlive
       "sellerthumbnailUrl":EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminphoto),
       "buyers":1,
       "isUsed":isUsed,
+      "rate":5,
+      "rater":1,
+      "finalrate":5
     });
     setState(() {
       file=null;

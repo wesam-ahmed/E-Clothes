@@ -13,10 +13,14 @@ class ItemModel {
   int price;
   int quantity;
   int buyers;
+  num rate;
+  num rater;
+  num finalrate;
   String sellerid;
   String sellername;
   String selleraddress;
   String sellerthumbnailUrl;
+
 
 
   ItemModel(
@@ -36,6 +40,9 @@ class ItemModel {
         this.selleraddress,
         this.sellerthumbnailUrl,
         this.buyers,
+        this.rate,
+        this.rater,
+        this.finalrate,
         });
 
   ItemModel.fromJson(Map<String, dynamic> json) {
@@ -55,6 +62,11 @@ class ItemModel {
     selleraddress=json['selleraddress'];
     sellerthumbnailUrl = json['sellerthumbnailUrl'];
     buyers = json['buyers'];
+    rate = json['rate'];
+    rater = json['rater'];
+    finalrate = json['finalrate'];
+
+
 
   }
 
@@ -78,6 +90,10 @@ class ItemModel {
     data['selleraddress'] =this.selleraddress;
     data['sellerthumbnailUrl'] = this.sellerthumbnailUrl;
     data['buyers']=this.buyers;
+    data['rate']=this.rate;
+    data['rater']=this.rater;
+    data['finalrate']=this.finalrate;
+
 
     return data;
   }

@@ -100,7 +100,7 @@ class _StoreHomeState extends State<StoreHome> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     CustomText(
-                                      text: "Categorise",
+                                      text: "Categories",
                                     ),
                                     SizedBox(height: 10),
                                     SingleChildScrollView(
@@ -160,7 +160,7 @@ class _StoreHomeState extends State<StoreHome> {
                                             backgroundColor: Colors.grey.shade100,
                                             icon: Image.asset("images/jeans.png"),
                                             label: Text(
-                                              "trousers",
+                                              "Trousers",
                                               style: TextStyle(color: Colors.black),
                                             ),
                                           ),
@@ -365,7 +365,15 @@ Widget sourceInfo(ItemModel model, BuildContext context,
             SizedBox(height: 10,),
             CustomText(text: model.title,alignment: Alignment.bottomLeft,),
             SizedBox(height: 10,),
-            CustomText(text:model.price.toString()+" \E\G\P",alignment: Alignment.bottomLeft ,color: primaryColor,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(text:model.price.toString()+" \E\G\P",alignment: Alignment.bottomLeft ,color: primaryColor,),
+                CustomText(text:"\u{2B50}"+model.finalrate.toStringAsFixed(1),alignment: Alignment.bottomLeft ,color: Colors.green,),
+
+
+              ],
+            ),
             SizedBox(height: 10,),
             Container(
               height: 40,
