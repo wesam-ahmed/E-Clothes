@@ -1,7 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Store/storehome.dart';
+import 'package:e_shop/Widgets/orderNumberCard.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:flutter/services.dart';
@@ -47,20 +47,8 @@ class _MyOrdersState extends State<MyOrders> {
                     ?ListView.builder(
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (c,index){
-                    return FutureBuilder<QuerySnapshot>(
-                      future:FirebaseFirestore.instance.collection("items")
-                          .where("idItem",whereIn: snapshot.data.docs[index].data()[EcommerceApp.productID]).get(),
+                    return OrderNumberCard(orderId: snapshot.data.docs[index].id,);
 
-
-                      builder: (c,snap){
-                        return snap.hasData ? OrderCard(
-                          itemCount: snap.data.docs.length,
-                          data: snap.data.docs,
-                          orderId: snapshot.data.docs[index].id,
-                        )
-                            :Center(child: circularProgress(),);
-                      },
-                    );
                   },
                 )
                     : Center(child: circularProgress(),);

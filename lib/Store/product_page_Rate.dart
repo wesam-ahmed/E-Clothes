@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Store/product_page.dart';
 import 'package:e_shop/Store/shopOwner.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/custom_button.dart';
@@ -9,50 +10,43 @@ import 'package:flutter/material.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:full_screen_image/full_screen_image.dart';
-
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 
 // ignore: must_be_immutable
-class ProductPage extends StatefulWidget {
+class ProductPageRate extends StatefulWidget {
   final ItemModel itemModel;
-  List<String>sizes=[];
-  List<String>colors=[];
-
-  ProductPage({this.itemModel,this.sizes,this.colors});
-
+  ProductPageRate({this.itemModel});
   @override
-  _ProductPageState createState() => _ProductPageState();
+  _ProductPageRateState createState() => _ProductPageRateState();
 }
-
-class _ProductPageState extends State<ProductPage> {
+class _ProductPageRateState extends State<ProductPageRate> {
 
   final double expanded_height = 400;
   final double rounded_container_height = 50;
-  Future<bool> _backStore() async {
-    return await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => StoreHome()));
-  }
   int quantityOfItems = 1;
   String ValueChoose;
+  bool firstPress = true;
+  double firstRate;
+
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: _backStore,
-      child: Scaffold(
-        body: Stack(
-          children: <Widget> [
-            CustomScrollView(
-              slivers: <Widget>[
-                _buildSliverHead(),
-                SliverToBoxAdapter(
-                  child: _buildDetail(),
-                )
-              ],
-            ),
+    return Scaffold(
+      body: Stack(
+        children: <Widget> [
+          CustomScrollView(
+            slivers: <Widget>[
+              _buildSliverHead(),
+              SliverToBoxAdapter(
+                child: _buildDetail(),
+              )
+            ],
+          ),
 
-          ],
-        ),
+        ],
       ),
     );
 
@@ -89,11 +83,6 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ),
           ),
-          Container(margin: EdgeInsets.only(right: 20),
-              child: CustomText(text:"\u{2B50}"+widget.itemModel.finalrate.toStringAsFixed(1),alignment: Alignment.bottomRight ,color: primaryColor,)),
-          Container(margin: EdgeInsets.only(right: 10),
-              child: CustomText(text:widget.itemModel.rater.toString()+" ratings",alignment: Alignment.bottomRight ,color: Colors.grey.shade300,)),
-
           Padding(
             padding: EdgeInsets.only(
               left: 15,
@@ -101,23 +90,7 @@ class _ProductPageState extends State<ProductPage> {
               top: 10,
               bottom: 10,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Featured",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    letterSpacing: 1.6,
-                  ),
-                ),
-              ],
-            ),
           ),
-          SizedBox(height: 260, child: FeaturedWidget()),
-
           Padding(
             padding: EdgeInsets.symmetric(
               vertical: 15,
@@ -136,27 +109,64 @@ class _ProductPageState extends State<ProductPage> {
                         color: Colors.grey,
                       ),
                       SizedBox(height: 5,),
-                      CustomText(text: '\E\G'+widget.itemModel.price.toString() ,
+                      CustomText(text: widget.itemModel.price.toString()+' \E\G\P' ,
                         color: primaryColor,
                       )
                     ],
                   ),
-                  Container(
-                    width: 180,
-                    height: 50,
-                    child: CustomButton(onPress: (){
-                      checkItemInCart(widget.itemModel.idItem, context);
-                    },
-                      text: "Add to Cart",
+            Column(children: [
+              CustomText(text: "Rate",
+                fontSize: 10,
+                color: Colors.grey,
+              ),
+              SizedBox(height: 5,),
+              CustomText(text: (widget.itemModel.finalrate).toStringAsFixed(1) ,
+                color: primaryColor,
+              )
+            ],),
+            RatingBar.builder(
+              initialRating: 3,
+              minRating: 1,
+              direction: Axis.horizontal,
+              allowHalfRating: true,
+              itemCount: 5,
+              itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                color: Colors.green,
+              ),
+              onRatingUpdate: (rating) {
+                if(firstPress)
+                {
+                  firstPress=false;
+                  firstRate = rating;
+                  Fluttertoast.showToast(
+                    msg: "Thanks for rate $firstRate of this "+widget.itemModel.title,
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.CENTER,
+                  );
+                  FirebaseFirestore.instance.collection("items").doc(widget.itemModel.idItem).update({
+                    "rate":FieldValue.increment(firstRate),
+                    "rater":FieldValue.increment(1),
+                    "finalrate":((widget.itemModel.rate)/(widget.itemModel.rater)),
+                  });
 
-
-
-                    ),
-                  ),
+                }
+                else {
+                  Fluttertoast.showToast(
+                      msg: "Sorry Can't change your first rate it was $firstRate",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.CENTER,
+                  );
+                }
+              },
+            ),
                 ],),
             ),
 
           ),
+          SizedBox(height: 275, child: FeaturedWidget()),
+
         ],
       ),
     );
@@ -213,73 +223,6 @@ class _ProductPageState extends State<ProductPage> {
   }
 
 }
-
-Widget sourceInfo(ItemModel model, BuildContext context,
-    {Color background, removeCartFunction}) {
-  return InkWell(
-    onTap: () {
-      getSizes(model.idItem).then((size){
-        getColors(model.idItem).then((color){
-          Route route =
-          MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
-          Navigator.pushReplacement(context, route);
-        });
-      });
-    },
-    splashColor: Colors.grey,
-    child: Padding(
-      padding: EdgeInsets.all(10.0),
-      child: Container(
-         decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      boxShadow: [BoxShadow(
-          color: Colors.grey.shade200,
-          offset: Offset(0.0, 5.0), //(x,y)
-          blurRadius: 10.0,
-        ),],),
-        width: 150,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Container(
-                decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(50)),
-                child: Container(
-                  height: 180,
-                  width: 100,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(9.0),
-                    child: Image.network(
-                      model.thumbnailUrl,
-                      fit: BoxFit.fill,
-                    ),
-                  ),
-                )),
-            SizedBox(height: 5,),
-            CustomText(text: model.title,alignment: Alignment.bottomLeft),
-            SizedBox(height: 5,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,),
-                Container(
-                  alignment: Alignment.topRight,
-                  child: InkWell(
-                    onTap: () {checkItemInCart(model.idItem, context);},
-                    child: Icon(
-                      Icons.add_shopping_cart_outlined,
-                      color: primaryColor,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
 //da el box bta3 el sora
 class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -301,6 +244,7 @@ class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
       child: Stack(
         children: <Widget>[
           Hero(
+
             tag: itemModel.shortInfo,
             child: FullScreenWidget(
               child: Image.network(
@@ -365,6 +309,7 @@ class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
     return true;
   }
 }
+
 class FeaturedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -403,6 +348,53 @@ class FeaturedWidget extends StatelessWidget {
     );
 
   }
+}
+Widget sourceInfo(ItemModel model, BuildContext context,
+    {Color background, removeCartFunction}) {
+  return InkWell(
+    onTap: () {
+      getSizes(model.idItem).then((size){
+        getColors(model.idItem).then((color){
+          Route route =
+          MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
+          Navigator.pushReplacement(context, route);
+        });
+      });
+
+    },
+    splashColor: Colors.grey,
+    child: Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Container(
+        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
+        width: 150,
+        height: 50,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+                decoration:
+                BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                child: Container(
+                  height: 180,
+                  width: 100,
+                  child: Image.network(
+                    model.thumbnailUrl,
+                    fit: BoxFit.fill,
+                  ),
+                )),
+            SizedBox(height: 5,),
+            CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
+            SizedBox(height: 5,),
+            CustomText(text: model.shortInfo,alignment: Alignment.bottomLeft , color: Colors.grey,),
+            SizedBox(height: 5,),
+            CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
+          ],
+        ),
+
+      ),
+    ),
+  );
 }
 
 

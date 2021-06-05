@@ -3,6 +3,7 @@ import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Store/product_page.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
 import 'package:e_shop/Widgets/constance.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -99,7 +100,7 @@ class _StoreHomeState extends State<StoreHome> {
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
                                     CustomText(
-                                      text: "Categorise",
+                                      text: "Categories",
                                     ),
                                     SizedBox(height: 10),
                                     SingleChildScrollView(
@@ -159,7 +160,7 @@ class _StoreHomeState extends State<StoreHome> {
                                             backgroundColor: Colors.grey.shade100,
                                             icon: Image.asset("images/jeans.png"),
                                             label: Text(
-                                              "trousers",
+                                              "Trousers",
                                               style: TextStyle(color: Colors.black),
                                             ),
                                           ),
@@ -256,7 +257,8 @@ class _StoreHomeState extends State<StoreHome> {
                                 .where("section",
                                 isEqualTo: SectionKey.section.toString())
                                 .where("category",
-                                isEqualTo: SectionKey.category.toString())
+                                isEqualTo: SectionKey.category.toString()).
+                              where("isUsed",isEqualTo: SectionKey.isUsed)
                                 .snapshots(),
                             builder: (context, dataSnapshot) {
                               return !dataSnapshot.hasData
@@ -289,9 +291,9 @@ class _StoreHomeState extends State<StoreHome> {
         ));
   }
 }
-getSizes(String DocID)async{
+getSizes(String docid)async{
   List <String> sizes=  [];
-  await FirebaseFirestore.instance.collection("items").doc(DocID).get().then((value){
+  await FirebaseFirestore.instance.collection("items").doc(docid).get().then((value){
     if(value!=null)
     {
       value.data()['size'].forEach((element) {
@@ -301,9 +303,9 @@ getSizes(String DocID)async{
   });
   return sizes;
 }
-getColors(String DocID)async{
+getColors(String docid)async{
   List <String> colors=  [];
-  await FirebaseFirestore.instance.collection("items").doc(DocID).get().then((value){
+  await FirebaseFirestore.instance.collection("items").doc(docid).get().then((value){
     if(value!=null)
     {
       value.data()['color'].forEach((element) {
@@ -330,9 +332,17 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     child: Padding(
       padding: EdgeInsets.all(5.0),
       child: Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade200)),
+        decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              offset: Offset(0.0, 5.0), //(x,y)
+              blurRadius: 10.0,
+            ),
+          ],),
         width: MediaQuery.of(context).size.width*.4,
-        height: 350,
+        height: 320,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -340,23 +350,41 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                 decoration:
                 BoxDecoration(borderRadius: BorderRadius.circular(50)),
                 child: Container(
-                  height: 250,
+                  height: 200,
                   width: MediaQuery.of(context).size.width*.4,
-                  child: Image.network(
-                    model.thumbnailUrl,
-                    width: 150.0,
-                    height: 150.0,
-                    fit: BoxFit.fill,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(9.0),
+                    child: Image.network(
+                      model.thumbnailUrl,
+                      fit: BoxFit.fill,
+                    ),
                   ),
 
 
                 )),
             SizedBox(height: 10,),
-            CustomText(text: model.title,alignment: Alignment.bottomLeft ,),
+            CustomText(text: model.title,alignment: Alignment.bottomLeft,),
             SizedBox(height: 10,),
-            CustomText(text: model.shortInfo,alignment: Alignment.bottomLeft , color: Colors.grey,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomText(text:model.price.toString()+" \E\G\P",alignment: Alignment.bottomLeft ,color: primaryColor,),
+                CustomText(text:"\u{2B50}"+model.finalrate.toStringAsFixed(1),alignment: Alignment.bottomLeft ,color: Colors.green,),
+
+
+              ],
+            ),
             SizedBox(height: 10,),
-            CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,)
+            Container(
+              height: 40,
+              width: 10,
+              child: CustomButton(onPress: (){
+                checkItemInCart(model.idItem, context);
+              },
+                text: "Add to Cart",
+              ),
+            ),
+
           ],
         ),
 

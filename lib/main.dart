@@ -2,22 +2,22 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Authentication/login.dart';
 import 'package:e_shop/Counters/ItemQuantity.dart';
-import 'package:e_shop/Store/cart.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'Authentication/authenication.dart';
 import 'package:e_shop/Config/config.dart';
 import 'Config/config.dart';
 import 'Counters/cartitemcounter.dart';
 import 'Counters/changeAddresss.dart';
 import 'Counters/totalMoney.dart';
 import 'Store/Section.dart';
-import 'Store/storehome.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+
 
 Future<void> main() async
 {
@@ -63,6 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
   // ignore: must_call_super
   void initState() {
     // TODO: implement initState
+
     displaySplash();
   }
 

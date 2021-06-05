@@ -12,10 +12,15 @@ class ItemModel {
   String category;
   int price;
   int quantity;
+  int buyers;
+  num rate;
+  num rater;
+  num finalrate;
   String sellerid;
   String sellername;
   String selleraddress;
   String sellerthumbnailUrl;
+
 
 
   ItemModel(
@@ -34,6 +39,10 @@ class ItemModel {
         this.sellername,
         this.selleraddress,
         this.sellerthumbnailUrl,
+        this.buyers,
+        this.rate,
+        this.rater,
+        this.finalrate,
         });
 
   ItemModel.fromJson(Map<String, dynamic> json) {
@@ -52,6 +61,13 @@ class ItemModel {
     sellername = json['sellername'];
     selleraddress=json['selleraddress'];
     sellerthumbnailUrl = json['sellerthumbnailUrl'];
+    buyers = json['buyers'];
+    rate = json['rate'];
+    rater = json['rater'];
+    finalrate = json['finalrate'];
+
+
+
   }
 
   Map<String, dynamic> toJson() {
@@ -73,6 +89,12 @@ class ItemModel {
     data['sellername'] = this.sellername;
     data['selleraddress'] =this.selleraddress;
     data['sellerthumbnailUrl'] = this.sellerthumbnailUrl;
+    data['buyers']=this.buyers;
+    data['rate']=this.rate;
+    data['rater']=this.rater;
+    data['finalrate']=this.finalrate;
+
+
     return data;
   }
 }
@@ -96,4 +118,5 @@ class PublishedDate {
 class SectionKey{
   static String section;
   static String category="Shirts";
+  static bool isUsed =false;
 }

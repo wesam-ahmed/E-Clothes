@@ -276,8 +276,7 @@ class AdminShippingDetails extends StatelessWidget {
         .doc(EcommerceApp.sharedPreferences
         .getString(EcommerceApp.userUID))
         .collection(EcommerceApp.collectionOrders)
-        .doc(mOrderId)
-        .delete();
+        .doc(mOrderId);
 
     getOrderId ="";
     Route route = MaterialPageRoute(builder: (c)=> UploadPage());

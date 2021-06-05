@@ -11,6 +11,8 @@ import 'package:provider/provider.dart';
 class PaymentPage extends StatefulWidget {
   final String addressId;
   final double totalAmount;
+
+
   PaymentPage({Key key, this.addressId, this.totalAmount}) : super(key: key);
   @override
   _PaymentPageState createState() => _PaymentPageState();
@@ -68,6 +70,10 @@ class _PaymentPageState extends State<PaymentPage> {
       EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
       EcommerceApp.isSuccess:true,
     });
+    UpdateNumberOfBuyers({
+      "buyers":FieldValue.increment(1),
+      "quantity":FieldValue.increment(-1),
+    });
       writeOrderDetalisForAdmin({
     EcommerceApp.addressID:widget.addressId,
     EcommerceApp.totalAmount:widget.totalAmount,
@@ -111,5 +117,13 @@ class _PaymentPageState extends State<PaymentPage> {
     collection(EcommerceApp.collectionOrders)
         .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)+data['orderTime']).
     set(data);
+  }
+  Future UpdateNumberOfBuyers(Map<String,dynamic>data)async{
+    List tempList=EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
+    tempList.forEach((element) async {
+    await EcommerceApp.firestore.collection("items").doc(element).update(data);
+    });
+    //await EcommerceApp.firestore.collection("items").doc("1621570115036").update(data);
+
   }
 }
