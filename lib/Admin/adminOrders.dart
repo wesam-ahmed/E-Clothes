@@ -109,4 +109,3 @@ Widget sourceInfoProducts(ItemModel model, BuildContext context,
   );
 }
 
-
