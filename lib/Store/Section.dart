@@ -202,14 +202,11 @@ class _SectionState extends State<Section>{
                         SectionKey.section="Men";
                       }
                   ),
-
                   Divider(height: 5,),
                    SizedBox(height: 20,),
                   Divider(height: 5,),
-
                    TextButton(style: TextButton.styleFrom(
                     primary: primaryColor,
-
                     onSurface: Colors.grey,
                   ),
                       child: Text("Woman",style: TextStyle(fontSize: 50),),
@@ -236,7 +233,6 @@ class _SectionState extends State<Section>{
                   Divider(height: 5,),
                   SizedBox(height: 20,),
                   Divider(height: 5,),
-
                   TextButton(style: TextButton.styleFrom(
                     primary: primaryColor,
                     onSurface: Colors.grey,
