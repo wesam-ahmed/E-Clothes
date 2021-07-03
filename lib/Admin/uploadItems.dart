@@ -4,6 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminShiftOrders.dart';
 import 'package:e_shop/Admin/uploadUsedItems.dart';
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Widgets/constance.dart';
+import 'package:e_shop/Widgets/customTextField.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -53,32 +56,35 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   }
   displayAdminHomeScreen() {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: Container(
-          decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                colors: [Colors.green,Colors.green],
-                begin:const FractionalOffset(0.0, 0.0),
-                end: const FractionalOffset(1.0, 0.0),
-                stops: [0.0,1.0],
-                tileMode: TileMode.clamp,
-              )
-          ),
-        ),
-        leading: IconButton(
-          icon:Icon(Icons.border_color,color: Colors.black,) ,
+      appBar:AppBar(
+        leading: new IconButton(
+          icon:Icon(Icons.border_color,color:primaryColor,) ,
           onPressed: (){
             Route route = MaterialPageRoute(builder: (C) => AdminShiftOrders());
             Navigator.pushReplacement(context, route);
           },
+
         ),
+        backgroundColor: Colors.white,
+        title: Text(
+          EcommerceApp.appName,
+          style: TextStyle(
+            fontSize: 20.0,
+            color: primaryColor,
+          ),
+        ),
+        centerTitle: true,
         actions: [
-          TextButton(
-            child: Text("Logout",style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold),),
-            onPressed: (){
-              Route route = MaterialPageRoute(builder: (C) => SplashScreen());
-              Navigator.pushReplacement(context, route);
-            },
+          Stack(
+            children: [
+              TextButton(
+      child: Text("Logout",style: TextStyle(color: primaryColor,fontSize: 16,fontWeight: FontWeight.bold),),
+        onPressed: () {
+          Route route = MaterialPageRoute(builder: (C) => SplashScreen());
+          Navigator.pushReplacement(context, route);
+        }
+          ),
+            ],
           )
         ],
       ),
@@ -87,67 +93,50 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   }
   getAdminHomeScreenBody(){
     return Container(
-      decoration: new BoxDecoration(
-          gradient: new LinearGradient(
-            colors: [Colors.lightGreen,Colors.green],
-            begin:const FractionalOffset(0.0, 0.0),
-            end: const FractionalOffset(1.0, 0.0),
-            stops: [0.0,1.0],
-            tileMode: TileMode.clamp,
-          )
-      ),
+
       child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.shop_two,color: Colors.white, size:200),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child:TextButton(
-                style: TextButton.styleFrom(primary: Colors.white,
-                  backgroundColor: Colors.black87,
-                  onSurface: Colors.grey,
-                ),
-                child: Text("Add New Items",style: TextStyle(fontSize: 20,color: Colors.white),),
-
-                onPressed: ()=>takeImage(context),
-              ) ,
-
+            Icon(Icons.shop_two,color: primaryColor, size:200),
+            Container(
+              width:180 ,
+              height: 50,
+              child: CustomButton(
+                onPress: (){
+                  takeImage(context);
+                },
+                color: Colors.grey.shade400,
+                text: "Add New Items",
+              ),
             ),
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child:TextButton(
-                style: TextButton.styleFrom(primary: Colors.white,
-                  backgroundColor: Colors.black87,
-                  onSurface: Colors.grey,
-                ),
-                child: Text("Add Used Items",style: TextStyle(fontSize: 20,color: Colors.white),),
-
-                onPressed: (){
+            SizedBox(height: 20,),
+            Container(
+              width:180 ,
+              height: 50,
+              child: CustomButton(
+                onPress: (){
                   Route route = MaterialPageRoute(builder: (C) => UploadUsedPage());
                   Navigator.pushReplacement(context, route);
                 },
-              ) ,
 
+                text: "Add Used Items",
+              ),
             ),
-
-            Padding(
-              padding: EdgeInsets.only(top: 20),
-              child:TextButton(
-                style: TextButton.styleFrom(primary: Colors.white,
-                  backgroundColor: Colors.black87,
-                  onSurface: Colors.green,
-                ),
-                child: Text("My Products",style: TextStyle(fontSize: 20,color: Colors.white),),
-
-                onPressed: (){
+            SizedBox(height: 20,),
+            Container(
+              width:180 ,
+              height: 50,
+              child: CustomButton(
+                onPress: (){
                   Route route = MaterialPageRoute(builder: (C) => AdminOrders());
                   Navigator.pushReplacement(context, route);
-
                 },
-              ) ,
-
+                color: Colors.grey.shade400,
+                text: "My Products",
+              ),
             ),
+
 
           ],
         ),
@@ -197,9 +186,39 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
       file=imageFile;
     });
   }
+
   displayAdminUploadHomeScreen(){
     return Scaffold(
-      appBar: AppBar(
+      appBar:AppBar(
+        leading: IconButton(icon: Icon(Icons.arrow_back,color: primaryColor,),onPressed: clearFromInfo ),
+        backgroundColor: Colors.white,
+        title: Text("New product",
+          style: TextStyle(
+            fontSize: 20.0,
+            color: primaryColor,
+          ),
+        ),
+        centerTitle: true,
+        actions: [
+          TextButton(
+              onPressed:uploading? null: (){
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Container(
+                        width: 30,
+                        height: 80,
+                        child: circularProgress()
+                    );
+                  },
+                );
+                uploadImageandSaveIteminfo();
+              } ,
+              child: Text("Add",style: TextStyle(color: primaryColor,fontSize: 16.0,fontWeight: FontWeight.bold),)
+          )
+        ],
+
+      ),/* AppBar(
         flexibleSpace: Container(
           decoration: new BoxDecoration(
               gradient: new LinearGradient(
@@ -219,8 +238,9 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
               child: Text("Add",style: TextStyle(color: Colors.black,fontSize: 16.0,fontWeight: FontWeight.bold),)
           )
         ],
-      ),
-      body: ListView(
+      ),*/
+      body:getBody(),
+      /* ListView(
         children: [
           uploading ? circularProgress() : Text(""),
           Container(
@@ -230,7 +250,9 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
               child: AspectRatio(
                 aspectRatio: 16/9,
                 child: Container(
-                  decoration: BoxDecoration(image: DecorationImage(image: FileImage(file),fit: BoxFit.cover)),
+                  height: 500,
+
+                  decoration: BoxDecoration(image: DecorationImage(image: FileImage(file),fit: BoxFit.fill)),
                 ),
               ),
             ),
@@ -423,8 +445,12 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
 
         ],
-      ),
+      ),*/
     );
+
+
+
+
 
 
   }
@@ -491,5 +517,238 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
 
     });
   }
+  Widget getBody() {
+    var size = MediaQuery.of(context).size;
+    return SingleChildScrollView(
+      child: Stack(
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            height: size.height * 0.5,
+            decoration: BoxDecoration(
+                image: DecorationImage(image: FileImage(file),fit: BoxFit.fill)
+            ),
+            child: SafeArea(
+              child: Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                ),
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(top: size.height * 0.45),
+            width: double.infinity,
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(50)),
+            child: Padding(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+
+                  Align(
+                    child: Container(
+                      width: 150,
+                      height: 7,
+                      decoration: BoxDecoration(
+                          color: Colors.green[50],
+                          borderRadius: BorderRadius.circular(10)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  CustomTextField(
+                    controller: _shortInfoTextEditingController,
+                    data: Icons.perm_device_info,
+                    hintText:"Shot info" ,
+                    isObsecure: false,
+                  ),
+                  CustomTextField(
+                    controller: _titleTextEditingController,
+                    data: Icons.title,
+                    hintText:"Title" ,
+                    isObsecure: false,
+                  ),
+                  CustomTextField(
+                    controller: _descriptionTextEditingController,
+                    data: Icons.info,
+                    hintText:"Description" ,
+                    isObsecure: false,
+                  ),
+                  CustomTextField(
+                    controller: _priceTextEditingController,
+                    data: Icons.monetization_on,
+                    hintText:"Price" ,
+                    isObsecure: false,
+                  ),
+                  CustomTextField(
+                    controller: _QuantityInfoTextEditingController,
+                    data: Icons.countertops,
+                    hintText:"Quantity" ,
+                    isObsecure: false,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 16,right: 16),
+
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.all(Radius.circular(10.0))
+                      ),
+                      child: DropdownButton(
+                        hint: Text("Selction"),
+                        elevation: 3,
+                        icon: Icon(Icons.arrow_drop_down),
+                        iconSize: 30,
+                        isExpanded: true,
+                        dropdownColor: Colors.grey.shade200,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            DropdownValue_Section = newValue;
+                          });
+                        },
+                        items: <String>['Men', 'Woman', 'Kids']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        })
+                            .toList(),
+
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      padding: EdgeInsets.only(left: 16,right: 16),
+
+                      decoration: BoxDecoration(
+                          color: Colors.grey.shade100,
+                          borderRadius: BorderRadius.all(Radius.circular(10.0))
+                      ),
+                      child: DropdownButton(
+                        hint: Text("Category"),
+                        elevation: 3,
+                        icon: Icon(Icons.arrow_drop_down),
+                        iconSize: 30,
+                        isExpanded: true,
+                        dropdownColor: Colors.grey.shade200,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            DropdownValue_Category = newValue;
+                          });
+                        },
+                        items: <String>['Shoes', 'Shirts', 'T-Shirt', 'Pants','Jackets']
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        })
+                            .toList(),
+
+                      ),
+                    ),
+                  ),
+
+
+               Container(
+                 padding: EdgeInsets.all(8),
+
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+
+                ),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+               child: Row(
+                 children: [
+                   Column(
+                     children: [
+                       Icon(Icons.add_road_rounded,color: Colors.black,),
+                       SizedBox(height: 8,),
+                       Text("size",style: TextStyle(fontSize: 15),)
+                     ],
+                   ),
+                   
+                   SizedBox(width: 5,),
+                   CheckboxGroup(
+                       checkColor: primaryColor,
+                       activeColor: Colors.grey.shade200,
+                       orientation: GroupedButtonsOrientation.HORIZONTAL,
+                       labels: <String>[
+                         "XS", "S", "M", "L", "XL", "XXL", "XXXL","One Size"
+                       ],
+                       onSelected: (List<String> sizeChecked) {
+                         sizeList1=sizeChecked;
+                         print(sizeList1);
+                       }
+                   ),
+
+                 ],
+               ),
+                ),
+              ),
+                  SizedBox(height: 8,),
+                  Container(
+                    padding: EdgeInsets.all(8),
+
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Column(
+                            children: [
+                              Icon(Icons.color_lens,color: Colors.black,),
+                              SizedBox(height: 8,),
+                              Text("color",style: TextStyle(fontSize: 15),)
+                            ],
+                          ),
+
+                          SizedBox(width: 5,),
+                          CheckboxGroup(
+                              checkColor: primaryColor,
+                              activeColor: Colors.grey.shade200,
+                              orientation: GroupedButtonsOrientation.HORIZONTAL,
+                              labels: <String> [
+                                "Red", "Blue", "Green", "Orange", "White", "Black", "Yellow", "Grey", "Violet", "Brown","Other"
+                              ],
+                              onSelected: (List<String> colorChecked) {
+                                colorList1= colorChecked;
+                                print(colorList1);
+                              }
+                          ),
+
+                        ],
+                      ),
+                    ),
+                  ),
+
+
+
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
 }
 

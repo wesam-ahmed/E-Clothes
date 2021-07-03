@@ -11,37 +11,37 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:full_screen_image/full_screen_image.dart';
 
-
 // ignore: must_be_immutable
 class ProductPage extends StatefulWidget {
   final ItemModel itemModel;
-  List<String>sizes=[];
-  List<String>colors=[];
+  List<String> sizes = [];
+  List<String> colors = [];
 
-  ProductPage({this.itemModel,this.sizes,this.colors});
+  ProductPage({this.itemModel, this.sizes, this.colors});
 
   @override
   _ProductPageState createState() => _ProductPageState();
 }
 
 class _ProductPageState extends State<ProductPage> {
-
   final double expanded_height = 400;
   final double rounded_container_height = 50;
+
   Future<bool> _backStore() async {
     return await Navigator.push(
         context, MaterialPageRoute(builder: (context) => StoreHome()));
   }
+
   int quantityOfItems = 1;
   String ValueChoose;
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: _backStore,
+      onWillPop: _backStore,
       child: Scaffold(
         body: Stack(
-          children: <Widget> [
+          children: <Widget>[
             CustomScrollView(
               slivers: <Widget>[
                 _buildSliverHead(),
@@ -50,13 +50,12 @@ class _ProductPageState extends State<ProductPage> {
                 )
               ],
             ),
-
           ],
         ),
       ),
     );
-
   }
+
   Widget _buildSliverHead() {
     return SliverPersistentHeader(
       delegate: DetailSliverDelegate(
@@ -66,9 +65,9 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
+
   //da el cointanier bta3 ba2y el saf7a ba3d el sora wi el seller
   Widget _buildDetail() {
-
     return Container(
       color: Colors.white,
       child: Column(
@@ -80,8 +79,8 @@ class _ProductPageState extends State<ProductPage> {
               vertical: 15,
               horizontal: 15,
             ),
-            child: Text(widget.itemModel.longDescription
-              ,
+            child: Text(
+              widget.itemModel.longDescription,
               style: TextStyle(
                 color: Colors.black38,
                 height: 1.4,
@@ -89,11 +88,21 @@ class _ProductPageState extends State<ProductPage> {
               ),
             ),
           ),
-          Container(margin: EdgeInsets.only(right: 20),
-              child: CustomText(text:"\u{2B50}"+widget.itemModel.finalrate.toStringAsFixed(1),alignment: Alignment.bottomRight ,color: primaryColor,)),
-          Container(margin: EdgeInsets.only(right: 10),
-              child: CustomText(text:widget.itemModel.rater.toString()+" ratings",alignment: Alignment.bottomRight ,color: Colors.grey.shade300,)),
-
+          Container(
+              margin: EdgeInsets.only(right: 20),
+              child: CustomText(
+                text:
+                    "\u{2B50}" + widget.itemModel.finalrate.toStringAsFixed(1),
+                alignment: Alignment.bottomRight,
+                color: primaryColor,
+              )),
+          Container(
+              margin: EdgeInsets.only(right: 10),
+              child: CustomText(
+                text: widget.itemModel.rater.toString() + " ratings",
+                alignment: Alignment.bottomRight,
+                color: Colors.grey.shade300,
+              )),
           Padding(
             padding: EdgeInsets.only(
               left: 15,
@@ -117,7 +126,6 @@ class _ProductPageState extends State<ProductPage> {
             ),
           ),
           SizedBox(height: 260, child: FeaturedWidget()),
-
           Padding(
             padding: EdgeInsets.symmetric(
               vertical: 15,
@@ -127,16 +135,19 @@ class _ProductPageState extends State<ProductPage> {
               padding: const EdgeInsets.all(1.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
                 children: [
                   Column(
                     children: [
-                      CustomText(text: "PRICE",
+                      CustomText(
+                        text: "PRICE",
                         fontSize: 10,
                         color: Colors.grey,
                       ),
-                      SizedBox(height: 5,),
-                      CustomText(text: '\E\G'+widget.itemModel.price.toString() ,
+                      SizedBox(
+                        height: 5,
+                      ),
+                      CustomText(
+                        text: '\E\G' + widget.itemModel.price.toString(),
                         color: primaryColor,
                       )
                     ],
@@ -144,23 +155,22 @@ class _ProductPageState extends State<ProductPage> {
                   Container(
                     width: 180,
                     height: 50,
-                    child: CustomButton(onPress: (){
-                      checkItemInCart(widget.itemModel.idItem, context);
-                    },
+                    child: CustomButton(
+                      onPress: () {
+                        checkItemInCart(widget.itemModel.idItem, context);
+                      },
                       text: "Add to Cart",
-
-
-
                     ),
                   ),
-                ],),
+                ],
+              ),
             ),
-
           ),
         ],
       ),
     );
   }
+
   //da bta3 el seller info
   Widget _buildUserInfo() {
     return Padding(
@@ -196,14 +206,13 @@ class _ProductPageState extends State<ProductPage> {
           ),
           Spacer(),
           IconButton(
-            onPressed: (){
-
-              Route route =
-              MaterialPageRoute(builder: (c) => ShopOwner(itemModel: widget.itemModel,));
+            onPressed: () {
+              Route route = MaterialPageRoute(
+                  builder: (c) => ShopOwner(
+                        itemModel: widget.itemModel,
+                      ));
               Navigator.pushReplacement(context, route);
-
             },
-
             icon: const Icon(Icons.arrow_forward_ios_outlined),
             color: Colors.black54,
           ),
@@ -211,17 +220,20 @@ class _ProductPageState extends State<ProductPage> {
       ),
     );
   }
-
 }
 
 Widget sourceInfo(ItemModel model, BuildContext context,
     {Color background, removeCartFunction}) {
   return InkWell(
     onTap: () {
-      getSizes(model.idItem).then((size){
-        getColors(model.idItem).then((color){
-          Route route =
-          MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
+      getSizes(model.idItem).then((size) {
+        getColors(model.idItem).then((color) {
+          Route route = MaterialPageRoute(
+              builder: (c) => ProductPage(
+                    itemModel: model,
+                    sizes: size,
+                    colors: color,
+                  ));
           Navigator.pushReplacement(context, route);
         });
       });
@@ -230,20 +242,24 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     child: Padding(
       padding: EdgeInsets.all(10.0),
       child: Container(
-         decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade300),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-      boxShadow: [BoxShadow(
-          color: Colors.grey.shade200,
-          offset: Offset(0.0, 5.0), //(x,y)
-          blurRadius: 10.0,
-        ),],),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.grey.shade300),
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade200,
+              offset: Offset(0.0, 5.0), //(x,y)
+              blurRadius: 10.0,
+            ),
+          ],
+        ),
         width: 150,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
                 decoration:
-                BoxDecoration(borderRadius: BorderRadius.circular(50)),
+                    BoxDecoration(borderRadius: BorderRadius.circular(50)),
                 child: Container(
                   height: 180,
                   width: 100,
@@ -255,17 +271,27 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                     ),
                   ),
                 )),
-            SizedBox(height: 5,),
-            CustomText(text: model.title,alignment: Alignment.bottomLeft),
-            SizedBox(height: 5,),
+            SizedBox(
+              height: 5,
+            ),
+            CustomText(text: model.title, alignment: Alignment.bottomLeft),
+            SizedBox(
+              height: 5,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text:"\E\G"+model.price.toString(),alignment: Alignment.bottomLeft ,color: primaryColor,),
+                CustomText(
+                  text: "\E\G" + model.price.toString(),
+                  alignment: Alignment.bottomLeft,
+                  color: primaryColor,
+                ),
                 Container(
                   alignment: Alignment.topRight,
                   child: InkWell(
-                    onTap: () {checkItemInCart(model.idItem, context);},
+                    onTap: () {
+                      checkItemInCart(model.idItem, context);
+                    },
                     child: Icon(
                       Icons.add_shopping_cart_outlined,
                       color: primaryColor,
@@ -280,6 +306,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     ),
   );
 }
+
 //da el box bta3 el sora
 class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
   final double expandedHeight;
@@ -365,48 +392,33 @@ class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
     return true;
   }
 }
+
 class FeaturedWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("items")
-          .where("section",
-          isEqualTo: SectionKey.section.toString())
-          .where("category",
-          isEqualTo: SectionKey.category.toString())
+          .where("section", isEqualTo: SectionKey.section.toString())
+          .where("category", isEqualTo: SectionKey.category.toString())
           .snapshots(),
       builder: (context, dataSnapshot) {
-        if(dataSnapshot.hasData)
-        {
+        if (dataSnapshot.hasData) {
           return ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context,index)
-            {
-              ItemModel model = ItemModel.fromJson(
-                  dataSnapshot
-                      .data.docs[index].data());
+            itemBuilder: (context, index) {
+              ItemModel model =
+                  ItemModel.fromJson(dataSnapshot.data.docs[index].data());
               return sourceInfo(model, context);
-            }
-            ,itemCount: dataSnapshot.data.docs.length,
+            },
+            itemCount: dataSnapshot.data.docs.length,
           );
-        }
-        else
-        {
+        } else {
           return Center(
             child: circularProgress(),
           );
         }
-
       },
     );
-
   }
 }
-
-
-
-
-
-

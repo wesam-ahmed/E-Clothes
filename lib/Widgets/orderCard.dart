@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Orders/OrderDetailsPage.dart';
 import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Store/product_page_Rate.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:flutter/material.dart';
 import '../Store/storehome.dart';
 
@@ -20,17 +21,9 @@ OrderCard({Key key,this.itemCount,this.data,this.orderId}):super(key:key);
        //Navigator.push(context, MaterialPageRoute(builder: (c)=>OrderDetails(orderID: orderId,)));
       },
       child: Container(
-        decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-              colors: [Colors.white,Colors.green],
-              begin:const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: [0.0,1.0],
-              tileMode: TileMode.clamp,
-            )
-        ),
-        padding: EdgeInsets.all(10.0),
-        margin: EdgeInsets.all(10.0),
+       color: Colors.grey.shade300,
+        padding: EdgeInsets.all(5.0),
+        margin: EdgeInsets.all(2.0),
         height: itemCount*190.0,
         child: ListView.builder(itemCount: itemCount,
           physics: NeverScrollableScrollPhysics(),
@@ -132,10 +125,7 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                     Flexible(
                       child: Container(),
                     ),
-                    Divider(
-                      height: 5.0,
-                      color: Colors.black,
-                    ),
+
                   ],
                 ),
               ),
