@@ -157,9 +157,6 @@ Widget sourceInfoProducts(ItemModel model, BuildContext context,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(text:model.price.toString()+" \E\G\P",alignment: Alignment.bottomLeft ,color: primaryColor,),
-
-
-
               ],
             ),
             SizedBox(height: 10,),
