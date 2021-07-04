@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminOrderCard.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Widgets/loadingWidget.dart';
@@ -46,6 +47,19 @@ class _MyOrdersState extends State<AdminShiftOrders> {
       child: SafeArea(
       child: Scaffold(
         appBar: AppBar(
+
+          iconTheme: IconThemeData(color: primaryColor),
+          backgroundColor: Colors.white,
+          title: Text(
+            "My Orders",
+            style: TextStyle(
+              fontSize: 20.0,
+              color: primaryColor,
+            ),
+          ),
+          centerTitle: true,
+
+        ),/*AppBar(
           iconTheme: IconThemeData(color: Colors.white),
           flexibleSpace: Container(
             decoration: new BoxDecoration(
@@ -68,7 +82,7 @@ class _MyOrdersState extends State<AdminShiftOrders> {
               },
             ),
           ],
-        ),
+        ),*/
         body: Container(
           child: Column(
             children: [
