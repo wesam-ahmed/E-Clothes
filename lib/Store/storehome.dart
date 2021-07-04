@@ -106,95 +106,96 @@ class _StoreHomeState extends State<StoreHome> {
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      FloatingActionButton.extended(
-                                        heroTag: "Shoes",
-                                        onPressed: () {
-                                          SectionKey.category = "Shoes";
-                                          Route route = MaterialPageRoute(
-                                              builder: (_) => StoreHome());
-                                          Navigator.pushReplacement(
-                                              context, route);
-                                        },
-                                        backgroundColor: Colors.grey.shade100,
-                                        icon: Image.asset("images/Jacket.png"),
-                                        label: Text(
-                                          "Jacket",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      FloatingActionButton.extended(
-                                        heroTag: "Shirts",
-                                        onPressed: () {
-                                          SectionKey.category = "T-Shirt";
-                                          Route route = MaterialPageRoute(
-                                              builder: (_) => StoreHome());
-                                          Navigator.pushReplacement(
-                                              context, route);
-                                        },
-                                        backgroundColor: Colors.grey.shade100,
-                                        icon: Image.asset("images/tshirt.png"),
-                                        label: Text(
-                                          "T-shirt",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      FloatingActionButton.extended(
-                                        heroTag: "Pants",
-                                        onPressed: () {
-                                          SectionKey.category = "Pants";
-                                          Route route = MaterialPageRoute(
-                                              builder: (_) => StoreHome());
-                                          Navigator.pushReplacement(
-                                              context, route);
-                                        },
-                                        backgroundColor: Colors.grey.shade100,
-                                        icon: Image.asset("images/jeans.png"),
-                                        label: Text(
-                                          "Trousers",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      FloatingActionButton.extended(
-                                        heroTag: "Jackets",
-                                        onPressed: () {
-                                          SectionKey.category = "Jackets";
-                                          Route route = MaterialPageRoute(
-                                              builder: (_) => StoreHome());
-                                          Navigator.pushReplacement(
-                                              context, route);
-                                        },
-                                        backgroundColor: Colors.grey.shade100,
-                                        icon: Image.asset(
-                                            "images/hooded-jacket.png"),
-                                        label: Text(
-                                          "Hoodies",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      FloatingActionButton.extended(
-                                        heroTag: "Sneakers",
-                                        onPressed: () {
-                                          SectionKey.category = "Sneakers";
-                                          Route route = MaterialPageRoute(
-                                              builder: (_) => StoreHome());
-                                          Navigator.pushReplacement(
-                                              context, route);
-                                        },
-                                        backgroundColor: Colors.grey.shade100,
-                                        icon:
+
+                                        children: [
+                                          FloatingActionButton.extended(
+                                            heroTag: "Shoes",
+                                            onPressed: () {
+                                              SectionKey.category = "Shoes";
+                                              Route route = MaterialPageRoute(
+                                                  builder: (_) => StoreHome());
+                                              Navigator.pushReplacement(
+                                                  context, route);
+                                            },
+                                            backgroundColor: Colors.grey.shade100,
+                                            icon: Image.asset("images/Jacket.png"),
+                                            label: Text(
+                                              "Jacket",
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          FloatingActionButton.extended(
+                                            heroTag: "T-Shirt",
+                                            onPressed: () {
+                                              SectionKey.category = "T-Shirt";
+                                              Route route = MaterialPageRoute(
+                                                  builder: (_) => StoreHome());
+                                              Navigator.pushReplacement(
+                                                  context, route);
+                                            },
+                                            backgroundColor: Colors.grey.shade100,
+                                            icon: Image.asset("images/tshirt.png"),
+                                            label: Text(
+                                              "T-shirt",
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          FloatingActionButton.extended(
+                                            heroTag: "Pants",
+                                            onPressed: () {
+                                              SectionKey.category = "Pants";
+                                              Route route = MaterialPageRoute(
+                                                  builder: (_) => StoreHome());
+                                              Navigator.pushReplacement(
+                                                  context, route);
+                                            },
+                                            backgroundColor: Colors.grey.shade100,
+                                            icon: Image.asset("images/jeans.png"),
+                                            label: Text(
+                                              "Trousers",
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          FloatingActionButton.extended(
+                                            heroTag: "Jackets",
+                                            onPressed: () {
+                                              SectionKey.category = "Jackets";
+                                              Route route = MaterialPageRoute(
+                                                  builder: (_) => StoreHome());
+                                              Navigator.pushReplacement(
+                                                  context, route);
+                                            },
+                                            backgroundColor: Colors.grey.shade100,
+                                            icon: Image.asset(
+                                                "images/hooded-jacket.png"),
+                                            label: Text(
+                                              "Hoodies",
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          FloatingActionButton.extended(
+                                            heroTag: "Sneakers",
+                                            onPressed: () {
+                                              SectionKey.category = "Sneakers";
+                                              Route route = MaterialPageRoute(
+                                                  builder: (_) => StoreHome());
+                                              Navigator.pushReplacement(
+                                                  context, route);
+                                            },
+                                            backgroundColor: Colors.grey.shade100,
+                                            icon:
                                             Image.asset("images/sneakers.png"),
                                         label: Text(
                                           "shoes",
@@ -402,10 +403,14 @@ Widget sourceInfo(ItemModel model, BuildContext context,
             Container(
               height: 40,
               width: 10,
-              child: CustomButton(
-                onPress: () {
-                  checkItemInCart(model.idItem, context);
-                },
+
+              child: CustomButton(onPress: (){
+                getSizes(model.idItem).then((size){
+                  getColors(model.idItem).then((color){
+                    //Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
+                    Navigator.push(context,PageTransition(type: PageTransitionType.leftToRightWithFade, child: ProductPage(itemModel: model,sizes:size,colors: color,)));
+                  });
+                });              },
                 text: "Add to Cart",
               ),
             ),

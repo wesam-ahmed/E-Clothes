@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Counters/cartitemcounter.dart';
 import 'package:e_shop/Store/shopOwner.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/custom_button.dart';
@@ -9,7 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:full_screen_image/full_screen_image.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ProductPage extends StatefulWidget {
@@ -155,11 +159,16 @@ class _ProductPageState extends State<ProductPage> {
                   Container(
                     width: 180,
                     height: 50,
-                    child: CustomButton(
-                      onPress: () {
-                        checkItemInCart(widget.itemModel.idItem, context);
-                      },
+                    child: CustomButton(onPress: (){
+                      List <Map<String,dynamic>> idlist =[{
+                        'id':widget.itemModel.idItem,
+                        'size':'ss',
+                        'color':'blue'
+                      }];
+                      checkItemInCart(idlist, context);
+                    },
                       text: "Add to Cart",
+
                     ),
                   ),
                 ],
@@ -286,7 +295,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                   alignment: Alignment.bottomLeft,
                   color: primaryColor,
                 ),
-                Container(
+               /* Container(
                   alignment: Alignment.topRight,
                   child: InkWell(
                     onTap: () {
@@ -297,7 +306,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                       color: primaryColor,
                     ),
                   ),
-                ),
+                ),*/
               ],
             ),
           ],
@@ -306,6 +315,38 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     ),
   );
 }
+void checkItemInCart(List idItemAsId, BuildContext context) {
+  idItemAsId.forEach((element) {
+    EcommerceApp.sharedPreferences
+        .getStringList(EcommerceApp.userCartList)
+        .contains(element["id"])
+        ? Fluttertoast.showToast(msg: "Item is already in Cart")
+        : addItemToCart(idItemAsId, context);
+  });
+}
+addItemToCart(List idItemAsId, BuildContext context) {
+
+  List tempCartList =
+  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
+  idItemAsId.forEach((element) {
+    tempCartList.add(element["id"]);
+    ListOfOrder.idlist.add(element);
+  });
+  //tempCartList =FieldValue.arrayUnion(idItemAsId);
+  EcommerceApp.firestore
+      .collection(EcommerceApp.collectionUser)
+      .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+      .update({
+    EcommerceApp.userCartList: FieldValue.arrayUnion(idItemAsId),
+  }).then((v) {
+    Fluttertoast.showToast(msg: "Item Added to Cart Successfully");
+    EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,tempCartList );
+
+    Provider.of<CartItemCounter>(context, listen: false).displayResult();
+  });
+
+}
+
 
 //da el box bta3 el sora
 class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
@@ -421,4 +462,28 @@ class FeaturedWidget extends StatelessWidget {
       },
     );
   }
+  addItemToCart(List idItemAsId, BuildContext context) {
+
+    List tempCartList =
+    EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
+    idItemAsId.forEach((element) {
+      tempCartList.add(element["id"]);
+      ListOfOrder.idlist.add(element);
+    });
+    //tempCartList =FieldValue.arrayUnion(idItemAsId);
+    EcommerceApp.firestore
+        .collection(EcommerceApp.collectionUser)
+        .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+        .update({
+      EcommerceApp.userCartList: FieldValue.arrayUnion(idItemAsId),
+    }).then((v) {
+      Fluttertoast.showToast(msg: "Item Added to Cart Successfully");
+      EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,tempCartList );
+
+      Provider.of<CartItemCounter>(context, listen: false).displayResult();
+    });
+
+  }
+
+
 }

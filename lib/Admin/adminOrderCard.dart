@@ -22,14 +22,7 @@ class AdminOrderCard extends StatelessWidget
   {
     return  InkWell(
       onTap: (){
-        Route route;
-        if(counter==0){
-          counter=counter+1;
-          MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,addressID: addressID,orderBy: orderBy,section:section,category:category));
-
-        }
         Navigator.push(context, MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,addressID: addressID,orderBy: orderBy,section:section,category:category)));
-
       },
       child: Container(
         decoration: new BoxDecoration(
