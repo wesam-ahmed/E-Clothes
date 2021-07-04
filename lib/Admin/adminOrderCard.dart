@@ -25,7 +25,7 @@ class AdminOrderCard extends StatelessWidget
         Route route;
         if(counter==0){
           counter=counter+1;
-          route=MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,addressID: addressID,orderBy: orderBy,section:section,category:category));
+          MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,addressID: addressID,orderBy: orderBy,section:section,category:category));
 
         }
         Navigator.push(context, MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,addressID: addressID,orderBy: orderBy,section:section,category:category)));
