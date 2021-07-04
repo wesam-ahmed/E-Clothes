@@ -77,6 +77,7 @@ class AdminOrderCard extends StatelessWidget
 
     return  InkWell(
 
+
       child: Container(
         color: Colors.grey[100],
         child: Padding
@@ -87,6 +88,7 @@ class AdminOrderCard extends StatelessWidget
             decoration: BoxDecoration( //                    <-- BoxDecoration
               border: Border(bottom: BorderSide(color: Colors.grey.shade400),),
             ),
+
             child: Row(
               children: [
                 Image.network(model.thumbnailUrl,width: 180.0,),
@@ -134,17 +136,22 @@ class AdminOrderCard extends StatelessWidget
                                       style: TextStyle(
                                         fontSize: 14.0,
                                         color: primaryColor,
+
                                       ),
                                     ),
                                     Text(
                                       " EGP ",
+
                                       style: TextStyle(color: Colors.black,fontSize: 16.0),
+
                                     ),
                                     Text(
                                       (model.price ).toString(),
                                       style: TextStyle(
                                         fontSize: 15.0,
+
                                         color: Colors.black,
+
                                       ),
                                     ),
                                   ],
@@ -173,6 +180,7 @@ class AdminOrderCard extends StatelessWidget
         ),
 
       ),
+
 
     );
   }
