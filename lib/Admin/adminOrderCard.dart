@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/adminOrderDetails.dart';
 import 'package:e_shop/Models/item.dart';
+import 'package:e_shop/Store/storehome.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
 import 'package:flutter/material.dart';
 
@@ -26,13 +28,34 @@ class AdminOrderCard extends StatelessWidget
       },
       child: Container(
         decoration: new BoxDecoration(
-            gradient: new LinearGradient(
+
+           /*border: Border.all(color: primaryColor,width: 5)*/
+            borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+        BoxShadow(
+        color: Colors.green.shade200,
+        offset: const Offset(
+          5.0,
+          5.0,
+        ), //Offset
+        blurRadius: 10.0,
+        spreadRadius: 2.0,
+      ), //BoxShadow
+      BoxShadow(
+        color: Colors.white,
+        offset: const Offset(0.0, 0.0),
+        blurRadius: 0.0,
+        spreadRadius: 0.0,
+      ),
+
+           /* gradient: new LinearGradient(
               colors: [Colors.white,Colors.grey],
               begin:const FractionalOffset(0.0, 0.0),
               end: const FractionalOffset(1.0, 0.0),
               stops: [0.0,1.0],
               tileMode: TileMode.clamp,
-            )
+            )*/
+        ],
         ),
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.all(10.0),
@@ -50,14 +73,22 @@ class AdminOrderCard extends StatelessWidget
   Widget sourceOrderInfo(ItemModel model, BuildContext context,
       {Color background})
   {
+    width =  MediaQuery.of(context).size.width;
 
     return  InkWell(
+
+
       child: Container(
         color: Colors.grey[100],
         child: Padding
           (padding: EdgeInsets.all(6.0),
           child: Container(
             height: 170.0,
+            width: width,
+            decoration: BoxDecoration( //                    <-- BoxDecoration
+              border: Border(bottom: BorderSide(color: Colors.grey.shade400),),
+            ),
+
             child: Row(
               children: [
                 Image.network(model.thumbnailUrl,width: 180.0,),
@@ -104,18 +135,23 @@ class AdminOrderCard extends StatelessWidget
                                       "Total Price:",
                                       style: TextStyle(
                                         fontSize: 14.0,
-                                        color: Colors.grey,
+                                        color: primaryColor,
+
                                       ),
                                     ),
                                     Text(
                                       " EGP ",
-                                      style: TextStyle(color: Colors.blueGrey,fontSize: 16.0),
+
+                                      style: TextStyle(color: Colors.black,fontSize: 16.0),
+
                                     ),
                                     Text(
                                       (model.price ).toString(),
                                       style: TextStyle(
                                         fontSize: 15.0,
-                                        color: Colors.grey,
+
+                                        color: Colors.black,
+
                                       ),
                                     ),
                                   ],
@@ -129,13 +165,23 @@ class AdminOrderCard extends StatelessWidget
                         child: Container(),
                       ),
 
+
                     ],
+
                   ),
+
                 ),
+
               ],
             ),
 
-          ),),),
+
+          ),
+        ),
+
+      ),
+
+
     );
   }
 }
