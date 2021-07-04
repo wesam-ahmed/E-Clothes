@@ -67,20 +67,11 @@ class _AdminOrdersState extends State<AdminOrders>{
         ),
         body: CustomScrollView(
           slivers: [
-            // SliverPersistentHeader(floating: true, delegate: SearchBoxDelegate()),
-           /* SliverToBoxAdapter(
-              child:Column(children:
-              [
-                SizedBox(height: 20,),
-                Text("My Products",style: TextStyle(fontSize: 30,fontStyle: FontStyle.italic),),
-                Divider(height: 10,)
-              ],),
-            ),*/
-            StreamBuilder<QuerySnapshot>(
+            SliverToBoxAdapter(),
+            StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("items")
-                  .where("sellerid",
-                  isEqualTo: EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminId).toString())
+                  .where("sellerid",isEqualTo: EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminId).toString())
                   .snapshots(),
               builder: (context, dataSnapshot) {
                 return !dataSnapshot.hasData
