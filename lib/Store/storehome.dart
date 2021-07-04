@@ -130,9 +130,9 @@ class _StoreHomeState extends State<StoreHome> {
                                             width: 10,
                                           ),
                                           FloatingActionButton.extended(
-                                            heroTag: "Shirts",
+                                            heroTag: "T-Shirt",
                                             onPressed: () {
-                                              SectionKey.category = "Shirts";
+                                              SectionKey.category = "T-Shirt";
                                               Route route = MaterialPageRoute(
                                                   builder: (_) => StoreHome());
                                               Navigator.pushReplacement(
@@ -379,8 +379,12 @@ Widget sourceInfo(ItemModel model, BuildContext context,
               height: 40,
               width: 10,
               child: CustomButton(onPress: (){
-                checkItemInCart(model.idItem, context);
-              },
+                getSizes(model.idItem).then((size){
+                  getColors(model.idItem).then((color){
+                    //Route route = MaterialPageRoute(builder: (c) => ProductPage(itemModel: model,sizes:size,colors: color,));
+                    Navigator.push(context,PageTransition(type: PageTransitionType.leftToRightWithFade, child: ProductPage(itemModel: model,sizes:size,colors: color,)));
+                  });
+                });              },
                 text: "Add to Cart",
               ),
             ),

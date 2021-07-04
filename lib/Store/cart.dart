@@ -112,7 +112,7 @@ class _CartPageState extends State<CartPage>
                         );
                       },
                     ),
-                    
+
 
                   ],
                 ),
@@ -182,17 +182,19 @@ class _CartPageState extends State<CartPage>
   beginBuildingCart()
   {
     return SliverToBoxAdapter(
-      child: Column(children: [
-        Image.asset('images/emptyCart.png',),
-        SizedBox(height: 20,),
-        Text("Cart Is Empty",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold ,color: Colors.grey),)
-      ],)
+        child: Column(children: [
+          Image.asset('images/emptyCart.png',),
+          SizedBox(height: 20,),
+          Text("Cart Is Empty",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold ,color: Colors.grey),)
+        ],)
     );
   }
   removeItemFromUserCart(String idItemAsId)
   {
     List tempCartList = EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
     tempCartList.remove(idItemAsId);
+    ListOfOrder.idlist.removeWhere((element) => element["id"]==idItemAsId);
+
     EcommerceApp.firestore.collection(EcommerceApp.collectionUser).doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
         .update({
       EcommerceApp.userCartList:tempCartList,
@@ -263,9 +265,9 @@ Widget sourceInfo(ItemModel model, BuildContext context,
             context: context,
             builder: (BuildContext context) {
               return Container(
-                width: 30,
-                height: 80,
-                child: circularProgress()
+                  width: 30,
+                  height: 80,
+                  child: circularProgress()
               );
             },
           );

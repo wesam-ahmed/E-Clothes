@@ -17,8 +17,30 @@ class _MyOrdersState extends State<AdminShiftOrders> {
   }
   String dropdownValue_Section ;
   String dropdownValue_Category ;
+  List IDs=[];
+  List ID=[];
+  getData(){
+    IDs.clear();
+    EcommerceApp.firestore
+        .collection("orders").doc().get().then((value) {
+      value["productIDs"].forEach((val){
+        var map={
+          "color":val["color"],
+          "size":val["size"],
+          "id":val["id"]
+        };
+        IDs.add(map);
+        ID.add(val["id"]);
+        print(IDs);
+      });
+    });
+    print(IDs);
+    print(ID);
+  }
+
   @override
   Widget build(BuildContext context) {
+    getData();
     return WillPopScope(
       onWillPop: _backAdmin,
       child: SafeArea(
@@ -102,7 +124,8 @@ class _MyOrdersState extends State<AdminShiftOrders> {
                       return FutureBuilder<QuerySnapshot>(
                         future:FirebaseFirestore.instance.
                         collection("items").where("idItem",
-                            whereIn: snapshot.data.docs[index].data()[EcommerceApp.productID]).where("sellerid", isEqualTo: EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminId).toString() ).get(),
+                            whereIn: snapshot.data.docs[index].data()[ID])
+                            .where("sellerid", isEqualTo: EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminId).toString()).get(),
 
                         builder: (c,snap){
                           return snap.hasData ?
