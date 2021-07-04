@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
+import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -11,13 +12,13 @@ import 'package:provider/provider.dart';
 class PaymentPage extends StatefulWidget {
   final String addressId;
   final double totalAmount;
+  final ListOfOrder listOfOrder;
 
-
-  PaymentPage({Key key, this.addressId, this.totalAmount}) : super(key: key);
+  PaymentPage({Key key, this.addressId, this.totalAmount,this.listOfOrder}) : super(key: key);
   @override
   _PaymentPageState createState() => _PaymentPageState();
 }
- 
+
 
 
 
@@ -40,7 +41,7 @@ class _PaymentPageState extends State<PaymentPage> {
             mainAxisAlignment:MainAxisAlignment.center,
             children: [
               Padding(
-                  padding:EdgeInsets.all(8.0),
+                padding:EdgeInsets.all(8.0),
                 child: Image.asset("images/cash.png"),
 
               ),
@@ -65,43 +66,42 @@ class _PaymentPageState extends State<PaymentPage> {
       EcommerceApp.addressID:widget.addressId,
       EcommerceApp.totalAmount:widget.totalAmount,
       "orderBy":EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID),
-      EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
+      EcommerceApp.productID:FieldValue.arrayUnion(ListOfOrder.idlist),
+
+      //EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
       EcommerceApp.paymentDetails:"Cash on Delivery",
       EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
       EcommerceApp.isSuccess:true,
     });
-    UpdateNumberOfBuyers({
-      "buyers":FieldValue.increment(1),
-      "quantity":FieldValue.increment(-1),
-    });
-      writeOrderDetalisForAdmin({
-    EcommerceApp.addressID:widget.addressId,
-    EcommerceApp.totalAmount:widget.totalAmount,
-    "orderBy":EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID),
-    EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
-    EcommerceApp.paymentDetails:"Cash on Delivery",
-    EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
-    EcommerceApp.isSuccess:true,
+    writeOrderDetalisForAdmin({
+      EcommerceApp.addressID:widget.addressId,
+      EcommerceApp.totalAmount:widget.totalAmount,
+      "orderBy":EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID),
+      EcommerceApp.productID:FieldValue.arrayUnion(ListOfOrder.idlist),
+      // EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
+      EcommerceApp.paymentDetails:"Cash on Delivery",
+      EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
+      EcommerceApp.isSuccess:true,
     }).whenComplete(() => {
       emptyCartNow()
-      });
-    
- }
+    });
+
+  }
   emptyCartNow(){
     EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,["garbageValue"]);
     List tempList=EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
 
     FirebaseFirestore.instance.collection("users")
-           .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
+        .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
         .update({
       EcommerceApp.userCartList: tempList,
-       }).then((value)
+    }).then((value)
     {
       EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,tempList );
-       Provider.of<CartItemCounter>(context,listen:false).displayResult() ;
-       Fluttertoast.showToast(msg: "congratulations,Your order has been placed successfuly");
-       Route route=MaterialPageRoute(builder: (c)=>SplashScreen());
-       Navigator.pushReplacement(context, route);
+      Provider.of<CartItemCounter>(context,listen:false).displayResult() ;
+      Fluttertoast.showToast(msg: "congratulations,Your order has been placed successfuly");
+      Route route=MaterialPageRoute(builder: (c)=>SplashScreen());
+      Navigator.pushReplacement(context, route);
     });
 
   }
@@ -117,13 +117,5 @@ class _PaymentPageState extends State<PaymentPage> {
     collection(EcommerceApp.collectionOrders)
         .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)+data['orderTime']).
     set(data);
-  }
-  Future UpdateNumberOfBuyers(Map<String,dynamic>data)async{
-    List tempList=EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
-    tempList.forEach((element) async {
-    await EcommerceApp.firestore.collection("items").doc(element).update(data);
-    });
-    //await EcommerceApp.firestore.collection("items").doc("1621570115036").update(data);
-
   }
 }

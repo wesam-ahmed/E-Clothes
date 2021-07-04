@@ -414,12 +414,8 @@ class _UploadUsedPageState extends State<UploadUsedPage> with AutomaticKeepAlive
                       colorList1= colorChecked;
                       print(colorList1);
                     }
-
                 ),
               )
-
-
-
           ),
 
 

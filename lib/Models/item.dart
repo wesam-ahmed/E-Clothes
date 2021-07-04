@@ -114,9 +114,15 @@ class PublishedDate {
     return data;
   }
 
+
 }
 class SectionKey{
   static String section;
   static String category="Shirts";
   static bool isUsed =false;
+}
+class ListOfOrder{
+  static List <Map<String,dynamic>> idlist =[];
+  static List <Map<String,dynamic>> idlistOfMyOrders =[];
+
 }

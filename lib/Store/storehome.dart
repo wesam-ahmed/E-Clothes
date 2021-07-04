@@ -130,9 +130,9 @@ class _StoreHomeState extends State<StoreHome> {
                                             width: 10,
                                           ),
                                           FloatingActionButton.extended(
-                                            heroTag: "Shirts",
+                                            heroTag: "T-Shirt",
                                             onPressed: () {
-                                              SectionKey.category = "Shirts";
+                                              SectionKey.category = "T-Shirt";
                                               Route route = MaterialPageRoute(
                                                   builder: (_) => StoreHome());
                                               Navigator.pushReplacement(

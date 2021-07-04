@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 import '../Store/storehome.dart';
 
 int counter=0;
-class OrderCard extends StatelessWidget {
+class OrderCardSize extends StatelessWidget {
 final int itemCount;
 final List<DocumentSnapshot>data;
 final String orderId;
+final String ordercolor;
+final String ordersize;
 bool FirstClick=false;
-OrderCard({Key key,this.itemCount,this.data,this.orderId}):super(key:key);
+OrderCardSize({Key key,this.itemCount,this.data,this.orderId,this.ordercolor,this.ordersize}):super(key:key);
   @override
   Widget build(BuildContext context) {
     return  InkWell(
@@ -29,7 +31,7 @@ OrderCard({Key key,this.itemCount,this.data,this.orderId}):super(key:key);
           physics: NeverScrollableScrollPhysics(),
             itemBuilder: (c,index){
               ItemModel model=ItemModel.fromJson(data[index].data());
-              return sourceOrderInfo(model, context);
+              return sourceOrderInfo(model,ordercolor,ordersize, context);
             },
         ),
       ),
@@ -39,7 +41,7 @@ OrderCard({Key key,this.itemCount,this.data,this.orderId}):super(key:key);
 
 
 
-Widget sourceOrderInfo(ItemModel model, BuildContext context,
+Widget sourceOrderInfo(ItemModel model,String ordercolor,String ordersize, BuildContext context,
     {Color background})
 {
   width =  MediaQuery.of(context).size.width;
@@ -118,6 +120,8 @@ Widget sourceOrderInfo(ItemModel model, BuildContext context,
                                 ],
                               ),
                             ),
+                            Text(ordercolor),
+                            Text(ordersize),
                           ],
                         ),
                       ],
