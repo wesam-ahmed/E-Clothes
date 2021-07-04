@@ -47,4 +47,95 @@ class AdminOrderCard extends StatelessWidget
       ),
     );
   }
+  Widget sourceOrderInfo(ItemModel model, BuildContext context,
+      {Color background})
+  {
+
+    return  InkWell(
+      child: Container(
+        color: Colors.grey[100],
+        child: Padding
+          (padding: EdgeInsets.all(6.0),
+          child: Container(
+            height: 170.0,
+            child: Row(
+              children: [
+                Image.network(model.thumbnailUrl,width: 180.0,),
+                SizedBox(width: 10.0,),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 15.0,),
+                      Container(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: Text(model.title,style: TextStyle(color: Colors.black,fontSize: 14.0),),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height:5.0,),
+                      Container(
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Expanded(
+                              child: Text(model.shortInfo,style: TextStyle(color: Colors.black54,fontSize: 12.0),),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 20.0,),
+                      Row(
+                        children: [
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              Padding(
+                                padding: EdgeInsets.only(top: 5.0),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      "Total Price:",
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                    Text(
+                                      " EGP ",
+                                      style: TextStyle(color: Colors.blueGrey,fontSize: 16.0),
+                                    ),
+                                    Text(
+                                      (model.price ).toString(),
+                                      style: TextStyle(
+                                        fontSize: 15.0,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Flexible(
+                        child: Container(),
+                      ),
+
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+          ),),),
+    );
+  }
 }
