@@ -6,6 +6,7 @@ import 'package:e_shop/Models/item.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
 import 'package:e_shop/Models/address.dart';
+import 'package:e_shop/Widgets/orderCardsize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,16 +20,37 @@ class AdminOrderDetails extends StatelessWidget {
   final String addressID;
   final String section ;
   final String category ;
+  List IDs=[];
+
+  getData(){
+    IDs.clear();
+    EcommerceApp.firestore
+        .collection("orders")
+        .doc(orderId).get().then((value) {
+      value["productIDs"].forEach((val){
+        var map={
+          "color":val["color"],
+          "size":val["size"],
+          "id":val["id"]
+        };
+        IDs.add(map);
+
+        print(IDs);
+      });
+    });
+    print(IDs);
+  }
 
   AdminOrderDetails({Key key,this.orderId,this.orderBy,this.addressID,this.section,this.category}):super(key: key);
   @override
   Widget build(BuildContext context) {
     getOrderId = orderId;
+    getData();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
           child: FutureBuilder<DocumentSnapshot>(
-            future:EcommerceApp.firestore.collection(EcommerceApp.collectionOrders).doc(getOrderId).get()
+            future:EcommerceApp.firestore.collection(EcommerceApp.collectionOrders).doc(orderId).get()
             ,builder: (c,snapshot)
           {
               Map dataMap;
@@ -42,15 +64,6 @@ class AdminOrderDetails extends StatelessWidget {
                   children: [
                     AdminStatusBanner(status: dataMap[EcommerceApp.isSuccess],),
                     SizedBox(height: 10,),
-                    /*Padding(padding: EdgeInsets.all(4),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                         dataMap[EcommerceApp.totalAmount].toString()+ " EG",
-                          style:  TextStyle(fontSize: 20,fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),*/
                     Padding(padding: EdgeInsets.all(4)
                       ,child: Text(
                           "OrderId: "+getOrderId
@@ -63,18 +76,27 @@ class AdminOrderDetails extends StatelessWidget {
                       ),
                     ),
                     Divider(height: 2,),
-                    FutureBuilder<QuerySnapshot>(
-                      future: EcommerceApp.firestore
-                      .collection("items").where("section",isEqualTo:SectionKey.section.toString()).where("category",isEqualTo:SectionKey.category.toString()).
-                      where("idItem",whereIn: dataMap[EcommerceApp.productID]).get(),
-                      builder: (c,dataSnapshot){
-                        return dataSnapshot.hasData ?
-                        OrderCard(
-                          itemCount: dataSnapshot.data.docs.length,
-                          data: dataSnapshot.data.docs,
-                        )
-                            :Center(child: circularProgress(),);
-                      },
+                    Container(
+                      height: 500,
+                      child: ListView.builder(
+                        itemCount: IDs.length,
+                        itemBuilder: (c,index) {
+                          return FutureBuilder(
+                            future: EcommerceApp.firestore
+                                .collection("items").where("idItem", isEqualTo: IDs[index]["id"]).get(),
+                            builder: (c, dataSnapshot) {
+                              return dataSnapshot.hasData ?
+                              OrderCardSize(
+                                itemCount: dataSnapshot.data.docs.length,
+                                data: dataSnapshot.data.docs,
+                                ordercolor: IDs[index]["color"].toString(),
+                                ordersize: IDs[index]["size"].toString(),
+                              )
+                                  : Center(child: circularProgress(),);
+                            },
+                          );
+                        }
+                      ),
                     ),
                     Divider(height: 2,),
                     FutureBuilder<DocumentSnapshot>(
