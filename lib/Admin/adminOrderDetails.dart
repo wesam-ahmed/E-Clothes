@@ -3,6 +3,8 @@ import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Models/item.dart';
+import 'package:e_shop/Widgets/AdminOrderCardSize.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
 import 'package:e_shop/Models/address.dart';
@@ -77,7 +79,7 @@ class AdminOrderDetails extends StatelessWidget {
                     ),
                     Divider(height: 2,),
                     Container(
-                      height: 500,
+                      height: 450,
                       child: ListView.builder(
                         itemCount: IDs.length,
                         itemBuilder: (c,index) {
@@ -86,7 +88,7 @@ class AdminOrderDetails extends StatelessWidget {
                                 .collection("items").where("idItem", isEqualTo: IDs[index]["id"]).get(),
                             builder: (c, dataSnapshot) {
                               return dataSnapshot.hasData ?
-                              OrderCardSize(
+                              AdminOrderCardSize(
                                 itemCount: dataSnapshot.data.docs.length,
                                 data: dataSnapshot.data.docs,
                                 ordercolor: IDs[index]["color"].toString(),
@@ -138,15 +140,16 @@ class AdminStatusBanner extends StatelessWidget {
 
     return Container(
       decoration: new BoxDecoration(
-          gradient: new LinearGradient(
+        color: primaryColor,
+         /* gradient: new LinearGradient(
             colors: [Colors.white,Colors.grey],
             begin:const FractionalOffset(0.0, 0.0),
             end: const FractionalOffset(1.0, 0.0),
             stops: [0.0,1.0],
             tileMode: TileMode.clamp,
-          )
+          )*/
       ),
-      height:40.0,
+      height:60.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -204,7 +207,7 @@ class AdminShippingDetails extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 10.0,),
           child: Text(
             "Shipment Details:",
-            style: TextStyle(color: Colors.black,fontWeight:FontWeight.bold),
+            style: TextStyle(color: primaryColor,fontWeight:FontWeight.bold),
           ),
         ),
         Container(
@@ -262,13 +265,14 @@ class AdminShippingDetails extends StatelessWidget {
               ,
               child: Container(
                 decoration: new BoxDecoration(
-                    gradient: new LinearGradient(
+                  color: primaryColor,
+                   /* gradient: new LinearGradient(
                       colors: [Colors.white,Colors.grey],
                       begin:const FractionalOffset(0.0, 0.0),
                       end: const FractionalOffset(1.0, 0.0),
                       stops: [0.0,1.0],
                       tileMode: TileMode.clamp,
-                    )
+                    )*/
                 ),
                 width: MediaQuery.of(context).size.width -40.0,
                 height: 50.0,
