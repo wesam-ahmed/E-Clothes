@@ -3,6 +3,7 @@ import 'package:e_shop/Orders/OrderDetailsPage.dart';
 import 'package:e_shop/Models/item.dart';
 import 'package:flutter/material.dart';
 import '../Store/storehome.dart';
+import 'constance.dart';
 
 int counter=0;
 class OrderNumberCard extends StatelessWidget {
@@ -16,17 +17,12 @@ OrderNumberCard({Key key,this.orderId}):super(key:key);
       },
       child: Container(
         decoration: new BoxDecoration(
-            gradient: new LinearGradient(
-              colors: [Colors.white,Colors.green],
-              begin:const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: [0.0,1.0],
-              tileMode: TileMode.clamp,
-            )
+            color: primaryColor,
+            borderRadius: BorderRadius.circular(20)
         ),
         padding: EdgeInsets.all(10.0),
         margin: EdgeInsets.all(10.0),
-        child: Text(orderId),
+        child: Text("Order Number: $orderId",style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold,color: Colors.white),),
       ),
     );
   }

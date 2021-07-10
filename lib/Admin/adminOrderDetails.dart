@@ -85,7 +85,7 @@ class AdminOrderDetails extends StatelessWidget {
                         itemBuilder: (c,index) {
                           return FutureBuilder(
                             future: EcommerceApp.firestore
-                                .collection("items").where("idItem", isEqualTo: IDs[index]["id"]).get(),
+                                .collection("items").where("idItem", isEqualTo: IDs[index]["id"]).where("sellerid",isEqualTo: EcommerceApp.sharedPreferences.getString(EcommerceApp.collectionAdminId).toString()).get(),
                             builder: (c, dataSnapshot) {
                               return dataSnapshot.hasData ?
                               AdminOrderCardSize(
@@ -266,13 +266,6 @@ class AdminShippingDetails extends StatelessWidget {
               child: Container(
                 decoration: new BoxDecoration(
                   color: primaryColor,
-                   /* gradient: new LinearGradient(
-                      colors: [Colors.white,Colors.grey],
-                      begin:const FractionalOffset(0.0, 0.0),
-                      end: const FractionalOffset(1.0, 0.0),
-                      stops: [0.0,1.0],
-                      tileMode: TileMode.clamp,
-                    )*/
                 ),
                 width: MediaQuery.of(context).size.width -40.0,
                 height: 50.0,

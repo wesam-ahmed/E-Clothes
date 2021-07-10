@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
@@ -14,17 +16,18 @@ class PaymentPage extends StatefulWidget {
   final double totalAmount;
   final ListOfOrder listOfOrder;
 
+
+
   PaymentPage({Key key, this.addressId, this.totalAmount,this.listOfOrder}) : super(key: key);
   @override
   _PaymentPageState createState() => _PaymentPageState();
 }
-
-
-
-
+ Random rn = new Random();
 class _PaymentPageState extends State<PaymentPage> {
+  int OrderNumber =rn.nextInt(100)+10;
   @override
   Widget build(BuildContext context) {
+    print(OrderNumber);
     return Material(
       child: Container(
         decoration: new BoxDecoration(
@@ -52,7 +55,10 @@ class _PaymentPageState extends State<PaymentPage> {
                 textColor: Colors.white,
                 padding: EdgeInsets.all(8.0),
                 splashColor: Colors.deepOrange,
-                onPressed: ()=>addOrderDetails(),
+                onPressed: ()
+                 {
+                   addOrderDetails();
+                  },
                 child: Text("place Order",style: TextStyle(fontSize: 30.0),),
               ),
             ],
@@ -67,7 +73,6 @@ class _PaymentPageState extends State<PaymentPage> {
       EcommerceApp.totalAmount:widget.totalAmount,
       "orderBy":EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID),
       EcommerceApp.productID:FieldValue.arrayUnion(ListOfOrder.idlist),
-
       //EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
       EcommerceApp.paymentDetails:"Cash on Delivery",
       EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
@@ -88,6 +93,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
   }
   emptyCartNow(){
+    ListOfOrder.idlist.clear();
     EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,["garbageValue"]);
     List tempList=EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
 
@@ -109,13 +115,12 @@ class _PaymentPageState extends State<PaymentPage> {
     await EcommerceApp.firestore.collection(EcommerceApp.collectionUser).
     doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)).
     collection(EcommerceApp.collectionOrders)
-        .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)+data['orderTime']).
+        .doc(OrderNumber.toString()+data['orderTime']).
     set(data);
   }
   Future writeOrderDetalisForAdmin(Map<String,dynamic>data)async{
-    await EcommerceApp.firestore.
-    collection(EcommerceApp.collectionOrders)
-        .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)+data['orderTime']).
+    await EcommerceApp.firestore.collection(EcommerceApp.collectionOrders)
+        .doc(OrderNumber.toString()+data['orderTime']).
     set(data);
   }
 }

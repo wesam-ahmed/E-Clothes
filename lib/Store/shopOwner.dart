@@ -89,15 +89,48 @@ class _ShopOwnerState extends State<ShopOwner> {
                     ),
                     SizedBox(width: 10,),
                     Column(
-                      children: [
-                        Text(
-                          EcommerceApp.sharedPreferences.getString(EcommerceApp.userName),
-                          style: TextStyle(color: Colors.black,fontSize: 22 ,fontWeight: FontWeight.normal),
+                      crossAxisAlignment: CrossAxisAlignment.start,
+
+                      children:<Widget> [
+                        Row(
+                          children: [
+                            Icon(Icons.perm_identity_rounded,color: primaryColor,),
+                            Text(
+                              widget.itemModel.sellername,
+                              style: TextStyle(color: Colors.black,fontSize: 20 ,fontWeight: FontWeight.normal),
+                            ),
+
+                          ],
                         ),
-                        Text(
-                          EcommerceApp.sharedPreferences.getString(EcommerceApp.userEmail),
-                          style: TextStyle(color: Colors.black,fontSize: 10 ,fontWeight: FontWeight.normal),
+                        Row(
+                          children: [
+                            Icon(Icons.email,color: primaryColor,),
+                            SizedBox(width: 3,),
+                            Text(
+                              widget.itemModel.sellerid,
+                              style: TextStyle(color: Colors.black,fontSize: 13 ,fontWeight: FontWeight.normal),
+                            ),
+
+                          ],
                         ),
+                        Row(children: [
+                          Icon(Icons.location_on,color: primaryColor,),
+                          Container(
+                            width: MediaQuery.of(context).size.width*0.5,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Text(
+                                widget.itemModel.selleraddress,
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(color: Colors.black,fontSize: 10 ,height: 1.4,fontWeight: FontWeight.normal),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 3,
+
+                              ),
+                            ),
+                          ),
+
+                        ],)
                       ],
 
                     )

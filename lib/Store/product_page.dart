@@ -37,7 +37,9 @@ class _ProductPageState extends State<ProductPage> {
   }
 
   int quantityOfItems = 1;
-  String ValueChoose;
+  String ValueColorChoose;
+  String ValueSizeChoose;
+
 
   @override
   Widget build(BuildContext context) {
@@ -162,8 +164,8 @@ class _ProductPageState extends State<ProductPage> {
                     child: CustomButton(onPress: (){
                       List <Map<String,dynamic>> idlist =[{
                         'id':widget.itemModel.idItem,
-                        'size':'ss',
-                        'color':'blue'
+                        'size':ValueSizeChoose,
+                        'color':ValueColorChoose
                       }];
                       checkItemInCart(idlist, context);
                     },
@@ -184,49 +186,94 @@ class _ProductPageState extends State<ProductPage> {
   Widget _buildUserInfo() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Row(
-        children: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(50),
-            child: Image.network(
-              widget.itemModel.sellerthumbnailUrl,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 10,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  widget.itemModel.sellername,
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+      child: Column(
+        children: [
+          Row(
+            children: <Widget>[
+              ClipRRect(
+                borderRadius: BorderRadius.circular(50),
+                child: Image.network(
+                  widget.itemModel.sellerthumbnailUrl,
+                  width: 50,
+                  height: 50,
+                  fit: BoxFit.cover,
                 ),
-              ],
-            ),
-          ),
-          Spacer(),
-          IconButton(
-            onPressed: () {
-              Route route = MaterialPageRoute(
-                  builder: (c) => ShopOwner(
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      widget.itemModel.sellername,
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Spacer(),
+              IconButton(
+                onPressed: () {
+                  Route route = MaterialPageRoute(
+                      builder: (c) => ShopOwner(
                         itemModel: widget.itemModel,
                       ));
-              Navigator.pushReplacement(context, route);
-            },
-            icon: const Icon(Icons.arrow_forward_ios_outlined),
-            color: Colors.black54,
+                  Navigator.pushReplacement(context, route);
+                },
+                icon: const Icon(Icons.arrow_forward_ios_outlined),
+                color: Colors.black54,
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              DropdownButton(
+                hint: ValueColorChoose==null
+                    ?Text("Color")
+                    :Text(ValueColorChoose),
+                value: ValueColorChoose,
+                onChanged: (String newValue) {
+                  setState(() {
+                    ValueColorChoose = newValue;
+
+                  });
+                },
+                items: widget.colors.map((String ValueItem) {
+                  return DropdownMenuItem(
+                    value: ValueItem,
+                    child: Text(ValueItem.toString()),
+                  );
+                }).toList(),
+              ),
+              DropdownButton(
+    hint: ValueSizeChoose== null
+        ?Text("Size")
+                :Text(ValueSizeChoose),
+    value: ValueSizeChoose,
+    onChanged: (newValue) {
+      setState(() {
+        ValueSizeChoose = newValue;
+      });
+    },
+    items: widget.sizes.map((ValueItem) {
+    return DropdownMenuItem(
+    value: ValueItem,
+    child: Text(
+    ValueItem.toString()),
+    );
+    }).toList(),)
+
+            ],
           ),
         ],
-      ),
+      )
     );
   }
 }
@@ -403,7 +450,7 @@ class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
                 Text(
                   itemModel.title,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.green,
                     fontSize: 30,
                   ),
                 ),
