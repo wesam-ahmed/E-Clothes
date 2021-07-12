@@ -43,6 +43,7 @@ class OrderDetails extends StatelessWidget {
   }
   @override
   Widget build(BuildContext context) {
+    getOrderId=orderID;
     getData();
     return SafeArea(
       child: Scaffold(
@@ -86,6 +87,12 @@ class OrderDetails extends StatelessWidget {
                         style: TextStyle(color: Colors.grey,fontSize: 16),
                       ),
                     ),
+                    Padding(padding: EdgeInsets.all(4)
+                      ,child: Text(
+                          "Shipping State: "+dataMap["shippingstate"].toString()
+
+                      ),
+                    ),
                     Divider(height: 2,),
                     Container(
                         height: 500,
@@ -106,15 +113,7 @@ class OrderDetails extends StatelessWidget {
                               );
                             }
                         )),
-                    /*                           builder: (c,dataSnapshot){
-                                  return dataSnapshot.hasData ?
-                                  OrderCard(
-                                    itemCount: dataSnapshot.data.documents.length,
-                                    data: dataSnapshot.data.documents,
-                                  )
-                                      :Center(child: circularProgress(),);
-                                },
-*/
+
                     Divider(height: 2,),
                     FutureBuilder<DocumentSnapshot>(
                       future:EcommerceApp.firestore
@@ -314,18 +313,17 @@ class ShippingDetails extends StatelessWidget {
       ],
     );
   }
-  confirmeduserOrderReceived(BuildContext context ,String mOrderId) {
-    EcommerceApp.firestore
+  confirmeduserOrderReceived(BuildContext context ,String getOrderId) {
+    final order =EcommerceApp.firestore
         .collection(EcommerceApp.collectionUser)
         .doc(EcommerceApp.sharedPreferences
         .getString(EcommerceApp.userUID))
-        .collection(EcommerceApp.collectionOrders)
-        .doc(mOrderId)
-        .delete();
+        .collection(EcommerceApp.collectionOrders);
+    order.doc(getOrderId).update({"shippingstate":"Received"});
 
     getOrderId ="";
-    Route route = MaterialPageRoute(builder: (c)=> StoreHome());
-    Navigator.pushReplacement(context, route);
+    /*Route route = MaterialPageRoute(builder: (c)=> StoreHome());
+    Navigator.pushReplacement(context, route);*/
     Fluttertoast.showToast(msg: "Order has been Received");
 
 

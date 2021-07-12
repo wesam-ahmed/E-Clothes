@@ -1,6 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_shop/Orders/myReceivedOrders.dart';
+import 'package:e_shop/Orders/myOrders.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/orderNumberCard.dart';
@@ -10,14 +10,14 @@ import 'package:flutter/services.dart';
 import '../Widgets/loadingWidget.dart';
 import '../Widgets/orderCard.dart';
 
-class MyOrders extends StatefulWidget {
+class MyReceivedOrders extends StatefulWidget {
   @override
-  _MyOrdersState createState() => _MyOrdersState();
+  _MyReceivedOrdersState createState() => _MyReceivedOrdersState();
 }
 
-class _MyOrdersState extends State<MyOrders> {
+class _MyReceivedOrdersState extends State<MyReceivedOrders> {
   Future<bool> _backStore()async{
-    return await Navigator.push(context, MaterialPageRoute(builder: (context) => StoreHome()));
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => MyOrders()));
   }
   @override
   Widget build(BuildContext context) {
@@ -29,13 +29,14 @@ class _MyOrdersState extends State<MyOrders> {
               backgroundColor: primaryColor,
               iconTheme: IconThemeData(color: Colors.white),
               centerTitle: true,
-              title: Text("My Orders",style: TextStyle(color: Colors.white),),
+              title: Text("My Received Orders",style: TextStyle(color: Colors.white),),
               actions: [
                 IconButton(
-                  icon: Icon(Icons.car_rental_outlined,color: Colors.white,),
+                  icon: Icon(Icons.arrow_drop_down_circle,color: Colors.white,),
                   onPressed: (){
-                    Route route = MaterialPageRoute(builder: (c)=> MyReceivedOrders());
-                    Navigator.pushReplacement(context, route);                  },
+                    Route route = MaterialPageRoute(builder: (c)=> MyOrders());
+                    Navigator.pushReplacement(context, route);
+                  },
                 ),
               ],
             ),
@@ -43,7 +44,7 @@ class _MyOrdersState extends State<MyOrders> {
               stream: EcommerceApp.firestore
                   .collection(EcommerceApp.collectionUser)
                   .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
-                  .collection(EcommerceApp.collectionOrders).where("shippingstate",isNotEqualTo: "Received").snapshots(),
+                  .collection(EcommerceApp.collectionOrders).where("shippingstate",isEqualTo: "Received").snapshots(),
 
               builder: (c,snapshot){
                 return snapshot.hasData

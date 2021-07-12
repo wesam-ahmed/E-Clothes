@@ -13,13 +13,14 @@ final String orderBy;
 final String addressID;
 final String section ;
 final String category ;
+final String shippingstate;
 
-AdminOrderNumberCard({Key key,this.orderId,this.orderBy,this.category,this.section,this.addressID}):super(key:key);
+AdminOrderNumberCard({Key key,this.orderId,this.orderBy,this.category,this.section,this.addressID,this.shippingstate}):super(key:key);
   @override
   Widget build(BuildContext context) {
     return  InkWell(
       onTap: (){
-       Navigator.push(context, MaterialPageRoute(builder: (c)=>AdminOrderDetails(orderId: orderId,section: section,addressID: addressID,orderBy: orderBy,category: category,)));
+       Navigator.push(context, MaterialPageRoute(builder: (c)=>AdminOrderDetails(shippingstate: shippingstate,orderId: orderId,section: section,addressID: addressID,orderBy: orderBy,category: category,)));
       },
       child: Container(
         decoration: new BoxDecoration(
