@@ -196,7 +196,7 @@ class _ProductPageState extends State<ProductPage> {
                   widget.itemModel.sellerthumbnailUrl,
                   width: 50,
                   height: 50,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
               Padding(
@@ -457,7 +457,7 @@ class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
                 Text(
                   itemModel.shortInfo,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.grey.shade400,
                     fontSize: 15,
                   ),
                 ),
