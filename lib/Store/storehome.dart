@@ -109,9 +109,9 @@ class _StoreHomeState extends State<StoreHome> {
 
                                         children: [
                                           FloatingActionButton.extended(
-                                            heroTag: "Shoes",
+                                            heroTag: "Jackets",
                                             onPressed: () {
-                                              SectionKey.category = "Shoes";
+                                              SectionKey.category = "Jackets";
                                               Route route = MaterialPageRoute(
                                                   builder: (_) => StoreHome());
                                               Navigator.pushReplacement(
@@ -120,7 +120,7 @@ class _StoreHomeState extends State<StoreHome> {
                                             backgroundColor: Colors.grey.shade100,
                                             icon: Image.asset("images/Jacket.png"),
                                             label: Text(
-                                              "Jacket",
+                                              "Jackets",
                                               style: TextStyle(color: Colors.black),
                                             ),
                                           ),
@@ -158,7 +158,7 @@ class _StoreHomeState extends State<StoreHome> {
                                             backgroundColor: Colors.grey.shade100,
                                             icon: Image.asset("images/jeans.png"),
                                             label: Text(
-                                              "Trousers",
+                                              "Pants",
                                               style: TextStyle(color: Colors.black),
                                             ),
                                           ),
@@ -166,9 +166,9 @@ class _StoreHomeState extends State<StoreHome> {
                                             width: 10,
                                           ),
                                           FloatingActionButton.extended(
-                                            heroTag: "Jackets",
+                                            heroTag: "Hoodies",
                                             onPressed: () {
-                                              SectionKey.category = "Jackets";
+                                              SectionKey.category = "Hoodies";
                                               Route route = MaterialPageRoute(
                                                   builder: (_) => StoreHome());
                                               Navigator.pushReplacement(
@@ -186,9 +186,9 @@ class _StoreHomeState extends State<StoreHome> {
                                             width: 10,
                                           ),
                                           FloatingActionButton.extended(
-                                            heroTag: "Sneakers",
+                                            heroTag: "Shoes",
                                             onPressed: () {
-                                              SectionKey.category = "Sneakers";
+                                              SectionKey.category = "Shoes";
                                               Route route = MaterialPageRoute(
                                                   builder: (_) => StoreHome());
                                               Navigator.pushReplacement(
@@ -198,7 +198,7 @@ class _StoreHomeState extends State<StoreHome> {
                                             icon:
                                             Image.asset("images/sneakers.png"),
                                         label: Text(
-                                          "shoes",
+                                          "Shoes",
                                           style: TextStyle(color: Colors.black),
                                         ),
                                       ),
@@ -217,7 +217,7 @@ class _StoreHomeState extends State<StoreHome> {
                                         backgroundColor: Colors.grey.shade100,
                                         icon: Image.asset("images/shorts.png"),
                                         label: Text(
-                                          "shorts",
+                                          "Shorts",
                                           style: TextStyle(color: Colors.black),
                                         ),
                                       ),
@@ -225,9 +225,9 @@ class _StoreHomeState extends State<StoreHome> {
                                         width: 10,
                                       ),
                                       FloatingActionButton.extended(
-                                        heroTag: "Bags",
+                                        heroTag: "accessories",
                                         onPressed: () {
-                                          SectionKey.category = "Bags";
+                                          SectionKey.category = "accessories";
                                           Route route = MaterialPageRoute(
                                               builder: (_) => StoreHome());
                                           Navigator.pushReplacement(
