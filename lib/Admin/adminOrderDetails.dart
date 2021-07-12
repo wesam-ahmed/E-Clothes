@@ -15,6 +15,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
 String getOrderId="";
+String getOrderBy="";
 class AdminOrderDetails extends StatelessWidget {
 
   final String orderId;
@@ -22,6 +23,7 @@ class AdminOrderDetails extends StatelessWidget {
   final String addressID;
   final String section ;
   final String category ;
+  final String shippingstate;
   List IDs=[];
 
   getData(){
@@ -43,10 +45,11 @@ class AdminOrderDetails extends StatelessWidget {
     print(IDs);
   }
 
-  AdminOrderDetails({Key key,this.orderId,this.orderBy,this.addressID,this.section,this.category}):super(key: key);
+  AdminOrderDetails({Key key,this.orderId,this.orderBy,this.addressID,this.section,this.category,this.shippingstate}):super(key: key);
   @override
   Widget build(BuildContext context) {
     getOrderId = orderId;
+    getOrderBy =orderBy;
     getData();
     return SafeArea(
       child: Scaffold(
@@ -75,6 +78,11 @@ class AdminOrderDetails extends StatelessWidget {
                       ,child: Text(
                         "Order at: "+ DateFormat("dd MMMM,yyyy - hh:mm aa").format(DateTime.fromMillisecondsSinceEpoch(int.parse(dataMap["orderTime"]))),
                         style: TextStyle(color: Colors.grey,fontSize: 16),
+                      ),
+                    ),
+                    Padding(padding: EdgeInsets.all(4)
+                      ,child: Text(
+                          "Shipping State: "+shippingstate.toString()
                       ),
                     ),
                     Divider(height: 2,),
@@ -260,7 +268,7 @@ class AdminShippingDetails extends StatelessWidget {
           child: Center(
             child: InkWell(
               onTap: () {
-                confirmParcelShifted(context, getOrderId);
+                confirmParcelShifted(context, getOrderId,getOrderBy);
               }
               ,
               child: Container(
@@ -288,18 +296,20 @@ class AdminShippingDetails extends StatelessWidget {
       ],
     );
   }
-  confirmParcelShifted(BuildContext context ,String mOrderId)
+  confirmParcelShifted(BuildContext context ,String getOrderId,String getOrderBy)
   {
-    EcommerceApp.firestore
-        .collection(EcommerceApp.collectionUser)
-        .doc(EcommerceApp.sharedPreferences
-        .getString(EcommerceApp.userUID))
-        .collection(EcommerceApp.collectionOrders)
-        .doc(mOrderId);
-
-    getOrderId ="";
-    Route route = MaterialPageRoute(builder: (c)=> UploadPage());
-    Navigator.pushReplacement(context, route);
+    print(getOrderBy);
+    print(getOrderId);
+    final MyorderRef = EcommerceApp.firestore.collection("orders");
+   MyorderRef.doc(getOrderId).update({
+     "shippingstate":"Shipped",
+   });
+   final UserOrderRef = EcommerceApp.firestore.collection("users").doc(getOrderBy).collection("orders");
+   UserOrderRef.doc(getOrderId).update({
+     "shippingstate":"Shipped",
+   });
+   /* Route route = MaterialPageRoute(builder: (c)=> UploadPage());
+    Navigator.pushReplacement(context, route);*/
     Fluttertoast.showToast(msg: "Product has been Shifted.");
 
 

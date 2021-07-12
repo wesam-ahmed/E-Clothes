@@ -24,7 +24,7 @@ class PaymentPage extends StatefulWidget {
 }
  Random rn = new Random();
 class _PaymentPageState extends State<PaymentPage> {
-  int OrderNumber =rn.nextInt(100)+10;
+  int OrderNumber =rn.nextInt(100)+10+DateTime.now().millisecondsSinceEpoch;
   @override
   Widget build(BuildContext context) {
     print(OrderNumber);
@@ -75,7 +75,7 @@ class _PaymentPageState extends State<PaymentPage> {
       EcommerceApp.productID:FieldValue.arrayUnion(ListOfOrder.idlist),
       //EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
       EcommerceApp.paymentDetails:"Cash on Delivery",
-      EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
+      EcommerceApp.orderTime:DateTime.now().minute.toString(),
       EcommerceApp.isSuccess:true,
     });
     writeOrderDetalisForAdmin({
@@ -85,8 +85,9 @@ class _PaymentPageState extends State<PaymentPage> {
       EcommerceApp.productID:FieldValue.arrayUnion(ListOfOrder.idlist),
       // EcommerceApp.productID:EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList),
       EcommerceApp.paymentDetails:"Cash on Delivery",
-      EcommerceApp.orderTime:DateTime.now().millisecondsSinceEpoch.toString(),
+      EcommerceApp.orderTime:DateTime.now().minute.toString(),
       EcommerceApp.isSuccess:true,
+      "shippingstate":"Pending",
     }).whenComplete(() => {
       emptyCartNow()
     });
@@ -115,12 +116,12 @@ class _PaymentPageState extends State<PaymentPage> {
     await EcommerceApp.firestore.collection(EcommerceApp.collectionUser).
     doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID)).
     collection(EcommerceApp.collectionOrders)
-        .doc(OrderNumber.toString()+data['orderTime']).
+        .doc(OrderNumber.toString()).
     set(data);
   }
   Future writeOrderDetalisForAdmin(Map<String,dynamic>data)async{
     await EcommerceApp.firestore.collection(EcommerceApp.collectionOrders)
-        .doc(OrderNumber.toString()+data['orderTime']).
+        .doc(OrderNumber.toString()).
     set(data);
   }
 }

@@ -1,6 +1,6 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:e_shop/Admin/myShippedOrders.dart';
+import 'package:e_shop/Admin/adminShiftOrders.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/adminorderNumberCard.dart';
@@ -13,14 +13,14 @@ import '../Widgets/loadingWidget.dart';
 import '../Widgets/orderCard.dart';
 import 'adminOrderCard.dart';
 
-class AdminShiftOrders extends StatefulWidget {
+class AdminShippedOrders extends StatefulWidget {
   @override
-  _AdminShiftOrdersState createState() => _AdminShiftOrdersState();
+  _AdminShiftshippedOrdersState createState() => _AdminShiftshippedOrdersState();
 }
 
-class _AdminShiftOrdersState extends State<AdminShiftOrders> {
+class _AdminShiftshippedOrdersState extends State<AdminShippedOrders> {
   Future<bool> _backStore()async{
-    return await Navigator.push(context, MaterialPageRoute(builder: (context) => UploadPage()));
+    return await Navigator.push(context, MaterialPageRoute(builder: (context) => AdminShiftOrders()));
   }
   String dropdownValue_Section ;
   String dropdownValue_Category ;
@@ -34,19 +34,19 @@ class _AdminShiftOrdersState extends State<AdminShiftOrders> {
               backgroundColor: primaryColor,
               iconTheme: IconThemeData(color: Colors.white),
               centerTitle: true,
-              title: Text("My Orders",style: TextStyle(color: Colors.white),),
+              title: Text("My Shipped Orders",style: TextStyle(color: Colors.white),),
               actions: [
                 IconButton(
                   icon: Icon(Icons.arrow_drop_down_circle,color: Colors.white,),
                   onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (c)=>AdminShippedOrders()));
+                    Navigator.push(context, MaterialPageRoute(builder: (c)=>AdminShiftOrders()));
                   },
                 ),
               ],
             ),
             body: StreamBuilder(
               stream: EcommerceApp.firestore
-                  .collection("orders").where("shippingstate",isEqualTo: "Pending").snapshots(),
+                  .collection("orders").where("shippingstate",isEqualTo: "Shipped").snapshots(),
 
               builder: (c,snapshot){
                 return snapshot.hasData
