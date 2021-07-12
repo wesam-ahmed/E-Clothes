@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
 import 'package:e_shop/Models/item.dart';
+import 'package:e_shop/Widgets/constance.dart';
+import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/main.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -28,7 +30,7 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     print(OrderNumber);
-    return Material(
+    /*return Material(
       child: Container(
         decoration: new BoxDecoration(
             gradient: new LinearGradient(
@@ -65,6 +67,43 @@ class _PaymentPageState extends State<PaymentPage> {
           ),
         ),
       ),
+    );*/
+    return Material(
+        child: Column(mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+          Image.asset('images/truck.png',color: primaryColor,width: 300,height: 300,),
+          SizedBox(height: 20,),
+             Container(
+               width: 250,
+               height: 50,
+               child: CustomButton(
+                text:"place Order" ,
+                color: Colors.grey.shade200,
+                textColor: primaryColor,
+                onPress: (){
+                  showDialog<String>(
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      title: const Text('Confirmation',style: TextStyle(color: primaryColor),),
+                      content: const Text('Are you sure you can confirm the Process?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, 'Cancel'),
+                          child: const Text('Cancel',style: TextStyle(color: Colors.black54),),
+                        ),
+                        TextButton(
+                          onPressed: () =>  addOrderDetails(),
+
+                  child: const Text('OK',style: TextStyle(color: primaryColor),),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+
+            ),
+             ),
+        ],)
     );
   }
   addOrderDetails(){
@@ -106,6 +145,7 @@ class _PaymentPageState extends State<PaymentPage> {
       EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,tempList );
       Provider.of<CartItemCounter>(context,listen:false).displayResult() ;
       Fluttertoast.showToast(msg: "congratulations,Your order has been placed successfuly");
+
       Route route=MaterialPageRoute(builder: (c)=>SplashScreen());
       Navigator.pushReplacement(context, route);
     });
