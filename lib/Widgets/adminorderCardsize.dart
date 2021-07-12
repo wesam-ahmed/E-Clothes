@@ -112,7 +112,6 @@ Widget sourceOrderInfo(ItemModel model,String ordercolor,String ordersize, Build
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
                             Padding(
                               padding: EdgeInsets.only(top: 5.0),
                               child: Row(
@@ -147,7 +146,8 @@ Widget sourceOrderInfo(ItemModel model,String ordercolor,String ordersize, Build
                                 ),),
                                 Text(ordercolor),
                               ],
-                            ),SizedBox(width: 3,),
+                            ),
+                            SizedBox(width: 3,),
                             Row(
                               children: [
                                 Text(

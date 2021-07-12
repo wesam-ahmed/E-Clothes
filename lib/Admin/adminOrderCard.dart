@@ -28,19 +28,15 @@ class AdminOrderCard extends StatelessWidget
       },
       child: Container(
         decoration: new BoxDecoration(
-
-           /*border: Border.all(color: primaryColor,width: 5)*/
-            borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(15),
         boxShadow: [
         BoxShadow(
         color: Colors.green.shade200,
-        offset: const Offset(
-          5.0,
-          5.0,
-        ), //Offset
+        offset: const Offset(5.0, 5.0,), //Offset
         blurRadius: 10.0,
         spreadRadius: 2.0,
       ), //BoxShadow
+
       BoxShadow(
         color: Colors.white,
         offset: const Offset(0.0, 0.0),
@@ -48,13 +44,6 @@ class AdminOrderCard extends StatelessWidget
         spreadRadius: 0.0,
       ),
 
-           /* gradient: new LinearGradient(
-              colors: [Colors.white,Colors.grey],
-              begin:const FractionalOffset(0.0, 0.0),
-              end: const FractionalOffset(1.0, 0.0),
-              stops: [0.0,1.0],
-              tileMode: TileMode.clamp,
-            )*/
         ],
         ),
         padding: EdgeInsets.all(10.0),
@@ -74,10 +63,7 @@ class AdminOrderCard extends StatelessWidget
       {Color background})
   {
     width =  MediaQuery.of(context).size.width;
-
     return  InkWell(
-
-
       child: Container(
         color: Colors.grey[100],
         child: Padding
