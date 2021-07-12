@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Widgets/customTextField.dart';
 import 'package:e_shop/DialogBox/errorDialog.dart';
@@ -32,8 +31,6 @@ class _RegisterState extends State<adminRegister> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String adminImageUrl = "";
   File _imageFile;
-  String adminitemid =Random().nextInt(100).toString()+DateTime.now().millisecond.toString();
-
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +143,73 @@ class _RegisterState extends State<adminRegister> {
       ,
     );
 
+    /* return SingleChildScrollView(
+      child: Container(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            SizedBox(height: 10),
+            InkWell(
+              onTap: () {
+                _selectAndPickImage();
+              },
+              child: CircleAvatar(
+                radius: _screenWidth *0.15,
+                backgroundColor: Colors.white,
+                backgroundImage: _imageFile == null ? null : FileImage(_imageFile),
+                child: _imageFile ==null ? Icon(Icons.add_photo_alternate,size: _screenWidth*0.15,color: Colors.grey,):
+                null,
+              ) ,
+            ),
+            SizedBox(height: 10),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  CustomTextField(
+                    controller: _nameTextEditingController,
+                    data: Icons.person,
+                    hintText: "Name",
+                    isObsecure: false,
+                  ),
+                  CustomTextField(
+                    controller: _emailTextEditingController,
+                    data: Icons.email,
+                    hintText: "Email",
+                    isObsecure: false,
+                  ),
+                  CustomTextField(
+                    controller: _passwordTextEditingController,
+                    data: Icons.vpn_key_outlined,
+                    hintText: "Password",
+                    isObsecure: true,
+                  ),
+                  CustomTextField(
+                    controller: _cpasswordTextEditingController,
+                    data: Icons.vpn_key_rounded,
+                    hintText: "Confirm Password",
+                    isObsecure: true,
+                  ),
+                ],
+              ),
+            ),
+            RaisedButton(
+              onPressed: (){
+                uploadAndSaveImage();
+              },
+              color: Colors.white,
+              child: Text("Sign up",style: TextStyle(color: Colors.black),),
+            ),
+            SizedBox(height: 30),
+            Container(height: 4,
+            width: _screenWidth*0.8,
+            color: Colors.black,),
+            SizedBox(height: 15,
+            ),
+          ],
+        ),
+      ),
+    );*/
   }
 
   Future<void> _selectAndPickImage() async {
@@ -158,22 +222,22 @@ class _RegisterState extends State<adminRegister> {
     if(_imageFile==null)
     {
       showDialog(
-        context: context,
-        builder: (c)
+          context: context,
+          builder: (c)
           {
             return ErrorAlertDialog(message: "PLease select an image file ",);
           }
       );
     }
     else
-    _passwordTextEditingController.text == _cpasswordTextEditingController.text
-        ? _emailTextEditingController.text.isNotEmpty &&
-        _passwordTextEditingController.text.isNotEmpty &&
-        _cpasswordTextEditingController.text.isNotEmpty &&
-        _nameTextEditingController.text.isNotEmpty
-        ? uploadToStorage()
-        : displayDialog("Please fill up registration complete form..")
-        : displayDialog("Password do not match.");
+      _passwordTextEditingController.text == _cpasswordTextEditingController.text
+          ? _emailTextEditingController.text.isNotEmpty &&
+          _passwordTextEditingController.text.isNotEmpty &&
+          _cpasswordTextEditingController.text.isNotEmpty &&
+          _nameTextEditingController.text.isNotEmpty
+          ? uploadToStorage()
+          : displayDialog("Please fill up registration complete form..")
+          : displayDialog("Password do not match.");
   }
 
   displayDialog(String msg) {
@@ -256,5 +320,7 @@ class _RegisterState extends State<adminRegister> {
     await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminName, _nameTextEditingController.text);
     await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminphoto, adminImageUrl);
     await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminAddress, _addressTextEditingController.text);
+
+
   }
 }

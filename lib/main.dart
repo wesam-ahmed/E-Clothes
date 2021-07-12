@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:e_shop/Config/config.dart';
 import 'Admin/adminLogin.dart';
+import 'Admin/uploadItems.dart';
 import 'Config/config.dart';
 import 'Counters/cartitemcounter.dart';
 import 'Counters/changeAddresss.dart';
@@ -46,7 +47,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             fontFamily:"SourceSansPro-Regular" ,
             primaryColor: Colors.green,),
-          home: AdminSignInPage()
+          home: SplashScreen()
       ),
     );
   }
