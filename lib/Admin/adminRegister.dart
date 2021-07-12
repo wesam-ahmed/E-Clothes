@@ -222,22 +222,22 @@ class _RegisterState extends State<adminRegister> {
     if(_imageFile==null)
     {
       showDialog(
-        context: context,
-        builder: (c)
+          context: context,
+          builder: (c)
           {
             return ErrorAlertDialog(message: "PLease select an image file ",);
           }
       );
     }
     else
-    _passwordTextEditingController.text == _cpasswordTextEditingController.text
-        ? _emailTextEditingController.text.isNotEmpty &&
-        _passwordTextEditingController.text.isNotEmpty &&
-        _cpasswordTextEditingController.text.isNotEmpty &&
-        _nameTextEditingController.text.isNotEmpty
-        ? uploadToStorage()
-        : displayDialog("Please fill up registration complete form..")
-        : displayDialog("Password do not match.");
+      _passwordTextEditingController.text == _cpasswordTextEditingController.text
+          ? _emailTextEditingController.text.isNotEmpty &&
+          _passwordTextEditingController.text.isNotEmpty &&
+          _cpasswordTextEditingController.text.isNotEmpty &&
+          _nameTextEditingController.text.isNotEmpty
+          ? uploadToStorage()
+          : displayDialog("Please fill up registration complete form..")
+          : displayDialog("Password do not match.");
   }
 
   displayDialog(String msg) {

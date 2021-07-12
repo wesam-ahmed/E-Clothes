@@ -192,8 +192,6 @@ class _AdminSignInScreenState extends State<AdminSignInScreen> {
       await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminId, dataSnapshot.data()["id"]);
       await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminphoto, dataSnapshot.data()["thumbnailUrl"]);
       await EcommerceApp.sharedPreferences.setString(EcommerceApp.collectionAdminAddress, dataSnapshot.data()["address"]);
-
-
     });
   }
 }

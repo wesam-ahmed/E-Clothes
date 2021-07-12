@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/adminorderNumberCard.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/orderNumberCard.dart';
 import 'package:flutter/material.dart';
 import 'package:e_shop/Config/config.dart';
@@ -29,7 +30,8 @@ class _AdminShiftOrdersState extends State<AdminShiftOrders> {
         child: SafeArea(
           child: Scaffold(
             appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.green),
+              backgroundColor: primaryColor,
+              iconTheme: IconThemeData(color: Colors.white),
               centerTitle: true,
               title: Text("My Orders",style: TextStyle(color: Colors.white),),
               actions: [

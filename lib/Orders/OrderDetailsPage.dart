@@ -90,7 +90,7 @@ class OrderDetails extends StatelessWidget {
                     Container(
                         height: 500,
                         child: ListView.builder(
-                            itemCount: 2,
+                            itemCount: IDs.length,
                             itemBuilder: (c,index){
                               return  FutureBuilder(
                                 future: EcommerceApp.firestore.collection("items").where("idItem",isEqualTo: IDs[index]["id"]).get(),
