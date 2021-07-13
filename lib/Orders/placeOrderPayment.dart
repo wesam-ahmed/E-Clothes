@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Counters/cartitemcounter.dart';
 import 'package:e_shop/Models/item.dart';
+import 'package:e_shop/Store/Section.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/custom_button.dart';
 import 'package:e_shop/main.dart';
@@ -116,6 +117,8 @@ class _PaymentPageState extends State<PaymentPage> {
       EcommerceApp.paymentDetails:"Cash on Delivery",
       EcommerceApp.orderTime:DateTime.now().minute.toString(),
       EcommerceApp.isSuccess:true,
+      "shippingstate":"Pending",
+
     });
     writeOrderDetalisForAdmin({
       EcommerceApp.addressID:widget.addressId,
@@ -147,7 +150,7 @@ class _PaymentPageState extends State<PaymentPage> {
       Provider.of<CartItemCounter>(context,listen:false).displayResult() ;
       Fluttertoast.showToast(msg: "congratulations,Your order has been placed successfuly");
 
-      Route route=MaterialPageRoute(builder: (c)=>SplashScreen());
+      Route route=MaterialPageRoute(builder: (c)=>Section());
       Navigator.pushReplacement(context, route);
     });
 

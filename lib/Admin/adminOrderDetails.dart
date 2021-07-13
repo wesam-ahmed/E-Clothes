@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:im_stepper/stepper.dart';
+
 
 String getOrderId="";
 String getOrderBy="";
@@ -25,6 +27,8 @@ class AdminOrderDetails extends StatelessWidget {
   final String category ;
   final String shippingstate;
   List IDs=[];
+  int activeStep = 2;
+
 
   getData(){
     IDs.clear();
@@ -62,6 +66,15 @@ class AdminOrderDetails extends StatelessWidget {
               if(snapshot.hasData)
               {
                 dataMap =snapshot.data.data();
+                if(dataMap["shippingstate"].toString()=="Pending"){
+                  activeStep = 0;
+                }
+                else if(dataMap["shippingstate"].toString()=="Shipped"){
+                  activeStep = 1;
+                }
+              else if(dataMap["shippingstate"].toString()=="Received"){
+                activeStep = 2;
+               };
               }
               return snapshot.hasData ?
               Container(
@@ -85,6 +98,25 @@ class AdminOrderDetails extends StatelessWidget {
                           "Shipping State: "+shippingstate.toString()
                       ),
                     ),
+                    IconStepper(
+                      icons: [
+                        Icon(Icons.store_mall_directory_rounded,color: Colors.white,),
+                        Icon(Icons.motorcycle_rounded,color: Colors.white),
+                        Icon(Icons.home,color: Colors.white),
+                      ],
+                      activeStep: activeStep,
+                      scrollingDisabled: true,
+                      enableStepTapping: false,
+                      activeStepColor: primaryColor,
+                      lineColor: Colors.grey.shade400,
+                      activeStepBorderColor:Colors.grey.shade400,
+                      enableNextPreviousButtons: false,
+                      stepColor: Colors.grey.shade400,
+                      stepRadius: 20,
+
+
+                    ),
+
                     Divider(height: 2,),
                     Container(
                       height: 450,

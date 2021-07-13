@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:grouped_buttons/grouped_buttons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:progress_dialog/progress_dialog.dart';
 import 'adminOrders.dart';
 
 
