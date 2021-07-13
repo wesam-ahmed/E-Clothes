@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Config/config.dart';
+import 'package:e_shop/Orders/myOrders.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
@@ -381,11 +382,16 @@ class ShippingDetails extends StatelessWidget {
         .collection(EcommerceApp.collectionUser)
         .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
         .collection(EcommerceApp.collectionOrders);
-    order.doc(getOrderId).update({"shippingstate": "Received"});
 
-    getOrderId = "";
-    /*Route route = MaterialPageRoute(builder: (c)=> StoreHome());
-    Navigator.pushReplacement(context, route);*/
+    userorder.doc(getOrderId).update({"shippingstate":"Received"});
+
+    final order =EcommerceApp.firestore
+        .collection("orders");
+        order.doc(getOrderId).update({"shippingstate":"Received"});
+
+    getOrderId ="";
+    Route route = MaterialPageRoute(builder: (c)=> MyOrders());
+    Navigator.pushReplacement(context, route);
     Fluttertoast.showToast(msg: "Order has been Received");
   }
 }
