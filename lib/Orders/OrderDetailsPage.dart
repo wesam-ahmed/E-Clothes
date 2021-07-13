@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Address/address.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Store/storehome.dart';
+import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/loadingWidget.dart';
 import 'package:e_shop/Widgets/orderCard.dart';
 import 'package:e_shop/Models/address.dart';
@@ -13,6 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
+import 'package:im_stepper/main.dart';
+import 'package:im_stepper/stepper.dart';
+
 
 
 String getOrderId="";
@@ -20,6 +24,7 @@ class OrderDetails extends StatelessWidget {
   final String orderID;
   OrderDetails({Key key,this.orderID}):super(key: key);
   List IDs=[];
+  int activeStep = 2;
 
   getData(){
     IDs.clear();
@@ -59,6 +64,16 @@ class OrderDetails extends StatelessWidget {
               if(snapshot.hasData)
               {
                 dataMap =snapshot.data.data();
+
+                if(dataMap["shippingstate"].toString()=="Pending"){
+                  activeStep = 0;
+                }
+                else if(dataMap["shippingstate"].toString()=="Shipped"){
+                  activeStep = 1;
+                }
+              else if(dataMap["shippingstate"].toString()=="Received"){
+                activeStep = 2;
+               };
               }
               return snapshot.hasData
                   ?Container(
@@ -90,9 +105,26 @@ class OrderDetails extends StatelessWidget {
                     Padding(padding: EdgeInsets.all(4)
                       ,child: Text(
                           "Shipping State: "+dataMap["shippingstate"].toString()
-
                       ),
                     ),
+                    IconStepper(
+    icons: [
+    Icon(Icons.store_mall_directory_rounded,color: Colors.white,),
+    Icon(Icons.motorcycle_rounded,color: Colors.white),
+    Icon(Icons.home,color: Colors.white),
+    ],
+    activeStep: activeStep,
+      scrollingDisabled: true,
+      enableStepTapping: false,
+      activeStepColor: primaryColor,
+      lineColor: Colors.grey.shade400,
+      activeStepBorderColor:Colors.grey.shade400,
+      enableNextPreviousButtons: false,
+      stepColor: Colors.grey.shade400,
+      stepRadius: 20,
+
+
+    ),
                     Divider(height: 2,),
                     Container(
                         height: 500,

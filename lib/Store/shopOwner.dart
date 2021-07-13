@@ -160,9 +160,7 @@ class _ShopOwnerState extends State<ShopOwner> {
             ),
             Expanded(
                 child: CustomScrollView(
-
                   slivers: [
-                    
                     SliverToBoxAdapter(
                       child: Container(
                         margin: EdgeInsets.only(top: 1, bottom: 10),
@@ -178,22 +176,21 @@ class _ShopOwnerState extends State<ShopOwner> {
                                 padding: EdgeInsets.only(top: 5, bottom: 10),
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     FloatingActionButton.extended(
-                                      heroTag: "Shoes",
+                                      heroTag: "Jackets",
                                       onPressed: () {
-                                        SectionKey.category = "Shoes";
+                                        SectionKey.category = "Jackets";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => StoreHome());
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset("images/Jacket.png"),
                                       label: Text(
-                                        "Jacket",
+                                        "Jackets",
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ),
@@ -201,11 +198,11 @@ class _ShopOwnerState extends State<ShopOwner> {
                                       width: 10,
                                     ),
                                     FloatingActionButton.extended(
-                                      heroTag: "Shirts",
+                                      heroTag: "T-Shirt",
                                       onPressed: () {
-                                        SectionKey.category = "Shirts";
+                                        SectionKey.category = "T-Shirt";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => StoreHome());
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -224,14 +221,14 @@ class _ShopOwnerState extends State<ShopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Pants";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => StoreHome());
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset("images/jeans.png"),
                                       label: Text(
-                                        "trousers",
+                                        "Pants",
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ),
@@ -239,11 +236,11 @@ class _ShopOwnerState extends State<ShopOwner> {
                                       width: 10,
                                     ),
                                     FloatingActionButton.extended(
-                                      heroTag: "Jackets",
+                                      heroTag: "Hoodies",
                                       onPressed: () {
-                                        SectionKey.category = "Jackets";
+                                        SectionKey.category = "Hoodies";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => StoreHome());
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -259,11 +256,11 @@ class _ShopOwnerState extends State<ShopOwner> {
                                       width: 10,
                                     ),
                                     FloatingActionButton.extended(
-                                      heroTag: "Sneakers",
+                                      heroTag: "Shoes",
                                       onPressed: () {
-                                        SectionKey.category = "Sneakers";
+                                        SectionKey.category = "Shoes";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => StoreHome());
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -271,7 +268,7 @@ class _ShopOwnerState extends State<ShopOwner> {
                                       icon:
                                       Image.asset("images/sneakers.png"),
                                       label: Text(
-                                        "shoes",
+                                        "Shoes",
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ),
@@ -283,14 +280,14 @@ class _ShopOwnerState extends State<ShopOwner> {
                                       onPressed: () {
                                         SectionKey.category = "Shorts";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => StoreHome());
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset("images/shorts.png"),
                                       label: Text(
-                                        "shorts",
+                                        "Shorts",
                                         style: TextStyle(color: Colors.black),
                                       ),
                                     ),
@@ -298,11 +295,11 @@ class _ShopOwnerState extends State<ShopOwner> {
                                       width: 10,
                                     ),
                                     FloatingActionButton.extended(
-                                      heroTag: "Bags",
+                                      heroTag: "accessories",
                                       onPressed: () {
-                                        SectionKey.category = "Bags";
+                                        SectionKey.category = "accessories";
                                         Route route = MaterialPageRoute(
-                                            builder: (_) => ShopOwner(itemModel: widget.itemModel,));
+                                            builder: (_) => StoreHome());
                                         Navigator.pushReplacement(
                                             context, route);
                                       },
@@ -344,9 +341,7 @@ class _ShopOwnerState extends State<ShopOwner> {
                           staggeredTileBuilder: (c) =>
                               StaggeredTile.fit(1),
                           itemBuilder: (context, index) {
-                            ItemModel model = ItemModel.fromJson(
-                                dataSnapshot
-                                    .data.docs[index].data());
+                            ItemModel model = ItemModel.fromJson(dataSnapshot.data.docs[index].data());
                             return sourceInfo(model, context);
                           },
                           itemCount: dataSnapshot.data.docs.length,
