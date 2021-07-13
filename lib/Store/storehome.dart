@@ -128,6 +128,25 @@ class _StoreHomeState extends State<StoreHome> {
                                             width: 10,
                                           ),
                                           FloatingActionButton.extended(
+                                            heroTag: "Shirts",
+                                            onPressed: () {
+                                              SectionKey.category = "Shirts";
+                                              Route route = MaterialPageRoute(
+                                                  builder: (_) => StoreHome());
+                                              Navigator.pushReplacement(
+                                                  context, route);
+                                            },
+                                            backgroundColor: Colors.grey.shade100,
+                                            icon: Image.asset("images/shirt.png"),
+                                            label: Text(
+                                              "Shirt",
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          FloatingActionButton.extended(
                                             heroTag: "T-Shirt",
                                             onPressed: () {
                                               SectionKey.category = "T-Shirt";

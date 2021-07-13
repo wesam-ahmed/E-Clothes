@@ -40,7 +40,6 @@ class _ProductPageState extends State<ProductPage> {
   String ValueColorChoose;
   String ValueSizeChoose;
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -161,16 +160,18 @@ class _ProductPageState extends State<ProductPage> {
                   Container(
                     width: 180,
                     height: 50,
-                    child: CustomButton(onPress: (){
-                      List <Map<String,dynamic>> idlist =[{
-                        'id':widget.itemModel.idItem,
-                        'size':ValueSizeChoose,
-                        'color':ValueColorChoose
-                      }];
-                      checkItemInCart(idlist, context);
-                    },
+                    child: CustomButton(
+                      onPress: () {
+                        List<Map<String, dynamic>> idlist = [
+                          {
+                            'id': widget.itemModel.idItem,
+                            'size': ValueSizeChoose,
+                            'color': ValueColorChoose
+                          }
+                        ];
+                        checkItemInCart(idlist, context);
+                      },
                       text: "Add to Cart",
-
                     ),
                   ),
                 ],
@@ -185,96 +186,116 @@ class _ProductPageState extends State<ProductPage> {
   //da bta3 el seller info
   Widget _buildUserInfo() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: Column(
-        children: [
-          Row(
-            children: <Widget>[
-              ClipRRect(
-                borderRadius: BorderRadius.circular(50),
-                child: Image.network(
-                  widget.itemModel.sellerthumbnailUrl,
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.fill,
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+        child: Column(
+          children: [
+            Row(
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.network(
+                    widget.itemModel.sellerthumbnailUrl,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.fill,
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      widget.itemModel.sellername,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 10,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        widget.itemModel.sellername,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Spacer(),
-              IconButton(
-                onPressed: () {
-                  Route route = MaterialPageRoute(
-                      builder: (c) => ShopOwner(
-                        itemModel: widget.itemModel,
-                      ));
-                  Navigator.pushReplacement(context, route);
-                },
-                icon: const Icon(Icons.arrow_forward_ios_outlined),
-                color: Colors.black54,
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              DropdownButton(
-                hint: ValueColorChoose==null
-                    ?Text("Color")
-                    :Text(ValueColorChoose),
-                value: ValueColorChoose,
-                onChanged: (String newValue) {
-                  setState(() {
-                    ValueColorChoose = newValue;
-
-                  });
-                },
-                items: widget.colors.map((String ValueItem) {
-                  return DropdownMenuItem(
-                    value: ValueItem,
-                    child: Text(ValueItem.toString()),
-                  );
-                }).toList(),
-              ),
-              DropdownButton(
-    hint: ValueSizeChoose== null
-        ?Text("Size")
-                :Text(ValueSizeChoose),
-    value: ValueSizeChoose,
-    onChanged: (newValue) {
-      setState(() {
-        ValueSizeChoose = newValue;
-      });
-    },
-    items: widget.sizes.map((ValueItem) {
-    return DropdownMenuItem(
-    value: ValueItem,
-    child: Text(
-    ValueItem.toString()),
-    );
-    }).toList(),)
-
-            ],
-          ),
-        ],
-      )
-    );
+                Spacer(),
+                IconButton(
+                  onPressed: () {
+                    Route route = MaterialPageRoute(
+                        builder: (c) => ShopOwner(
+                              itemModel: widget.itemModel,
+                            ));
+                    Navigator.pushReplacement(context, route);
+                  },
+                  icon: const Icon(Icons.arrow_forward_ios_outlined),
+                  color: Colors.black54,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.green.shade200,
+                      )),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      hint: ValueColorChoose == null
+                          ? Text("Color")
+                          : Text(ValueColorChoose),
+                      value: ValueColorChoose,
+                      onChanged: (String newValue) {
+                        setState(() {
+                          ValueColorChoose = newValue;
+                        });
+                      },
+                      items: widget.colors.map((String ValueItem) {
+                        return DropdownMenuItem(
+                          value: ValueItem,
+                          child: Text(ValueItem.toString()),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 30,
+                ),
+                Container(
+                  width: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: Colors.green.shade200,
+                      )),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      hint: ValueSizeChoose == null
+                          ? Text("Size")
+                          : Text(ValueSizeChoose),
+                      value: ValueSizeChoose,
+                      onChanged: (newValue) {
+                        setState(() {
+                          ValueSizeChoose = newValue;
+                        });
+                      },
+                      items: widget.sizes.map((ValueItem) {
+                        return DropdownMenuItem(
+                          value: ValueItem,
+                          child: Text(ValueItem.toString()),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ));
   }
 }
 
@@ -342,7 +363,7 @@ Widget sourceInfo(ItemModel model, BuildContext context,
                   alignment: Alignment.bottomLeft,
                   color: primaryColor,
                 ),
-               /* Container(
+                /* Container(
                   alignment: Alignment.topRight,
                   child: InkWell(
                     onTap: () {
@@ -362,19 +383,20 @@ Widget sourceInfo(ItemModel model, BuildContext context,
     ),
   );
 }
+
 void checkItemInCart(List idItemAsId, BuildContext context) {
   idItemAsId.forEach((element) {
     EcommerceApp.sharedPreferences
-        .getStringList(EcommerceApp.userCartList)
-        .contains(element["id"])
+            .getStringList(EcommerceApp.userCartList)
+            .contains(element["id"])
         ? Fluttertoast.showToast(msg: "Item is already in Cart")
         : addItemToCart(idItemAsId, context);
   });
 }
-addItemToCart(List idItemAsId, BuildContext context) {
 
+addItemToCart(List idItemAsId, BuildContext context) {
   List tempCartList =
-  EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
+      EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
   idItemAsId.forEach((element) {
     tempCartList.add(element["id"]);
     ListOfOrder.idlist.add(element);
@@ -387,13 +409,12 @@ addItemToCart(List idItemAsId, BuildContext context) {
     EcommerceApp.userCartList: FieldValue.arrayUnion(idItemAsId),
   }).then((v) {
     Fluttertoast.showToast(msg: "Item Added to Cart Successfully");
-    EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,tempCartList );
+    EcommerceApp.sharedPreferences
+        .setStringList(EcommerceApp.userCartList, tempCartList);
 
     Provider.of<CartItemCounter>(context, listen: false).displayResult();
   });
-
 }
-
 
 //da el box bta3 el sora
 class DetailSliverDelegate extends SliverPersistentHeaderDelegate {
@@ -509,10 +530,10 @@ class FeaturedWidget extends StatelessWidget {
       },
     );
   }
-  addItemToCart(List idItemAsId, BuildContext context) {
 
+  addItemToCart(List idItemAsId, BuildContext context) {
     List tempCartList =
-    EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
+        EcommerceApp.sharedPreferences.getStringList(EcommerceApp.userCartList);
     idItemAsId.forEach((element) {
       tempCartList.add(element["id"]);
       ListOfOrder.idlist.add(element);
@@ -525,12 +546,10 @@ class FeaturedWidget extends StatelessWidget {
       EcommerceApp.userCartList: FieldValue.arrayUnion(idItemAsId),
     }).then((v) {
       Fluttertoast.showToast(msg: "Item Added to Cart Successfully");
-      EcommerceApp.sharedPreferences.setStringList(EcommerceApp.userCartList,tempCartList );
+      EcommerceApp.sharedPreferences
+          .setStringList(EcommerceApp.userCartList, tempCartList);
 
       Provider.of<CartItemCounter>(context, listen: false).displayResult();
     });
-
   }
-
-
 }
