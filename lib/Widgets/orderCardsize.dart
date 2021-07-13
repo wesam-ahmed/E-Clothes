@@ -23,7 +23,25 @@ OrderCardSize({Key key,this.itemCount,this.data,this.orderId,this.ordercolor,thi
        //Navigator.push(context, MaterialPageRoute(builder: (c)=>OrderDetails(orderID: orderId,)));
       },
       child: Container(
-       color: Colors.grey.shade300,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade400,
+              offset: const Offset(
+                5.0,
+                5.0,
+              ), //Offset
+              blurRadius: 10.0,
+              spreadRadius: 2.0,
+            ), //BoxShadow
+            BoxShadow(
+              color: Colors.white,
+              offset: const Offset(0.0, 0.0),
+              blurRadius: 0.0,
+              spreadRadius: 0.0,
+            ), //BoxShadow
+          ],
+        ),
         padding: EdgeInsets.all(5.0),
         margin: EdgeInsets.all(2.0),
         height: itemCount*190.0,
@@ -57,6 +75,7 @@ Widget sourceOrderInfo(ItemModel model,String ordercolor,String ordersize, Build
             child: Container(
              height: 170.0,
              width: width,
+
             child: Row(
             children: [
               Image.network(model.thumbnailUrl,width: 180.0,),
@@ -103,7 +122,7 @@ Widget sourceOrderInfo(ItemModel model,String ordercolor,String ordersize, Build
                                     "Total Price:",
                                     style: TextStyle(
                                       fontSize: 14.0,
-                                      color: Colors.grey,
+                                      color: Colors.red,
                                     ),
                                   ),
                                   Text(
@@ -114,14 +133,34 @@ Widget sourceOrderInfo(ItemModel model,String ordercolor,String ordersize, Build
                                     (model.price ).toString(),
                                     style: TextStyle(
                                       fontSize: 15.0,
-                                      color: Colors.grey,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            Text(ordercolor),
-                            Text(ordersize),
+                            Row(
+                              children: [Text(
+                                "Color:",
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                  color: Colors.black,
+                                ),),
+                                Text(ordercolor),
+                              ],
+                            ),
+                            SizedBox(width: 3,),
+                            Row(
+                              children: [
+                                Text(
+                                  "Size:",
+                                  style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Colors.black,
+                                  ),),
+                                Text(ordersize),
+                              ],
+                            ),
                           ],
                         ),
                       ],

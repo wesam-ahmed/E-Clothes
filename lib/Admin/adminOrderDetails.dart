@@ -119,7 +119,7 @@ class AdminOrderDetails extends StatelessWidget {
 
                     Divider(height: 2,),
                     Container(
-                      height: 450,
+                      height: 400,
                       child: ListView.builder(
                         itemCount: IDs.length,
                         itemBuilder: (c,index) {
