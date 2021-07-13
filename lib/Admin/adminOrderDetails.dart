@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Address/address.dart';
+import 'package:e_shop/Admin/adminShiftOrders.dart';
 import 'package:e_shop/Admin/uploadItems.dart';
 import 'package:e_shop/Config/config.dart';
 import 'package:e_shop/Models/item.dart';
@@ -340,8 +341,8 @@ class AdminShippingDetails extends StatelessWidget {
    UserOrderRef.doc(getOrderId).update({
      "shippingstate":"Shipped",
    });
-   /* Route route = MaterialPageRoute(builder: (c)=> UploadPage());
-    Navigator.pushReplacement(context, route);*/
+    Route route = MaterialPageRoute(builder: (c)=> AdminShiftOrders());
+    Navigator.pushReplacement(context, route);
     Fluttertoast.showToast(msg: "Product has been Shifted.");
 
 

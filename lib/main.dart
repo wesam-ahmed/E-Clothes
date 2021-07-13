@@ -9,16 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:e_shop/Config/config.dart';
-import 'Admin/adminLogin.dart';
-import 'Admin/uploadItems.dart';
 import 'Config/config.dart';
 import 'Counters/cartitemcounter.dart';
 import 'Counters/changeAddresss.dart';
 import 'Counters/totalMoney.dart';
 import 'Store/Section.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
+
 
 
 Future<void> main() async
@@ -72,8 +69,7 @@ class _SplashScreenState extends State<SplashScreen> {
   displaySplash() {
     Timer(Duration(seconds: 2), () async {
       if (await EcommerceApp.auth.currentUser != null) {
-        Route route = MaterialPageRoute(builder: (_) =>  Section()
-        );
+        Route route = MaterialPageRoute(builder: (_) =>  Login());
         Navigator.pushReplacement(context, route);
       } else {
         Route route = MaterialPageRoute(builder: (_) => Login());
