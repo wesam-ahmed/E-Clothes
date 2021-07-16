@@ -220,7 +220,7 @@ class _UploadPageState extends State<UploadPage> with AutomaticKeepAliveClientMi
   clearFromInfo() {
     setState(() {
       file = null;
-     _descriptionTextEditingController.clear();
+      _descriptionTextEditingController.clear();
       _priceTextEditingController.clear();
       _shortInfoTextEditingController.clear();
       _titleTextEditingController.clear();

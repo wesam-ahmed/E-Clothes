@@ -233,7 +233,7 @@ class _ProductPageState extends State<ProductPage> {
               ],
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
                   width: 100,
@@ -242,28 +242,28 @@ class _ProductPageState extends State<ProductPage> {
                       border: Border.all(
                         color: Colors.green.shade200,
                       )),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      hint: ValueColorChoose == null
-                          ? Text("Color")
-                          : Text(ValueColorChoose),
-                      value: ValueColorChoose,
-                      onChanged: (String newValue) {
-                        setState(() {
-                          ValueColorChoose = newValue;
-                        });
-                      },
-                      items: widget.colors.map((String ValueItem) {
-                        return DropdownMenuItem(
-                          value: ValueItem,
-                          child: Text(ValueItem.toString()),
-                        );
-                      }).toList(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        hint: ValueColorChoose == null
+                            ? Text("Color")
+                            : Text(ValueColorChoose),
+                        value: ValueColorChoose,
+                        onChanged: (String newValue) {
+                          setState(() {
+                            ValueColorChoose = newValue;
+                          });
+                        },
+                        items: widget.colors.map((String ValueItem) {
+                          return DropdownMenuItem(
+                            value: ValueItem,
+                            child: Text(ValueItem.toString()),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 30,
                 ),
                 Container(
                   width: 100,
@@ -272,23 +272,26 @@ class _ProductPageState extends State<ProductPage> {
                       border: Border.all(
                         color: Colors.green.shade200,
                       )),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton(
-                      hint: ValueSizeChoose == null
-                          ? Text("Size")
-                          : Text(ValueSizeChoose),
-                      value: ValueSizeChoose,
-                      onChanged: (newValue) {
-                        setState(() {
-                          ValueSizeChoose = newValue;
-                        });
-                      },
-                      items: widget.sizes.map((ValueItem) {
-                        return DropdownMenuItem(
-                          value: ValueItem,
-                          child: Text(ValueItem.toString()),
-                        );
-                      }).toList(),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        hint: ValueSizeChoose == null
+                            ? Text("Size")
+                            : Text(ValueSizeChoose),
+                        value: ValueSizeChoose,
+                        onChanged: (newValue) {
+                          setState(() {
+                            ValueSizeChoose = newValue;
+                          });
+                        },
+                        items: widget.sizes.map((ValueItem) {
+                          return DropdownMenuItem(
+                            value: ValueItem,
+                            child: Text(ValueItem.toString()),
+                          );
+                        }).toList(),
+                      ),
                     ),
                   ),
                 )

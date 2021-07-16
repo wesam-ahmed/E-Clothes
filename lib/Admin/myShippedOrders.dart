@@ -46,7 +46,7 @@ class _AdminShiftshippedOrdersState extends State<AdminShippedOrders> {
             ),
             body: StreamBuilder(
               stream: EcommerceApp.firestore
-                  .collection("orders").where("shippingstate",isEqualTo: "Shipped").snapshots(),
+                  .collection("orders").where("shippingstate",isNotEqualTo: "Pending").snapshots(),
 
               builder: (c,snapshot){
                 return snapshot.hasData
