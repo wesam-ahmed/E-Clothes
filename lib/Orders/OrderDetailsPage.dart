@@ -219,20 +219,14 @@ class StatusBanner extends StatelessWidget {
     return Container(
       decoration: new BoxDecoration(
         color: primaryColor,
-          /*gradient: new LinearGradient(
-        colors: [Colors.white, Colors.grey],
-        begin: const FractionalOffset(0.0, 0.0),
-        end: const FractionalOffset(1.0, 0.0),
-        stops: [0.0, 1.0],
-        tileMode: TileMode.clamp,
-      )*/),
+         ),
       height: 60.0,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           GestureDetector(
             onTap: () {
-              SystemNavigator.pop();
+              Navigator.push(context, MaterialPageRoute(builder: (c)=>MyOrders  ()));
             },
             child: Container(
               child: Icon(
@@ -378,7 +372,7 @@ class ShippingDetails extends StatelessWidget {
   }
 
   confirmeduserOrderReceived(BuildContext context, String getOrderId) {
-    final order = EcommerceApp.firestore
+    final userorder = EcommerceApp.firestore
         .collection(EcommerceApp.collectionUser)
         .doc(EcommerceApp.sharedPreferences.getString(EcommerceApp.userUID))
         .collection(EcommerceApp.collectionOrders);

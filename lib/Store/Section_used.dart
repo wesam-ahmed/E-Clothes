@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'Section.dart';
+
 
 class SectionUsed extends StatefulWidget {
   @override
@@ -12,23 +14,8 @@ class SectionUsed extends StatefulWidget {
 }
 class _SectionUsedState extends State<SectionUsed>{
   Future<bool> _onWillPop() async {
-    return (await showDialog(
-      context: context,
-      builder: (context) => new AlertDialog(
-        title: new Text('Are you sure?'),
-        content: new Text('Do you want to exit an App'),
-        actions: <Widget>[
-          new TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: new Text('No'),
-          ),
-          new TextButton(
-            onPressed: () => SystemNavigator.pop(),
-            child: new Text('Yes'),
-          ),
-        ],
-      ),
-    )) ?? false;
+    return await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Section()));
   }
   @override
   Widget build(BuildContext context) {

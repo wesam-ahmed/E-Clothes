@@ -1,6 +1,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_shop/Orders/myReceivedOrders.dart';
+import 'package:e_shop/Store/Section.dart';
 import 'package:e_shop/Store/storehome.dart';
 import 'package:e_shop/Widgets/constance.dart';
 import 'package:e_shop/Widgets/orderNumberCard.dart';
@@ -37,6 +38,13 @@ class _MyOrdersState extends State<MyOrders> {
                     Route route = MaterialPageRoute(builder: (c)=> MyReceivedOrders());
                     Navigator.pushReplacement(context, route);                  },
                 ),
+                IconButton(
+                  icon: Icon(Icons.arrow_back,color: Colors.white,),
+                  onPressed: (){
+                    Route route = MaterialPageRoute(builder: (c)=> Section());
+                    Navigator.pushReplacement(context, route);                  },
+                ),
+
               ],
             ),
             body: StreamBuilder(
