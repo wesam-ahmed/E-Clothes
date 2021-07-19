@@ -176,16 +176,16 @@ class _ShopOwnerState extends State<ShopOwner> {
                                 padding: EdgeInsets.only(top: 5, bottom: 10),
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+
                                   children: [
                                     FloatingActionButton.extended(
                                       heroTag: "Jackets",
                                       onPressed: () {
-                                        SectionKey.category = "Jackets";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(
-                                            context, route);
+                                        setState(() {
+                                          SectionKey.category = "Jackets";
+                                        });
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset("images/Jacket.png"),
@@ -198,13 +198,28 @@ class _ShopOwnerState extends State<ShopOwner> {
                                       width: 10,
                                     ),
                                     FloatingActionButton.extended(
+                                      heroTag: "Shirts",
+                                      onPressed: () {
+                                        setState(() {
+                                          SectionKey.category = "Shirts";
+                                        });
+                                      },
+                                      backgroundColor: Colors.grey.shade100,
+                                      icon: Image.asset("images/shirt.png"),
+                                      label: Text(
+                                        "Shirt",
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    FloatingActionButton.extended(
                                       heroTag: "T-Shirt",
                                       onPressed: () {
-                                        SectionKey.category = "T-Shirt";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(
-                                            context, route);
+                                        setState(() {
+                                          SectionKey.category = "T-Shirt";
+                                        });
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset("images/tshirt.png"),
@@ -219,11 +234,9 @@ class _ShopOwnerState extends State<ShopOwner> {
                                     FloatingActionButton.extended(
                                       heroTag: "Pants",
                                       onPressed: () {
-                                        SectionKey.category = "Pants";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(
-                                            context, route);
+                                        setState(() {
+                                          SectionKey.category = "Pants";
+                                        });
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset("images/jeans.png"),
@@ -238,11 +251,9 @@ class _ShopOwnerState extends State<ShopOwner> {
                                     FloatingActionButton.extended(
                                       heroTag: "Hoodies",
                                       onPressed: () {
-                                        SectionKey.category = "Hoodies";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(
-                                            context, route);
+                                        setState(() {
+                                          SectionKey.category = "Hoodies";
+                                        });
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset(
@@ -258,11 +269,9 @@ class _ShopOwnerState extends State<ShopOwner> {
                                     FloatingActionButton.extended(
                                       heroTag: "Shoes",
                                       onPressed: () {
-                                        SectionKey.category = "Shoes";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(
-                                            context, route);
+                                        setState(() {
+                                          SectionKey.category = "Shoes";
+                                        });
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon:
@@ -278,11 +287,9 @@ class _ShopOwnerState extends State<ShopOwner> {
                                     FloatingActionButton.extended(
                                       heroTag: "Shorts",
                                       onPressed: () {
-                                        SectionKey.category = "Shorts";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(
-                                            context, route);
+                                        setState(() {
+                                          SectionKey.category = "Shorts";
+                                        });
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset("images/shorts.png"),
@@ -297,11 +304,9 @@ class _ShopOwnerState extends State<ShopOwner> {
                                     FloatingActionButton.extended(
                                       heroTag: "accessories",
                                       onPressed: () {
-                                        SectionKey.category = "accessories";
-                                        Route route = MaterialPageRoute(
-                                            builder: (_) => StoreHome());
-                                        Navigator.pushReplacement(
-                                            context, route);
+                                        setState(() {
+                                          SectionKey.category = "accessories";
+                                        });
                                       },
                                       backgroundColor: Colors.grey.shade100,
                                       icon: Image.asset("images/bags.png"),
